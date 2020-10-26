@@ -1,0 +1,22 @@
+
+<title><%= @meta_tag['title'] %></title>
+<link rel="icon" href="<%= @meta_tag['icon_image_url'] %>">
+<meta name="description" content="<%= @meta_tag['description'] %>"/>
+<meta name="keywords" content="<%= @meta_tag['keywords'] %>"/>
+
+<!-- Facebook Open Graph data -->
+<meta property="og:title" content="<%= @meta_tag['title'] %>" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="<%= request.original_url %>" />
+<meta property="og:image" content="<%= @meta_tag['image_url'] %>" />
+<meta property="og:description" content="<%= @meta_tag['description']  %>" />
+<meta property="og:site_name" content="<%= @meta_tag['title'] %>" />
+
+<!-- Twitter Card data -->
+<meta name="twitter:card" content="summary_large_image"/>
+<% if ENV["twitter_account"].present? %>
+    <%= "<meta name='twitter:site' content='#{DEFAULT_META["twitter_account"]}'/>"  %>
+ <% end %>
+<meta name="twitter:title" content="<%= @meta_tag['title'] %>"/>
+<meta name="twitter:description" content="<%= @meta_tag['description']  %>"/>
+<meta name="twitter:image:src" content="<%= @meta_tag['image_url'] %>"/>
