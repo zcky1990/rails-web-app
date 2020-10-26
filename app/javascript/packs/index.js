@@ -1,6 +1,3 @@
-require("@rails/ujs").start()
-require("turbolinks").start()
-require("channels")
 
 import Vue from 'vue/dist/vue.js';
 import AppPageLayout from '../layout/home/index-page-layout.vue';

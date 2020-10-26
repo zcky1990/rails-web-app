@@ -1,7 +1,7 @@
 <template>
-  <div id="app-layout">
-    <p>{{ data.message }}</p>
-  </div>
+<div class="container mx-auto">
+  {{ data.message }}
+</div>
 </template>
 
 <script>
