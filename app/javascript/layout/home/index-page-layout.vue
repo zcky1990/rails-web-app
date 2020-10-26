@@ -15,15 +15,8 @@ export default {
     _datas: {}
   },
   mounted: function() {
-    console.log("reasdasda")
     this.data = { ...this._datas };
+    debugger
   }
 }
 </script>
-
-<style scoped>
-p {
-  font-size: 2em;
-  text-align: center;
-}
-</style>
