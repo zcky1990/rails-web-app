@@ -8,14 +8,14 @@
 export default {
   data: function () {
     return {
-      data: {}
-    }
+      data: {},
+    };
   },
-  props:{
-    _datas: {}
+  props: {
+    _datas: {},
   },
-  mounted: function() {
+  mounted: function () {
     this.data = { ...this._datas };
-  }
-}
+  },
+};
 </script>
