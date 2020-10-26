@@ -1,13 +1,6 @@
-<!DOCTYPE html>
-<html>
-  <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-    <%= stylesheet_link_tag 'style', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
-  </head>
-  <body>
-    <%= render 'shared/application' %>
-  </body>
-</html>
+<div id="app-page-layout">
+    <page-layout :_datas="<%= @data.to_json %>">
+    </page-layout>
+</div>
+
+<%= javascript_pack_tag 'index'%>
