@@ -16,7 +16,6 @@ export default {
   },
   mounted: function() {
     this.data = { ...this._datas };
-    debugger
   }
 }
 </script>
