@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
-  devise_for :user, only: []
+  devise_for :user, only: [], controllers: { omniauth_callbacks: "omniauth_callbacks" }
   # devise_for :user, class_name: 'User',
   #   :controllers => {
   #     :sessions=> 'api/v1/sessions',
@@ -13,6 +13,9 @@ Rails.application.routes.draw do
       resource :sessions, only: [] do
         post "/login", to: "sessions#login", as: "login"
         post "/logout", to: "sessions#logout", as: "logout"
+        post "/google_login", to: "sessions#google_login", as: "google_login"
+        post "/facebook_login", to: "sessions#facebook_login", as: "facebook_login"
+        post "/twitter_login", to: "sessions#twitter_login", as: "twitter_login"
       end
 
       resource :registrations, only: [] do

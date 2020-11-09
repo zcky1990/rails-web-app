@@ -18,6 +18,15 @@ class User
   field :avatar_img_url, type: String
   field :gender, type: String
 
+  field :google_uid, type: String
+  field :google_token, type: String
+
+  field :facebook_uid, type: String
+  field :facebook_token, type: String
+
+  field :twitter_uid, type: String
+  field :twitter_token, type: String
+
   ## Recoverable
   field :reset_password_token, type: String
   field :reset_password_sent_at, type: Time
@@ -43,10 +52,25 @@ class User
   # field :unlock_token,    type: String # Only if unlock strategy is :email or :both
   # field :locked_at,       type: Time
 
-  index({ email: 1 })
+  index({ email: 1 }, { unique: true, name: "email_index" })
+  index({ google_uid: 1 }, { unique: true, name: "google_uid_index" })
+  index({ facebook_uid: 1 }, { unique: true, name: "facebook_uid_index" })
+  index({ twitter_uid: 1 }, { unique: true, name: "twitter_uid_index" })
 
   def self.find_by_email(email)
     results = self.find_by(email: email)
+    return results
+  end
+
+  def self.find_by_omniauth_id(type, uid)
+    results = {}
+    if type == FB_LOGIN
+      results = self.find_by(facebook_uid: uid)
+    elsif type == GOOGLE_LOGIN
+      results = self.find_by(google_uid: uid)
+    elsif type == TWITTER_LOGIN
+      results = self.find_by(twitter_uid: uid)
+    end
     return results
   end
 

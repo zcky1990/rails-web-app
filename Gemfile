@@ -30,6 +30,10 @@ gem 'jwt'
 
 gem 'pry'
 
+#omniauth
+gem 'omniauth-facebook', '~> 4.0'
+gem 'omniauth-google-oauth2', '~> 0.4.1'
+gem 'omniauth-twitter', '~> 1.2', '>= 1.2.1'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false

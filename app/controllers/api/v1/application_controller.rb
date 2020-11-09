@@ -11,27 +11,10 @@ class Api::V1::ApplicationController < ActionController::API
       if @decoded[:app_name].present?
         #dont do anything
       else
-        @current_user = User.find(@decoded[:user])
+        @current_user = User.find(@decoded[:user_id])
       end
-    rescue ActiveRecord::RecordNotFound => e
-      render json: { errors: e.message }, status: :unauthorized
-    rescue JWT::DecodeError => e
+    rescue Exception => e
       render json: { errors: e.message }, status: :unauthorized
     end
-  end
-
-  def result_json(status, response, message)
-    data = {}
-    if response.present?
-      data = response
-    end
-    result = {
-      status: status,
-      data: {
-        data: data,
-        message: message,
-      },
-    }
-    return result
   end
 end

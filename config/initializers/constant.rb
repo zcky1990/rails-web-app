@@ -9,3 +9,7 @@ SUCCESS_LOGOUT = "Success Logout"
 
 SUCCESS_CREATE_USER = "Success create new user"
 ERROR_EMAIL_TAKEN = "Email has been taken"
+
+FB_LOGIN = "fb"
+GOOGLE_LOGIN = "google"
+TWITTER_LOGIN = "twitter"

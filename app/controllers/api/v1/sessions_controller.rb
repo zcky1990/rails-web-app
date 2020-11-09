@@ -1,60 +1,48 @@
 class Api::V1::SessionsController < Api::V1::ApplicationController
+  before_action :authorize_request, except: :login
   respond_to :json
 
+  def initialize
+    super
+    @service = Api::V1::SessionsService.new
+  end
+
   def login
-    user = User.find_by_email(params[:email])
-    if user.present?
-      if user.valid_password?(params[:password])
-        if user_signed_in?
-          result = user_result_json(SUCCESS, user, USER_ALREADY_LOGIN)
-        else
-          sign_in user
-          result = user_result_json(SUCCESS, user, USER_SUCCESS_LOGIN)
-        end
-        render :json => result, :status => 200
-      else
-        result = user_result_json(FAILED, nil, ERROR_FAILED_LOGIN)
-        render :json => result, :status => 200
-      end
-    else
-      result = user_result_json(FAILED, nil, ERROR_FAILED_LOGIN)
-      render :json => result, :status => 200
-    end
+    is_user_sign_in = user_signed_in?
+    response = @service.sign_in_user(params, is_user_sign_in, method(:login_user_callback))
+    render :json => response, :status => 200
   end
 
   def logout
     if @current_user.present?
-      sign_out(@current_user)
-      result = user_result_json(SUCCESS, nil, SUCCESS_LOGOUT)
-      render :json => result, :status => 200
+      response = @service.sign_out_user(@current_user, method(:logout_user_callback))
+      render :json => response, :status => 200
     else
-      result = user_result_json(FAILED, nil, ERROR_FAILED_LOGOUT)
-      render :json => result, :status => 200
+      response = @service.set_user_result_json(FAILED, nil, ERROR_FAILED_LOGOUT)
+      render :json => response, :status => 200
     end
   end
 
-  private
+  def facebook_login
+    response = @service.sign_in_user_omni_auth(FB_LOGIN, params, method(:login_user_callback))
+    render :json => response, :status => 200
+  end
 
-  def user_result_json(status, user, message)
-    data = {}
-    if user.present?
-      token = JsonWebToken.encode(user: user)
-      time = Time.now + 24.hours.to_i
-      data = {
-        uid: user.id.to_s,
-        email: user.email,
-        token: token,
-        exp: time.strftime("%m-%d-%Y %H:%M"),
-      }
-    end
+  def google_login
+    response = @service.sign_in_user_omni_auth(GOOGLE_LOGIN, params, method(:login_user_callback))
+    render :json => response, :status => 200
+  end
 
-    result = {
-      status: status,
-      data: {
-        data: data,
-        message: message,
-      },
-    }
-    return result
+  def twitter_login
+    response = @service.sign_in_user_omni_auth(TWITTER_LOGIN, params, method(:login_user_callback))
+    render :json => response, :status => 200
+  end
+
+  def login_user_callback(user)
+    sign_in(user)
+  end
+
+  def logout_user_callback(user)
+    sign_out(user)
   end
 end
