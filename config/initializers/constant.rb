@@ -1,5 +1,5 @@
-SUCCESS = 'success'
-FAILED = 'failed'
+SUCCESS = "success"
+FAILED = "failed"
 
 USER_SUCCESS_LOGIN = "Login User Success"
 ERROR_FAILED_LOGIN = "Failed Login"
@@ -8,4 +8,4 @@ ERROR_FAILED_LOGOUT = "Failed Logout, User not found"
 SUCCESS_LOGOUT = "Success Logout"
 
 SUCCESS_CREATE_USER = "Success create new user"
-ERROR_EMAIL_TAKEN =  "Email has been taken"
+ERROR_EMAIL_TAKEN = "Email has been taken"
