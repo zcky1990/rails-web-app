@@ -28,7 +28,7 @@ export default {
     };
   },
   components: {
-    "Facebook-Btn":facebookLogin,
+    "Facebook-Btn": facebookLogin,
     "Google-Btn": googleLogin,
   },
   props: {
@@ -37,8 +37,7 @@ export default {
   mounted: function () {
     this.data = { ...this._datas };
   },
-  methods: {
-  }
+  methods: {},
 };
 </script>
 

@@ -62,7 +62,7 @@ export default {
   },
   computed: {
     getButtonText() {
-        return this.loginLabel;
+      return this.loginLabel;
     },
   },
   methods: {
