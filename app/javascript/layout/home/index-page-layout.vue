@@ -10,14 +10,8 @@
         </div>
       </div>
       <div class="w-full md:w-1/5 bg-blue-400 p-4 text-center text-gray-700">
-        <facebook-login
-          class="button"
-          appId="462577024718487"
-          @login="getUserData"
-          @logout="onLogout"
-          @get-initial-status="getUserData"
-        >
-        </facebook-login>
+        <Facebook-Btn></Facebook-Btn>
+        <Google-Btn></Google-Btn>
       </div>
     </div>
   </div>
@@ -25,6 +19,7 @@
 
 <script>
 import facebookLogin from "../../components/facebook-login/facebook-login.vue";
+import googleLogin from "../../components/google-login/google-login.vue";
 
 export default {
   data: function () {
@@ -33,7 +28,8 @@ export default {
     };
   },
   components: {
-    facebookLogin,
+    "Facebook-Btn":facebookLogin,
+    "Google-Btn": googleLogin,
   },
   props: {
     _datas: {},
@@ -42,19 +38,7 @@ export default {
     this.data = { ...this._datas };
   },
   methods: {
-    onLogout: function (response) {
-      
-    },
-    getUserData: function (response) {
-      if (response.response){
-        var authResponse = response.response.authResponse;
-        var facebookId = authResponse.userID;
-        var facebookToken = authResponse.accessToken;
-        //send ajax to login in app
-      }
-      
-      console.log("clicked")
-    },
-  },
+  }
 };
 </script>
+
