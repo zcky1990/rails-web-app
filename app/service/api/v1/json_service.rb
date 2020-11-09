@@ -12,8 +12,6 @@ class Api::V1::JsonService
       }
     end
 
-    p data
-
     result = {
       status: status,
       data: {
