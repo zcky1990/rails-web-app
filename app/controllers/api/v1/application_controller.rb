@@ -19,4 +19,19 @@ class Api::V1::ApplicationController < ActionController::API
       render json: { errors: e.message }, status: :unauthorized
     end
   end
+
+  def result_json(status, response, message)
+    data = {}
+    if response.present?
+      data = response
+    end
+    result = {
+      status: status,
+      data: {
+        data: data,
+        message: message,
+      },
+    }
+    return result
+  end
 end
