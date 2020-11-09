@@ -1,4 +1,9 @@
+##SECRET KEY
+SECRET_KEY: "anaksoleh"
+APP_NAME: "rails-webbapps"
+
 ## REDIS
 REDIS_HOST: 'localhost'
 REDIS_PORT: '6379'
+
 

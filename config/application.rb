@@ -37,5 +37,7 @@ module RailsWebapps
       end if File.exists?(env_file)
     end
 
+    #read file inside lib, make sure to set eager laod in dev and production.rb true
+    config.eager_load_paths << Rails.root.join('lib')
   end
 end

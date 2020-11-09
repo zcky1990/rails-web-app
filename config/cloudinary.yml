@@ -1,0 +1,21 @@
+---
+development:
+  cloud_name: dzzp8z3ad
+  api_key: '983752245359555'
+  api_secret: RX4lSH37YHn4dVqhRT23wSvfDaQ
+  enhance_image_tag: true
+  static_image_support: false
+
+production:
+  cloud_name: dzzp8z3ad
+  api_key: '983752245359555'
+  api_secret: RX4lSH37YHn4dVqhRT23wSvfDaQ
+  enhance_image_tag: true
+  static_image_support: true
+
+test:
+  cloud_name: dzzp8z3ad
+  api_key: '983752245359555'
+  api_secret: RX4lSH37YHn4dVqhRT23wSvfDaQ
+  enhance_image_tag: true
+  static_image_support: false
