@@ -14,6 +14,9 @@ class User
   field :last_name, type: String
   field :birthday, type: Date
   field :address, type: String
+  field :postal_code, type: Integer
+  field :avatar_img_url, type: String
+  field :gender, type: String
 
   ## Recoverable
   field :reset_password_token, type: String
