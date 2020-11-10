@@ -1,10 +1,15 @@
 
 <template>
-  <div class="google-btn" @click="handleClick" :id="id">
-    <div class="google-icon-wrapper">
-      <img class="google-icon" :src="icon" />
-    </div>
-    <p class="btn-text"><b>Sign in with google</b></p>
+  <div class="flex" @click="handleClick" :id="id">
+    <button
+      class="button-login bg-white text-gray font-bold sm:py-2 md:py-2 lg:py-2 sm:px-4 md:px-4 lg:px-4 rounded inline-flex items-center"
+    >
+      <img
+        class="fill-current sm:w-4 md:w-4 lg:w-4 sm:h-4 md:h-4 lg:h-4 sm:mr-2 md:mr-2 lg:mr-2"
+        :src="icon"
+      />
+      <span>{{ getButtonText }}</span>
+    </button>
   </div>
 </template>
 
@@ -32,13 +37,9 @@ export default {
       type: Function,
       default: () => {},
     },
-    logoutButton: {
-      type: Boolean,
-      default: false,
-    },
-    renderParams: {
-      type: Object,
-      required: false,
+    loginLabel: {
+      type: String,
+      default: "Sign in With Google",
     },
   },
   beforeCreate() {
@@ -63,6 +64,11 @@ export default {
         });
     },
   },
+  computed: {
+    getButtonText() {
+      return this.loginLabel;
+    },
+  },
   mounted() {
     GoogleAuth.load(this.params)
       .then(() => {
@@ -81,42 +87,10 @@ export default {
 </script>
 
 <style>
-.google-btn {
-  width: 225px;
-  height: 42px;
-  background-color: #4285f4;
-  border-radius: 2px;
-  box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.25);
-}
-.google-icon-wrapper {
-  position: absolute;
-  margin-top: 1px;
-  margin-left: 1px;
-  width: 40px;
+.button-login {
+  width: 206px;
+  max-width: 206px;
+  max-height: 40px;
   height: 40px;
-  border-radius: 2px;
-  background-color: #fff;
-}
-.google-icon {
-  position: absolute;
-  margin-top: 11px;
-  margin-left: 11px;
-  width: 18px;
-  height: 18px;
-}
-.btn-text {
-  position: relative;
-  line-height: 42px;
-  min-width: 225px;
-  padding: 0 15px 0px 46px;
-  color: #fff;
-  font-size: 14px;
-  letter-spacing: 0.2px;
-}
-.google-btn:hover {
-  box-shadow: 0 0 6px #4285f4;
-}
-.google-btn:active {
-  background: #1669f2;
 }
 </style>

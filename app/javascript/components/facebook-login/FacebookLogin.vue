@@ -1,8 +1,10 @@
 <template>
-  <div class="facebook-login">
-    <button @click="buttonClicked">
-      <i class="spinner" v-if="isWorking"></i>
-      <img :src="icon" v-if="!isWorking" />{{ getButtonText }}
+  <div class="flex" @click="buttonClicked">
+    <button
+      class="button-login bg-gradient-to-r from-indigo-700 to-indigo-800 text-white font-bold py-2 px-4 rounded inline-flex items-center"
+    >
+      <img class="fill-current w-4 h-4 mr-2" :src="icon" />
+      <span>{{ getButtonText }}</span>
     </button>
   </div>
 </template>
@@ -38,20 +40,17 @@ export default {
   },
   data() {
     return {
-      isWorking: false,
       isConnected: false,
       icon,
     };
   },
   mounted() {
-    this.isWorking = true;
     loadFbSdk(this.appId, this.version)
       .then(getFbLoginStatus)
       .then((response) => {
         if (response.status === "connected") {
           this.isConnected = true;
         }
-        this.isWorking = false;
         /** Event `get-initial-status` to be deprecated in next major version! */
         this.$emit("get-initial-status", response);
         this.$emit("sdk-loaded", {
@@ -78,7 +77,6 @@ export default {
         } else {
           this.isConnected = false;
         }
-        this.isWorking = false;
         this.$emit("login", {
           response,
           FB: window.FB,
@@ -86,9 +84,7 @@ export default {
       });
     },
     logout() {
-      this.isWorking = true;
       fbLogout().then((response) => {
-        this.isWorking = false;
         this.isConnected = false;
         this.$emit("logout", response);
       });
@@ -98,50 +94,10 @@ export default {
 </script>
 
 <style scoped>
-.facebook-login {
-  width: 184px;
-  height: 42px;
-}
-
-.facebook-login * {
-  box-sizing: inherit;
-}
-
-.facebook-login button {
-  border: none;
-  color: #fff;
-  position: relative;
-  line-height: 42px;
-  min-width: 225px;
-  padding: 0 15px 0px 46px;
-  background-image: linear-gradient(#4c69ba, #3b55a0);
-}
-
-.facebook-login .spinner {
-  left: 5px;
-  width: 30px;
-  height: 90%;
-  display: block;
-  border-radius: 50%;
-  position: absolute;
-  border: 5px solid #f3f3f3;
-  border-top-color: #3498db;
-  animation: facebook-login-spin 2s linear infinite;
-}
-
-.facebook-login img {
-  position: absolute;
-  top: 6px;
-  left: 10px;
-  width: 30px;
-}
-
-@keyframes facebook-login-spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+.button-login {
+  width: 206px;
+  max-width: 206px;
+  max-height: 40px;
+  height: 40px;
 }
 </style>
