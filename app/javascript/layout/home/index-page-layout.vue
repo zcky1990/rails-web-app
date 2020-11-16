@@ -5,7 +5,7 @@
     </div>
     <div class="container">
       <div class="container">
-        {{data.message}}
+        {{ data.message }}
       </div>
       <div class="container">
         <Facebook-Btn></Facebook-Btn>
@@ -25,9 +25,9 @@ import googleLogin from "../../components/google-login/google-login.vue";
 export default {
   data: function () {
     return {
-      data:{
-        message:""
-      }
+      data: {
+        message: "",
+      },
     };
   },
   props: {
