@@ -1,15 +1,15 @@
 <template>
   <div class="app-layout">
-    <div class="flex sm:flex-col md:flex-row lg:flex-row xl:flex-row flex-wrap">
-      <div class="w-full md:w-1/5 bg-gray-400 p-4 text-center text-gray-700">
+    <div class="">
+      <div class="">
         {{ data.message }}
       </div>
-      <div class="w-full md:w-3/5 bg-gray-500 p-4 text-center text-gray-200">
-        <div class="container mx-auto">
+      <div class="">
+        <div class="container">
           {{ data.message }}
         </div>
       </div>
-      <div class="w-full md:w-1/5 bg-blue-400 p-4 text-center text-gray-700">
+      <div class="">
         <Facebook-Btn></Facebook-Btn>
         <Google-Btn></Google-Btn>
       </div>

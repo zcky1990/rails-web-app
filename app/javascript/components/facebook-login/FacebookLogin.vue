@@ -1,12 +1,10 @@
 <template>
-  <div class="flex" @click="buttonClicked">
-    <button
-      class="button-login bg-gradient-to-r from-indigo-700 to-indigo-800 text-white font-bold py-2 px-4 rounded inline-flex items-center"
-    >
-      <img class="fill-current w-4 h-4 mr-2" :src="icon" />
-      <span>{{ getButtonText }}</span>
-    </button>
-  </div>
+  <button class="button is-small facebook" @click="buttonClicked">
+    <span class="icon is-small left-image">
+      <img class="fb-icon" :src="icon" />
+    </span>
+    <span class="text-btn-facebook">{{ getButtonText }}</span>
+  </button>
 </template>
 
 <script>
@@ -94,10 +92,26 @@ export default {
 </script>
 
 <style scoped>
-.button-login {
-  width: 206px;
-  max-width: 206px;
-  max-height: 40px;
-  height: 40px;
+.facebook {
+  width: 240px;
+  max-width: 240px;
+  max-height: 50px;
+  height: 50px;
+  background: #3B5998;
+  color: white;
+}
+.left-image{
+  width: 33px !important;
+  height: 33px !important;
+}
+.fb-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 18px;
+  height: 18px;
+}
+.text-btn-facebook {
+    font-size: 14px;
+    font-weight: bold;
 }
 </style>

@@ -1,16 +1,11 @@
 
 <template>
-  <div class="flex" @click="handleClick" :id="id">
-    <button
-      class="button-login bg-white text-gray font-bold sm:py-2 md:py-2 lg:py-2 sm:px-4 md:px-4 lg:px-4 rounded inline-flex items-center"
-    >
-      <img
-        class="fill-current sm:w-4 md:w-4 lg:w-4 sm:h-4 md:h-4 lg:h-4 sm:mr-2 md:mr-2 lg:mr-2"
-        :src="icon"
-      />
-      <span>{{ getButtonText }}</span>
-    </button>
-  </div>
+  <button class="button is-small google" @click="handleClick" :id="id">
+    <span class="icon is-small left-image">
+      <img class="google-icon" :src="icon" />
+    </span>
+    <span class="text-btn-google">{{ getButtonText }}</span>
+  </button>
 </template>
 
 <script>
@@ -87,10 +82,26 @@ export default {
 </script>
 
 <style>
-.button-login {
-  width: 206px;
-  max-width: 206px;
-  max-height: 40px;
-  height: 40px;
+.google {
+  width: 240px;
+  max-width: 240px;
+  max-height: 50px;
+  height: 50px;
+}
+.left-image{
+  width: 33px !important;
+  height: 33px !important;
+}
+.google-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 18px;
+  height: 18px;
+}
+.text-btn-google {
+    font-size: 14px;
+    font-weight: bold;
+      /* Use the Roboto font that is loaded in the <head> */
+    font-family: 'Roboto', sans-serif;
 }
 </style>
