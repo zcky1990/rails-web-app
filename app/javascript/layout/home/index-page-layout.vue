@@ -8,8 +8,8 @@
         {{ data.message }}
       </div>
       <div class="container">
-        <Facebook-Btn></Facebook-Btn>
-        <Google-Btn></Google-Btn>
+        <facebook-btn></facebook-btn>
+        <google-btn></google-btn>
       </div>
     </div>
   </section>
@@ -37,8 +37,8 @@ export default {
     this.data = this._datas;
   },
   components: {
-    "Facebook-Btn": facebookLogin,
-    "Google-Btn": googleLogin,
+    "facebook-btn": facebookLogin,
+    "google-btn": googleLogin,
     "snake-bar": snackbar,
   },
   created() {
