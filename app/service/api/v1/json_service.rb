@@ -4,11 +4,13 @@ class Api::V1::JsonService
     if user.present?
       token = JsonWebToken.encode(user_id: user.id.to_s)
       time = Time.now + 24.hours.to_i
+      role = user.role.present? ? user.role : "user" 
       data = {
         uid: user.id.to_s,
         email: user.email,
         token: token,
         exp: time.strftime("%m-%d-%Y %H:%M"),
+        role: role
       }
     end
 

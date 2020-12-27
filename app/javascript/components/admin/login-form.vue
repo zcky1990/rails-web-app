@@ -43,9 +43,7 @@
 </template>
 
 <script>
-import {
-    EventBus
-} from "../../plugins/eventbus.js";
+import { EventBus } from "../../plugins/eventbus.js";
 
 export default {
     data: function () {
@@ -65,12 +63,12 @@ export default {
                     "password": this.password
                 }
                 let headers = {};
-                headers['X-CSRF-Token'] = this.getCsrfToken();
-                this.post("/admin/sign_in", postbody, headers, function (response) {
+                this.post("/api/v1/sessions/login", postbody, headers, function (response) {
+                    debugger
                         if (response.data.status === 'success') {
                             window.location.href = "/admin/dashboard";
                         } else {
-                            self.showSnackbar(response.data.message, "error")
+                            self.showSnackbar(response, "error")
                         }
                     },
                     function (e) {

@@ -8,8 +8,7 @@
         {{ data.message }}
       </div>
       <div class="container">
-        <facebook-btn></facebook-btn>
-        <google-btn></google-btn>
+        <login-form></login-form>
       </div>
     </div>
   </section>
@@ -17,10 +16,9 @@
 
 
 <script>
-import snackbar from "../../components/shared/snackbar.vue";
-import { EventBus } from "../../plugins/eventbus.js";
-import facebookLogin from "../../components/user/facebook-login/facebook-login.vue";
-import googleLogin from "../../components/user/google-login/google-login.vue";
+import snackbar from "../../../components/shared/snackbar.vue";
+import { EventBus } from "../../../plugins/eventbus.js";
+import loginForm from "../../../components/admin/login-form.vue";
 
 export default {
   data: function () {
@@ -37,8 +35,7 @@ export default {
     this.data = this._datas;
   },
   components: {
-    "facebook-btn": facebookLogin,
-    "google-btn": googleLogin,
+    "login-form": loginForm,
     "snake-bar": snackbar,
   },
   created() {

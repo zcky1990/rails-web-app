@@ -1,4 +1,5 @@
-class Admin::IndexController < Admin::AdminApplicationController
+class Admin::IndexController < ApplicationController
   def index
-  end
+  end  
+  
 end

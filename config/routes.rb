@@ -13,17 +13,9 @@ Rails.application.routes.draw do
       get '/dashboard', to: 'index#index', as: 'index'
     end
 
-    resource :web_meta, only: [:web_meta], :path => '/'  do
-      get '/web_meta', to: 'web_meta#index', as: 'index'
-    end
-
-    resource :user_admin, only: [:web_meta], :path => '/'  do
-      get '/user_admin', to: 'user_admin#index', as: 'index'
-    end
-
     resource :login, only: [:index] do
       collection do
-        get '/', to: 'login#login', as: 'login'
+        get '/', to: 'login#index', as: 'login'
       end
     end
   end
