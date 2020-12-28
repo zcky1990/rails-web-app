@@ -4,11 +4,12 @@
       <snake-bar ref="snackbar"></snake-bar>
     </div>
     <div class="container">
-      <div v-if="isMessageEmpty()" class="container">
+      <div class="container">
         {{ data.message }}
       </div>
       <div class="container">
-        <login-form></login-form>
+        <facebook-btn></facebook-btn>
+        <google-btn></google-btn>
       </div>
     </div>
   </section>
@@ -18,7 +19,8 @@
 <script>
 import snackbar from "../../../components/shared/snackbar.vue";
 import { EventBus } from "../../../plugins/eventbus.js";
-import loginForm from "../../../components/admin/login-form.vue";
+import facebookLogin from "../../../components/user/facebook-login/facebook-login.vue";
+import googleLogin from "../../../components/user/google-login/google-login.vue";
 
 export default {
   data: function () {
@@ -32,24 +34,22 @@ export default {
     _datas: {},
   },
   mounted: function () {
-    if(this._datas !== null){
-      this.data = this._datas;
-    }
+    this.data = this._datas;
   },
   components: {
-    "login-form": loginForm,
+    "facebook-btn": facebookLogin,
+    "google-btn": googleLogin,
     "snake-bar": snackbar,
+  },
+  created() {
+    EventBus.$on("SNACKBAR_TRIGGERED", (val) => {
+      this.showSnackbar(val.message, val.type);
+    });
   },
   methods: {
     showSnackbar: function (message, type) {
       this.$refs.snackbar.showSnackBar(message, type);
     },
-    isMessageEmpty: function(){
-      if (this.data.message == "" || this.data.length == 0){
-        return true
-      }
-      return false
-    }
   },
 };
 </script>

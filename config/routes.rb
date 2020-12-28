@@ -18,8 +18,21 @@ Rails.application.routes.draw do
         get '/', to: 'login#index', as: 'login'
       end
     end
+
+    resource :web_meta_data, only: [] do
+      collection do
+        get '/', to: 'web_meta_data#index', as: 'web_meta_data'
+      end
+    end
+
   end
   
+  namespace :user do
+    resource :home, only: [], :path => "/" do
+      get "/", to: "home#index", as: "index"
+    end
+  end
+
   namespace :api do
     namespace :v1 do
       resource :sessions, only: [] do
@@ -40,9 +53,5 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :home, only: [], :path => "/" do
-    get "/", to: "home#index", as: "index"
-  end
-
-  root "home#index"
+  root "user/home#index"
 end
