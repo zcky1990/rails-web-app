@@ -64,7 +64,6 @@ export default {
                 }
                 let headers = {};
                 this.post("/api/admin/sessions/admin_login", postbody, headers, function (response) {
-                    debugger
                         if (response.data.status === 'success') {
                             window.location.href = "/admin/dashboard";
                         } else {

@@ -19,4 +19,8 @@ class ApplicationController < ActionController::Base
       render json: { errors: e.message }, status: :unauthorized
     end
   end
+
+  def get_token(current_user)
+    return current_user.token
+  end
 end

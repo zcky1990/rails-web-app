@@ -140,7 +140,7 @@ export default {
     uploadImage: function (type, imageFile, folder) {
       var self = this;
       let headers = {};
-      // headers["Authorization"] = "Bearer " + this.getJWT();
+      headers["Authorization"] = "Bearer " + this.getToken();
       headers["Content-Type"] = "multipart/form-data";
       let bodyFormData = new FormData();
       bodyFormData.append("imagefile", imageFile);
@@ -231,7 +231,7 @@ export default {
         }
 
         let headers = {};
-        // headers["Authorization"] = "Bearer " + this.getJWT();
+        headers["Authorization"] = "Bearer " + this.getToken();
         if (this.data.id == "") {
           this.post(
             "/api/admin/web_meta_data/create_web_meta_data",

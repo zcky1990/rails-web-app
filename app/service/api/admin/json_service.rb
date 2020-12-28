@@ -12,6 +12,7 @@ class Api::Admin::JsonService
         exp: time.strftime("%m-%d-%Y %H:%M"),
         role: role
       }
+      user.update_attributes(token: token)
     end
 
     result = {

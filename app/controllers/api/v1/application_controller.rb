@@ -22,9 +22,9 @@ class Api::V1::ApplicationController < ActionController::API
     result = {
       status: "error",
       data: {
-        error_title: error_title
-        error_code: error_code
-        error_message: error_message,
+        error_title: error_title,
+        error_code: error_code,
+        error_message: error_message
       }
     }
     return result

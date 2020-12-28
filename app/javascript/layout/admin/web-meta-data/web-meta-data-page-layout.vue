@@ -27,6 +27,7 @@ export default {
   },
   props: {
     _datas: {},
+    _token: ""
   },
   created() {
     var self = this;
