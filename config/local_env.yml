@@ -2,6 +2,8 @@
 SECRET_KEY: "anaksoleh"
 APP_NAME: "rails-webbapps"
 
+TOKEN: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBfbmFtZSI6InJhaWxzLXdlYmJhcHBzIiwiZXhwIjoxNjA5MjM0NzcxfQ.BTqhONCk3OPUPPW9IKGgUIpByUDryvC7X7Vcx7JyEIE"
+
 ## REDIS
 REDIS_HOST: 'localhost'
 REDIS_PORT: '6379'

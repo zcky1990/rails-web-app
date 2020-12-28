@@ -20,7 +20,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def get_token(current_user)
-    return current_user.token
+  def get_token(current_user = nil)
+    if current_user.present?
+      return current_user.token
+    else
+      return ENV["TOKEN"]
+    end
   end
 end
