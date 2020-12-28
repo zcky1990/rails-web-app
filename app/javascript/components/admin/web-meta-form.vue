@@ -150,8 +150,10 @@ export default {
           if (response.data.status === "success") {
             if (type == 0) {
               self.data.image_url = response.data.data.secure_url;
+              self.showSnackBar("success upload image", "success");
             } else {
               self.data.icon_image_url = response.data.data.secure_url;
+              self.showSnackBar("success upload image", "success");
             }
           } else {
             self.showSnackBar(response.data.message, "error");
@@ -235,6 +237,7 @@ export default {
             function (response) {
               if (response.data.status === "success") {
                 self.data = response.data.data;
+                self.showSnackBar("success create", "success");
               } else {
                 self.showSnackBar(response.data.message, "error");
               }
@@ -251,6 +254,7 @@ export default {
             function (response) {
               if (response.data.status === "success") {
                 self.data = response.data.data;
+                self.showSnackBar("success update", "success");
               } else {
                 self.showSnackBar(response.data.message, "error");
               }
