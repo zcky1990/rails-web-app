@@ -2,25 +2,30 @@ class Api::V1::RegistrationsController < Api::V1::ApplicationController
   respond_to :json
 
   def sign_up
-    user = User.find_by_email(params[:email])
-    if !user.present?
-      new_user = User.new(email: params[:email], password: params[:password])
-      if new_user.save!
-        result = get_result(SUCCESS, SUCCESS_CREATE_USER, new_user)
-        render :json => result, :status => 200
+    begin
+      user = User.find_by_email(params[:email])
+      if !user.present?
+        new_user = User.new(email: params[:email], password: params[:password])
+        if new_user.save!
+          user_data = get_result_data(new_user)
+          result = get_success_result(user_data, "Success create new user")
+          render :json => result, :status => 200
+        else
+          result = get_error_result("Failed to create new user", 500, new_user.errors.to_s)
+          render :json => result, :status => 200
+        end
       else
-        result = get_result(FAILED, new_user.errors.to_s, nil)
+        result = get_error_result("Failed to create new user", 500, "Email has been taken")
         render :json => result, :status => 200
       end
-    else
-      result = get_result(FAILED, ERROR_EMAIL_TAKEN, nil)
-      render :json => result, :status => 200
+    rescue Exception => e
+      result = get_error_result("Failed to create new user", 500, e.message)
+      render :json => result, :status => 500
     end
   end
 
   private
-
-  def get_result(status, message_data, user)
+  def get_result_data(status, message_data, user)
     if user.present?
       data = {
         uid: user.id.to_s,
@@ -29,13 +34,6 @@ class Api::V1::RegistrationsController < Api::V1::ApplicationController
     else
       data = nil
     end
-    result = {
-      status: status,
-      data: {
-        data: data,
-        message: message_data,
-      },
-    }
-    return result
+   return data
   end
 end

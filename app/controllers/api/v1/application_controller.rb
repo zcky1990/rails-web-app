@@ -17,4 +17,27 @@ class Api::V1::ApplicationController < ActionController::API
       render json: { errors: e.message }, status: :unauthorized
     end
   end
+
+  def get_error_result(error_title, error_code, error_message)
+    result = {
+      status: "error",
+      data: {
+        error_title: error_title
+        error_code: error_code
+        error_message: error_message,
+      }
+    }
+    return result
+  end
+
+  def get_success_result(data, message_data)
+    result = {
+      status: "success",
+      data: {
+        data: data,
+        message: message_data
+      }
+    }
+    return result
+  end
 end
