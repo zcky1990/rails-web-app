@@ -98,8 +98,6 @@
 </template>
 
 <script>
-import { EventBus } from "../../plugins/eventbus.js";
-
 export default {
   data: function () {
     return {
@@ -156,11 +154,11 @@ export default {
               self.data.icon_image_url = response.data.data.secure_url;
             }
           } else {
-            self.showSnackbar(response.data.message, "error");
+            self.showSnackBar(response.data.message, "error");
           }
         },
         function (e) {
-          self.showSnackbar(e.message, "error");
+          self.showSnackBar(e.message, "error");
         }
       );
     },
@@ -169,7 +167,7 @@ export default {
       let file = event.currentTarget.files[0];
       let t = file.type.split("/").pop().toLowerCase();
       if (t != "jpeg" && t != "jpg" && t != "png" && t != "bmp") {
-        this.showSnackbar("Please select a valid image file", "error");
+        this.showSnackBar("Please select a valid image file", "error");
         this.filename = "";
         return false;
       }
@@ -180,7 +178,7 @@ export default {
       let file = event.currentTarget.files[0];
       let t = file.type.split("/").pop().toLowerCase();
       if (t != "jpeg" && t != "jpg" && t != "png" && t != "bmp") {
-        this.showSnackbar("Please select a valid image file", "error");
+        this.showSnackBar("Please select a valid image file", "error");
         this.iconFileName = "";
         return false;
       }
@@ -238,11 +236,11 @@ export default {
               if (response.data.status === "success") {
                 self.data = response.data.data;
               } else {
-                self.showSnackbar(response.data.message, "error");
+                self.showSnackBar(response.data.message, "error");
               }
             },
             function (e) {
-              self.showSnackbar(e.message, "error");
+              self.showSnackBar(e.message, "error");
             }
           );
         } else {
@@ -254,22 +252,16 @@ export default {
               if (response.data.status === "success") {
                 self.data = response.data.data;
               } else {
-                self.showSnackbar(response.data.message, "error");
+                self.showSnackBar(response.data.message, "error");
               }
             },
             function (e) {
-              self.showSnackbar(e.message, "error");
+              self.showSnackBar(e.message, "error");
             }
           );
         }
       }
-    },
-    showSnackbar: function (message, type) {
-      let data = {};
-      data.message = message;
-      data.type = type;
-      EventBus.$emit("SNACKBAR_TRIGGERED", data);
-    },
+    }
   },
 };
 </script>

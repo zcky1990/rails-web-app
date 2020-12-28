@@ -17,7 +17,6 @@
 
 <script>
 import snackbar from "../../../components/shared/snackbar.vue";
-import { EventBus } from "../../../plugins/eventbus.js";
 import loginForm from "../../../components/admin/login-form.vue";
 
 export default {
@@ -31,6 +30,12 @@ export default {
   props: {
     _datas: {},
   },
+  created() {
+    var self = this;
+    this.onEmitSnackBar("SNACKBAR_TRIGGERED",function (data){
+      self.$refs.snackbar.showSnackBar(data.message, data.type);
+    })
+  },
   mounted: function () {
     if(this._datas !== null){
       this.data = this._datas;
@@ -39,11 +44,6 @@ export default {
   components: {
     "login-form": loginForm,
     "snake-bar": snackbar,
-  },
-  methods: {
-    showSnackbar: function (message, type) {
-      this.$refs.snackbar.showSnackBar(message, type);
-    }
   }
 };
 </script>

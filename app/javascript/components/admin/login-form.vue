@@ -68,11 +68,11 @@ export default {
                         if (response.data.status === 'success') {
                             window.location.href = "/admin/dashboard";
                         } else {
-                            self.showSnackbar(response, "error")
+                            self.showSnackBar(response, "error")
                         }
                     },
                     function (e) {
-                        self.showSnackbar(e.message, "error")
+                        self.showSnackBar(e.message, "error")
                     });
             }
         },
@@ -95,14 +95,7 @@ export default {
             } else {
                 return true
             }
-        },
-        showSnackbar: function (message, type) {
-            let data = {};
-            data.message = message;
-            data.type = type;
-            EventBus.$emit("SNACKBAR_TRIGGERED", data);
         }
-
     }
 };
 </script>
