@@ -58,10 +58,10 @@ export default {
                     data.type = type;
                     this.EventBus.$emit("SNACKBAR_TRIGGERED", data);
                 },
-                onEmitSnackBar(trigger,callback){
-                    this.EventBus.$on(trigger, (val) => {
+                onEmitSnackBar(callback){
+                    this.EventBus.$on("SNACKBAR_TRIGGERED", (val) => {
                         callback(val)
-                      });
+                    });
                 }
             }
         })

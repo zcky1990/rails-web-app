@@ -32,7 +32,7 @@ export default {
   },
   created() {
     var self = this;
-    this.onEmitSnackBar("SNACKBAR_TRIGGERED",function (data){
+    this.onEmitSnackBar(function (data){
       self.$refs.snackbar.showSnackBar(data.message, data.type);
     })
   },

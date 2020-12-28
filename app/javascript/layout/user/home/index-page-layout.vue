@@ -18,7 +18,6 @@
 
 <script>
 import snackbar from "../../../components/shared/snackbar.vue";
-import { EventBus } from "../../../plugins/eventbus.js";
 import facebookLogin from "../../../components/user/facebook-login/facebook-login.vue";
 import googleLogin from "../../../components/user/google-login/google-login.vue";
 
@@ -34,7 +33,9 @@ export default {
     _datas: {},
   },
   mounted: function () {
-    this.data = this._datas;
+    if(this._datas !== null){
+      this.data = this._datas;
+    }
   },
   components: {
     "facebook-btn": facebookLogin,
@@ -42,15 +43,14 @@ export default {
     "snake-bar": snackbar,
   },
   created() {
-    EventBus.$on("SNACKBAR_TRIGGERED", (val) => {
-      this.showSnackbar(val.message, val.type);
-    });
+   var self = this;
+    this.onEmitSnackBar(function (data){
+      self.$refs.snackbar.showSnackBar(data.message, data.type);
+    })
   },
   methods: {
-    showSnackbar: function (message, type) {
-      this.$refs.snackbar.showSnackBar(message, type);
-    },
-  },
+    
+  }
 };
 </script>
 
