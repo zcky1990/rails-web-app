@@ -34,6 +34,20 @@ Rails.application.routes.draw do
   end
 
   namespace :api do
+    namespace :admin do
+      resource :sessions, only: [] do
+        post "/admin_login", to: "sessions#login", as: "login"
+        post "/admin_logout", to: "sessions#logout", as: "logout"
+      end
+
+      resources :web_meta_data, only: [] do
+        post 'upload_image', action: :upload_image, on: :collection
+        post 'create_web_meta_data', action: :create_web_meta_data, on: :collection
+        put 'update_web_meta_data', action: :update_web_meta_data, on: :collection
+      end
+
+    end
+
     namespace :v1 do
       resource :sessions, only: [] do
         post "/login", to: "sessions#login", as: "login"

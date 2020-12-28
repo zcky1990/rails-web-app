@@ -63,7 +63,7 @@ export default {
                     "password": this.password
                 }
                 let headers = {};
-                this.post("/api/v1/sessions/login", postbody, headers, function (response) {
+                this.post("/api/admin/sessions/admin_login", postbody, headers, function (response) {
                     debugger
                         if (response.data.status === 'success') {
                             window.location.href = "/admin/dashboard";
@@ -72,7 +72,7 @@ export default {
                         }
                     },
                     function (e) {
-                        self.showSnackbar(e, "error")
+                        self.showSnackbar(e.message, "error")
                     });
             }
         },

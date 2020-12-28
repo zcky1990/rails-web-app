@@ -120,7 +120,6 @@ export default {
     };
   },
   mounted: function () {
-    this.data = this.getData();
   },
   computed: {
     getImageMetaTag: function () {
@@ -140,13 +139,13 @@ export default {
     uploadImage: function (type, imageFile, folder) {
       var self = this;
       let headers = {};
-      headers["Authorization"] = "Bearer " + this.getJWT();
+      // headers["Authorization"] = "Bearer " + this.getJWT();
       headers["Content-Type"] = "multipart/form-data";
       let bodyFormData = new FormData();
       bodyFormData.append("imagefile", imageFile);
       bodyFormData.set("folder", folder);
       this.post(
-        "/api/admin/web_meta/upload_image",
+        "/api/admin/web_meta_data/upload_image",
         bodyFormData,
         headers,
         function (response) {
@@ -161,7 +160,7 @@ export default {
           }
         },
         function (e) {
-          self.showSnackbar(e, "error");
+          self.showSnackbar(e.message, "error");
         }
       );
     },
@@ -243,7 +242,7 @@ export default {
               }
             },
             function (e) {
-              self.showSnackbar(e, "error");
+              self.showSnackbar(e.message, "error");
             }
           );
         } else {
@@ -259,7 +258,7 @@ export default {
               }
             },
             function (e) {
-              self.showSnackbar(e, "error");
+              self.showSnackbar(e.message, "error");
             }
           );
         }

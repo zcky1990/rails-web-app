@@ -4,7 +4,7 @@
       <snake-bar ref="snackbar"></snake-bar>
     </div>
     <div class="container">
-      <div v-if="isMessageEmpty()" class="container">
+      <div class="container">
         {{ data.message }}
       </div>
       <div class="container">
@@ -43,14 +43,8 @@ export default {
   methods: {
     showSnackbar: function (message, type) {
       this.$refs.snackbar.showSnackBar(message, type);
-    },
-    isMessageEmpty: function(){
-      if (this.data.message == "" || this.data.length == 0){
-        return true
-      }
-      return false
     }
-  },
+  }
 };
 </script>
 

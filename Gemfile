@@ -38,6 +38,9 @@ gem 'omniauth-twitter', '~> 1.2', '>= 1.2.1'
 #bulma css
 gem "bulma-rails", "~> 0.9.0"
 
+#cloudinary
+gem 'cloudinary'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 
