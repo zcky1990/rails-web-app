@@ -1,5 +1,5 @@
 class Api::Admin::WebMetaDataController < Api::Admin::ApplicationController
-  before_action :authorize_request, except: :login
+  before_action :authorize_request, except: [:upload_image, :create_web_meta_data, :update_web_meta_data]
   respond_to :json
 
   def initialize

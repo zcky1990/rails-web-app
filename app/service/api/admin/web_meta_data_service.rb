@@ -1,6 +1,6 @@
 class Api::Admin::WebMetaDataService
   def get_web_meta_data
-    data = WebMeta.all.first
+    data = WebMeta.where({}).first
     if data.present?
         result = get_data(data).to_json 
     else

@@ -5,10 +5,10 @@
     </div>
     <div class="container">
       <div class="container">
-        {{ data.message }}
+        {{ message }}
       </div>
       <div class="container">
-        <login-form></login-form>
+        <login-form ref="loginForm"></login-form>
       </div>
     </div>
   </section>
@@ -22,9 +22,7 @@ import loginForm from "../../../components/admin/web-meta-form.vue";
 export default {
   data: function () {
     return {
-      data: {
-        message: "",
-      },
+      message: ""
     };
   },
   props: {
@@ -37,8 +35,8 @@ export default {
     })
   },
   mounted: function () {
-    if(this._datas !== null){
-      this.data = this._datas;
+    if(this._datas !== null && !(Object.keys(this._datas).length === 0 && this._datas.constructor === Object)){
+      this.$refs.loginForm.setData(JSON.parse(this._datas));
     }
   },
   components: {

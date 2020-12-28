@@ -134,6 +134,9 @@ export default {
     },
   },
   methods: {
+    setData(data){
+      this.data = data
+    },
     uploadImage: function (type, imageFile, folder) {
       var self = this;
       let headers = {};
@@ -228,10 +231,10 @@ export default {
         }
 
         let headers = {};
-        headers["Authorization"] = "Bearer " + this.getJWT();
+        // headers["Authorization"] = "Bearer " + this.getJWT();
         if (this.data.id == "") {
           this.post(
-            "/api/admin/web_meta/create_web_meta_data",
+            "/api/admin/web_meta_data/create_web_meta_data",
             bodyFormData,
             headers,
             function (response) {
@@ -248,7 +251,7 @@ export default {
           );
         } else {
           this.put(
-            "/api/admin/web_meta/update_web_meta_data",
+            "/api/admin/web_meta_data/update_web_meta_data",
             bodyFormData,
             headers,
             function (response) {

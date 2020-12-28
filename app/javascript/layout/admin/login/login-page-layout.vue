@@ -37,7 +37,7 @@ export default {
     })
   },
   mounted: function () {
-    if(this._datas !== null){
+    if(this._datas !== null && !(Object.keys(this._datas).length === 0 && this._datas.constructor === Object)){
       this.data = this._datas;
     }
   },
