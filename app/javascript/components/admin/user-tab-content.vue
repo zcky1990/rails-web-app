@@ -31,6 +31,7 @@
           v-bind:keyEvent="keyEventAdmin"
           v-bind:page="page"
           v-bind:totalPage="totalPage"
+          v-bind:searchType="adminSearchType"
         ></table-list>
       </section>
       <section class="tab-content user">
@@ -60,6 +61,7 @@ export default {
       adminHideColumn: [0],
       adminActionShow: true,
       keyEventAdmin: "USER_ADMIN",
+      adminSearchType:["email", "user_id"],
       maxRow: 10,
       page:1,
       totalPage: 80
@@ -80,6 +82,9 @@ export default {
     });
     this.onEmitEvent("USER_ADMIN_LIST", function (data) {
       self.page = data.page
+    });
+    this.onEmitEvent("USER_ADMIN_SEARCH", function (data) {
+      console.log(data);
     });
   },
   methods: {

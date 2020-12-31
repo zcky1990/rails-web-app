@@ -1,5 +1,30 @@
 <template>
   <div class="table-container">
+    <div class="container">
+      <div class="columns">
+        <div class="column"></div>
+        <div class="column">
+          <div class="field has-addons">
+            <div class="control">
+              <span class="select is-small">
+                <select v-model="typeSearch">
+                  <option v-for="(value, index) in searchType"
+                    :key="`data-${index}`">{{value}}</option>
+                </select>
+              </span>
+            </div>
+            <div class="control is-expanded">
+              <input v-model="query" class="input is-small" type="text" placeholder="Find user">
+            </div>
+            <div class="control">
+              <a v-on:click="onSearch" class="button is-info is-small">
+                Search
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <table class="table is-fullwidth is-hoverable">
       <thead>
         <tr>
@@ -91,10 +116,14 @@ export default {
     keyEvent: String,
     page: Number,
     totalPage: Number,
-    maxRow: Number
+    maxRow: Number,
+    searchType:Array
   },
   data: function () {
-    return {};
+    return {
+      query:"",
+      typeSearch: ""
+    };
   },
   methods: {
     showPaginate: function(){
@@ -126,6 +155,15 @@ export default {
         eventKey: eventKey,
         type: type,
         index: id,
+      };
+      this.emitEvent(eventKey, eventData);
+    },
+    onSearch: function(){
+      let eventKey = this.keyEvent + "_SEARCH";
+      let eventData = {
+        query: this.query,
+        typeSearch: this.typeSearch,
+        eventKey: eventKey,
       };
       this.emitEvent(eventKey, eventData);
     },

@@ -1,7 +1,7 @@
 <template>
             <div class="container pagination-page">
             <nav
-              class="pagination is-right is-fullwidth"
+              class="pagination is-right is-fullwidth is-small"
               role="navigation"
               aria-label="pagination"
             >
