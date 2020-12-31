@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+   <%= render 'shared/meta_tag' %>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <% if @token.present?%>
       <meta name="token" content="<%= @token%>">
     <% end %>
