@@ -31,6 +31,7 @@ def web_meta_data(params)
         web_meta.update_attributes(icon_image_url: params[:icon_image_url])
         if web_meta.save
             data = get_data(web_meta)
+            set_redis("web_meta_data", data.to_json)
             create_success_result_json("success", data)
         else
             create_error_result_json("failed", "failed to update data: #{web_meta.errors}")
@@ -46,6 +47,7 @@ def web_meta_data(params)
        web_data =  WebMeta.new(data)
         if web_data.save
             data = get_data(web_data)
+            set_redis("web_meta_data", data.to_json)
             create_success_result_json("success", data)
         else
             create_error_result_json("failed", "failed to save data: #{web_data.errors}")
@@ -83,6 +85,11 @@ def create_error_result_json(status, message_data)
      }
     }
     return result
+end
+
+private
+def set_redis(key, json)
+    $redis.set(key, json)
 end
 
 end

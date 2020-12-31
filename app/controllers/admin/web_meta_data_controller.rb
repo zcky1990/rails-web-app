@@ -1,5 +1,5 @@
-class Admin::WebMetaDataController < ApplicationController
-  before_action :is_sign_in
+class Admin::WebMetaDataController < Admin::ApplicationController
+  before_action :is_sign_in,  :get_default_web_meta_data
   
   def initialize
     super
@@ -11,10 +11,4 @@ class Admin::WebMetaDataController < ApplicationController
     @data = @service.get_web_meta_data()
   end  
 
-  private
-  def is_sign_in
-      if !user_signed_in?
-        redirect_to "/admin/login"
-      end
-  end
 end
