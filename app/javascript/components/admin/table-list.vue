@@ -168,7 +168,6 @@ export default {
       let data = this.getData(id);
       let eventData = {
         data: data,
-        eventKey: eventKey,
         type: type,
         index: id,
       };
@@ -182,7 +181,6 @@ export default {
         let eventData = {
           query: this.query,
           typeSearch: this.typeSearch,
-          eventKey: eventKey,
         };
         this.emitEvent(eventKey, eventData);
       }
