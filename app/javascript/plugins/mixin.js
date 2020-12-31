@@ -1,14 +1,11 @@
 import axios from 'axios'
-import { EventBus } from '../plugins/eventbus.js'
+import {EventBus} from '../plugins/eventbus.js'
 
 export default {
     install(Vue) {
         Vue.mixin({
             data: function () {
-                return { 
-                    axios: '',
-                    EventBus: ''
-                }
+                return {axios: '', EventBus: ''}
             },
             created() {
                 this.axios = axios;
@@ -49,8 +46,22 @@ export default {
                         callbackFailed(e);
                     });
                 },
+                getJsonHeaders: function () {
+                    let headers = {};
+                    headers["Authorization"] = "Bearer " + this.getToken();
+                    headers["Content-Type"] = "application/json";
+                    return headers;
+                },
                 getData() {
                     console.log("add mixin or global function")
+                },
+                emitEvent(key, data) {
+                    this.EventBus.$emit(key, data);
+                },
+                onEmitEvent(key, callback) {
+                    this.EventBus.$on(key, (data) => {
+                        callback(data)
+                    });
                 },
                 showSnackBar: function (message, type) {
                     let data = {};
@@ -58,21 +69,21 @@ export default {
                     data.type = type;
                     this.EventBus.$emit("SNACKBAR_TRIGGERED", data);
                 },
-                onEmitSnackBar(callback){
+                onEmitSnackBar(callback) {
                     this.EventBus.$on("SNACKBAR_TRIGGERED", (val) => {
                         callback(val)
                     });
                 },
                 getToken() {
                     const metas = document.getElementsByTagName('meta');
-                  
+
                     for (let i = 0; i < metas.length; i++) {
-                      if (metas[i].getAttribute('name') === "token") {
-                        return metas[i].getAttribute('content');
-                      }
+                        if (metas[i].getAttribute('name') === "token") {
+                            return metas[i].getAttribute('content');
+                        }
                     }
                     return '';
-                  }
+                }
             }
         })
     }
