@@ -26,7 +26,7 @@
         </div>
       </div>
     </div>
-    <table class="table is-fullwidth is-hoverable">
+    <table class="table is-fullwidth is-hoverable ">
       <thead>
         <tr>
           <th
@@ -34,12 +34,12 @@
             :key="`tableHeaders-${index}`"
             v-if="itemsNotContains(index)"
           >
-            <div class="has-text-centered">
+            <div class="has-text-centered is-size-7">
               {{ header }}
             </div>
           </th>
           <th v-if="actionShow == true">
-            <div class="container has-text-centered">Action</div>
+            <div class="container has-text-centered is-size-7">Action</div>
           </th>
         </tr>
       </thead>
@@ -59,7 +59,7 @@
             :key="`data-${index}`"
             v-if="itemsNotContains(index)"
           >
-            <div class="has-text-centered">
+            <div class="has-text-centered is-size-7">
               {{ value }}
             </div>
           </td>
