@@ -9,7 +9,9 @@ class Api::V1::ApplicationController < ActionController::API
     begin
       @decoded = JsonWebToken.decode(header)
       if @decoded[:app_name].present?
-        #dont do anything
+        if @decoded[:app_name] != ENV["APP_NAME"]
+          render json: { errors: "Invalid Token"}, status: :unauthorized
+        end
       else
         @current_user = User.find(@decoded[:user_id])
       end
