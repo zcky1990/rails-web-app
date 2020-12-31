@@ -29,6 +29,8 @@
           v-bind:hideColumn="adminHideColumn"
           v-bind:actionShow="adminActionShow"
           v-bind:keyEvent="keyEventAdmin"
+          v-bind:page="page"
+          v-bind:totalPage="totalPage"
         ></table-list>
       </section>
       <section class="tab-content user">
@@ -39,6 +41,7 @@
           v-bind:hideColumn="adminHideColumn"
           v-bind:actionShow="adminActionShow"
           v-bind:keyEvent="keyEventAdmin"
+          v-bind:maxRow="maxRow"
         ></table-list>
       </section>
     </div>
@@ -57,6 +60,9 @@ export default {
       adminHideColumn: [0],
       adminActionShow: true,
       keyEventAdmin: "USER_ADMIN",
+      maxRow: 10,
+      page:1,
+      totalPage: 80
     };
   },
   created() {
@@ -71,6 +77,9 @@ export default {
     this.onEmitEvent("USER_ADMIN_REMOVE", function (data) {
       let index = data.index;
       self.removeData(self.adminDataTable, index);
+    });
+    this.onEmitEvent("USER_ADMIN_LIST", function (data) {
+      self.page = data.page
     });
   },
   methods: {
