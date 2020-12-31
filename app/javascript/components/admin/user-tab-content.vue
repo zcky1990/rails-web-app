@@ -29,9 +29,11 @@
           v-bind:hideColumn="adminHideColumn"
           v-bind:actionShow="adminActionShow"
           v-bind:keyEvent="keyEventAdmin"
-          v-bind:page="page"
-          v-bind:totalPage="totalPage"
+          v-bind:page="adminCurrentPage"
+          v-bind:totalPage="adminDataTotalPage"
           v-bind:searchType="adminSearchType"
+          v-bind:type="adminType"
+          v-bind:maxRow="adminTablemaxRow"
         ></table-list>
       </section>
       <section class="tab-content user">
@@ -42,7 +44,7 @@
           v-bind:hideColumn="adminHideColumn"
           v-bind:actionShow="adminActionShow"
           v-bind:keyEvent="keyEventAdmin"
-          v-bind:maxRow="maxRow"
+          v-bind:maxRow="adminTablemaxRow"
         ></table-list>
       </section>
     </div>
@@ -62,16 +64,25 @@ export default {
       adminActionShow: true,
       keyEventAdmin: "USER_ADMIN",
       adminSearchType:["email", "user_id"],
-      maxRow: 10,
-      page:1,
-      totalPage: 80
+      adminType: "Admin",
+      adminTablemaxRow: 10,
+      adminCurrentPage:1,
+      adminDataTotalPage: 1,
+      adminTotalData: 1
     };
   },
   created() {
     var self = this;
     this.onEmitEvent("USER_ADMIN_SHOW", function (data) {
       let a = { a: "asd", b: "d", c: "1", d: "1", e: "esda" };
-      self.addData(self.adminDataTable, a);
+      if (self.adminDataTable.length <= self.adminTablemaxRow){
+        self.addData(self.adminDataTable, a);
+      }else {
+        self.adminDataTable.pop()
+        self.addData(self.adminDataTable, a);
+        self.adminTotalData = self.adminTotalData + 1
+        self.adminDataTotalPage = parseInt(self.adminTotalData/self.adminTablemaxRow);
+      }
     });
     this.onEmitEvent("USER_ADMIN_EDIT", function (data) {
       console.log(data);
@@ -81,15 +92,18 @@ export default {
       self.removeData(self.adminDataTable, index);
     });
     this.onEmitEvent("USER_ADMIN_LIST", function (data) {
-      self.page = data.page
+      self.adminCurrentPage = data.page
     });
     this.onEmitEvent("USER_ADMIN_SEARCH", function (data) {
+      console.log(data);
+    });
+    this.onEmitEvent("USER_ADMIN_ADD", function (data) {
       console.log(data);
     });
   },
   methods: {
     addData: function (dataTable, data) {
-      dataTable.push(data);
+      dataTable.unshift(data);
     },
     removeData: function (dataTable, index) {
       dataTable.splice(index, 1);

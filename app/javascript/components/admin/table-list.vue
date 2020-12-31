@@ -1,5 +1,19 @@
 <template>
   <div class="table-container">
+      <div class="container">
+        <div class="columns">
+          <div class="column"></div>
+          <div class="column">
+            <div class="field is-grouped is-grouped-right">
+              <p class="control">
+                <a v-on:click="onAddNewUser" class="button is-info is-small">
+                  Add New {{type}}
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     <div class="container">
       <div class="columns">
         <div class="column"></div>
@@ -118,7 +132,8 @@ export default {
     page: Number,
     totalPage: Number,
     maxRow: Number,
-    searchType:Array
+    searchType:Array,
+    type: String
   },
   data: function () {
     return {
@@ -128,7 +143,7 @@ export default {
   },
   methods: {
     showPaginate: function(){
-      if (this.totalPage > 1 ){
+      if (this.totalPage > 1 || this.dataTable.length > this.maxRow){
         return true
       }
       return false
@@ -161,7 +176,7 @@ export default {
     },
     onSearch: function(){
       if (this.typeSearch === ""){
-        this.showSnackBar("please select search category first", "error")
+        this.showSnackBar("Please select search category first", "error")
       }else{
         let eventKey = this.keyEvent + "_SEARCH";
         let eventData = {
@@ -171,6 +186,10 @@ export default {
         };
         this.emitEvent(eventKey, eventData);
       }
+    },
+    onAddNewUser: function(){
+      let eventKey = this.keyEvent + "_ADD";
+      this.emitEvent(eventKey, {});
     },
     itemsNotContains: function (n) {
       return !(this.hideColumn.indexOf(n) > -1);
