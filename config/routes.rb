@@ -25,6 +25,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resource :user, only: [] do
+      collection do
+        get '/', to: 'user#index', as: 'user'
+      end
+    end
+
   end
   
   namespace :user do
