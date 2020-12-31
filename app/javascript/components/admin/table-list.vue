@@ -8,6 +8,7 @@
             <div class="control">
               <span class="select is-small">
                 <select v-model="typeSearch">
+                  <option disabled value="">Please select one</option>
                   <option v-for="(value, index) in searchType"
                     :key="`data-${index}`">{{value}}</option>
                 </select>
@@ -159,13 +160,17 @@ export default {
       this.emitEvent(eventKey, eventData);
     },
     onSearch: function(){
-      let eventKey = this.keyEvent + "_SEARCH";
-      let eventData = {
-        query: this.query,
-        typeSearch: this.typeSearch,
-        eventKey: eventKey,
-      };
-      this.emitEvent(eventKey, eventData);
+      if (this.typeSearch === ""){
+        this.showSnackBar("please select search category first", "error")
+      }else{
+        let eventKey = this.keyEvent + "_SEARCH";
+        let eventData = {
+          query: this.query,
+          typeSearch: this.typeSearch,
+          eventKey: eventKey,
+        };
+        this.emitEvent(eventKey, eventData);
+      }
     },
     itemsNotContains: function (n) {
       return !(this.hideColumn.indexOf(n) > -1);
