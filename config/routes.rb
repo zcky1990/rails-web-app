@@ -55,12 +55,12 @@ Rails.application.routes.draw do
         get "get_admin_list", action: :get_user_admin_list, on: :collection
         post "add_new_admin", action: :add_user_admin, on: :collection
         put "update_admin", action: :update_user_admin, on: :collection
-        del "remove_admin", action: :remove_user_admin, on: :collection
+        delete "remove_admin", action: :remove_user_admin, on: :collection
 
         get "get_user_list", action: :get_user_list, on: :collection
         post "add_new_user", action: :add_new_user, on: :collection
         put "update_user", action: :update_user, on: :collection
-        del "remove_user", action: :remove_user, on: :collection
+        delete "remove_user", action: :remove_user, on: :collection
       end
     end
 
