@@ -23,7 +23,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'devise', '~> 4.7', '>= 4.7.2'
 gem 'omniauth-oauth', '~> 1.1'
 gem 'mongoid', '~> 7.1', '>= 7.1.2'
-gem 'kaminari'
+gem 'kaminari-mongoid'
 
 #jwt for api
 gem 'jwt'
@@ -34,6 +34,8 @@ gem 'pry'
 gem 'omniauth-facebook', '~> 4.0'
 gem 'omniauth-google-oauth2', '~> 0.4.1'
 gem 'omniauth-twitter', '~> 1.2', '>= 1.2.1'
+
+gem 'active_model_serializers', '~> 0.10.0'
 
 #bulma css
 gem "bulma-rails", "~> 0.9.0"

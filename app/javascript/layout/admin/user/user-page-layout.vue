@@ -22,28 +22,34 @@ import contenttab from "../../../components/admin/user-tab-content.vue";
 export default {
   data: function () {
     return {
-      message: ""
+      message: "",
     };
   },
   props: {
     _datas: {},
-    _token: ""
+    _token: "",
   },
   created() {
     var self = this;
-    this.onEmitSnackBar(function (data){
+    this.onEmitSnackBar(function (data) {
       self.$refs.snackbar.showSnackBar(data.message, data.type);
-    })
+    });
   },
   mounted: function () {
-    if(this._datas !== null && !(Object.keys(this._datas).length === 0 && this._datas.constructor === Object)){
+    if (
+      this._datas !== null &&
+      !(
+        Object.keys(this._datas).length === 0 &&
+        this._datas.constructor === Object
+      )
+    ) {
       this.$refs.contentTab.setData(JSON.parse(this._datas));
     }
   },
   components: {
     "content-tab": contenttab,
     "snake-bar": snackbar,
-  }
+  },
 };
 </script>
 

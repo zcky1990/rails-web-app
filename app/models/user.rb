@@ -36,7 +36,7 @@ class User
 
   field :token, type: String
 
-  field :role, type: String
+  field :role, type: String, default: "user"
   embeds_many :access_level
 
   ## Trackable
@@ -61,6 +61,7 @@ class User
   index({ google_uid: 1 }, { unique: true, name: "google_uid_index" })
   index({ facebook_uid: 1 }, { unique: true, name: "facebook_uid_index" })
   index({ twitter_uid: 1 }, { unique: true, name: "twitter_uid_index" })
+  index({ role: 1 })
 
   def self.find_by_email(email)
     results = self.find_by(email: email)

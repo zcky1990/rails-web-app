@@ -9,30 +9,29 @@ Rails.application.routes.draw do
   # }, module: :devise
 
   namespace :admin do
-    resource :index, only: [], :path => '/'  do
-      get '/dashboard', to: 'index#index', as: 'index'
+    resource :index, only: [], :path => "/" do
+      get "/dashboard", to: "index#index", as: "index"
     end
 
     resource :login, only: [:index] do
       collection do
-        get '/', to: 'login#index', as: 'login'
+        get "/", to: "login#index", as: "login"
       end
     end
 
     resource :web_meta_data, only: [] do
       collection do
-        get '/', to: 'web_meta_data#index', as: 'web_meta_data'
+        get "/", to: "web_meta_data#index", as: "web_meta_data"
       end
     end
 
     resource :user, only: [] do
       collection do
-        get '/', to: 'user#index', as: 'user'
+        get "/", to: "user#index", as: "user"
       end
     end
-
   end
-  
+
   namespace :user do
     resource :home, only: [], :path => "/" do
       get "/", to: "home#index", as: "index"
@@ -47,11 +46,22 @@ Rails.application.routes.draw do
       end
 
       resources :web_meta_data, only: [] do
-        post 'upload_image', action: :upload_image, on: :collection
-        post 'create_web_meta_data', action: :create_web_meta_data, on: :collection
-        put 'update_web_meta_data', action: :update_web_meta_data, on: :collection
+        post "upload_image", action: :upload_image, on: :collection
+        post "create_web_meta_data", action: :create_web_meta_data, on: :collection
+        put "update_web_meta_data", action: :update_web_meta_data, on: :collection
       end
 
+      resources :user, only: [] do
+        get "get_admin_list", action: :get_user_admin_list, on: :collection
+        post "add_new_admin", action: :add_user_admin, on: :collection
+        put "update_admin", action: :update_user_admin, on: :collection
+        del "remove_admin", action: :remove_user_admin, on: :collection
+
+        get "get_user_list", action: :get_user_list, on: :collection
+        post "add_new_user", action: :add_new_user, on: :collection
+        put "update_user", action: :update_user, on: :collection
+        del "remove_user", action: :remove_user, on: :collection
+      end
     end
 
     namespace :v1 do

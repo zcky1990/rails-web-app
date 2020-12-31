@@ -37,6 +37,11 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
+    active_model_serializers (0.10.10)
+      actionpack (>= 4.1, < 6.1)
+      activemodel (>= 4.1, < 6.1)
+      case_transform (>= 0.2)
+      jsonapi-renderer (>= 0.1.1.beta1, < 0.3)
     activejob (6.0.3.4)
       activesupport (= 6.0.3.4)
       globalid (>= 0.3.6)
@@ -76,6 +81,8 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (~> 1.5)
       xpath (~> 3.2)
+    case_transform (0.2)
+      activesupport
     childprocess (3.0.0)
     cloudinary (1.18.1)
       aws_cf_signer
@@ -106,19 +113,12 @@ GEM
       concurrent-ruby (~> 1.0)
     jbuilder (2.10.1)
       activesupport (>= 5.0.0)
+    jsonapi-renderer (0.2.2)
     jwt (1.5.6)
-    kaminari (1.2.1)
-      activesupport (>= 4.1.0)
-      kaminari-actionview (= 1.2.1)
-      kaminari-activerecord (= 1.2.1)
-      kaminari-core (= 1.2.1)
-    kaminari-actionview (1.2.1)
-      actionview
-      kaminari-core (= 1.2.1)
-    kaminari-activerecord (1.2.1)
-      activerecord
-      kaminari-core (= 1.2.1)
     kaminari-core (1.2.1)
+    kaminari-mongoid (1.0.1)
+      kaminari-core (~> 1.0)
+      mongoid
     listen (3.3.3)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -292,6 +292,7 @@ PLATFORMS
   x86_64-darwin-19
 
 DEPENDENCIES
+  active_model_serializers (~> 0.10.0)
   bcrypt (~> 3.1.7)
   bootsnap (>= 1.4.2)
   bulma-rails (~> 0.9.0)
@@ -301,7 +302,7 @@ DEPENDENCIES
   devise (~> 4.7, >= 4.7.2)
   jbuilder (~> 2.7)
   jwt
-  kaminari
+  kaminari-mongoid
   listen (~> 3.2)
   mongoid (~> 7.1, >= 7.1.2)
   omniauth-facebook (~> 4.0)

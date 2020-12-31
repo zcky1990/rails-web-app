@@ -59,44 +59,53 @@ export default {
   data: function () {
     return {
       adminTableHeaders: ["0", "1", "2", "3", "4"],
-      adminDataTable: [{ a: "asd", b: "dasdasdasda", c: "1sadasdas", d: "1asdas", e: "esda" }],
-      adminHideColumn: [0],
+      adminDataTable: [
+        { a: "asd", b: "dasdasdasda", c: "1sadasdas", d: "1asdas", e: "esda" },
+      ],
+      adminHideColumn: [],
       adminActionShow: true,
       keyEventAdmin: "USER_ADMIN",
-      adminSearchType:["email", "user_id"],
+      adminSearchType: ["email", "user_id"],
       adminType: "Admin",
       adminTablemaxRow: 10,
-      adminCurrentPage:1,
+      adminCurrentPage: 1,
       adminDataTotalPage: 1,
-      adminTotalData: 1
+      adminTotalData: 1,
     };
   },
   created() {
     var self = this;
     this.onEmitEvent("USER_ADMIN_SHOW", function (data) {
       let a = { a: "asd", b: "d", c: "1", d: "1", e: "esda" };
-      if (self.adminDataTable.length <= self.adminTablemaxRow){
+      if (self.adminDataTable.length <= self.adminTablemaxRow) {
         self.addData(self.adminDataTable, a);
-      }else {
-        self.adminDataTable.pop()
+      } else {
         self.addData(self.adminDataTable, a);
-        self.adminTotalData = self.adminTotalData + 1
-        self.adminDataTotalPage = parseInt(self.adminTotalData/self.adminTablemaxRow);
+        self.adminTotalData = self.adminTotalData + 1;
+        self.adminDataTotalPage = Math.ceil(
+          self.adminTotalData / self.adminTablemaxRow
+        );
+        self.adminDataTable.pop();
       }
     });
     this.onEmitEvent("USER_ADMIN_EDIT", function (data) {
       console.log(data);
     });
+
     this.onEmitEvent("USER_ADMIN_REMOVE", function (data) {
       let index = data.index;
       self.removeData(self.adminDataTable, index);
     });
+
     this.onEmitEvent("USER_ADMIN_LIST", function (data) {
-      self.adminCurrentPage = data.page
+      self.adminCurrentPage = data.page;
+      console.log(data);
     });
+
     this.onEmitEvent("USER_ADMIN_SEARCH", function (data) {
       console.log(data);
     });
+
     this.onEmitEvent("USER_ADMIN_ADD", function (data) {
       console.log(data);
     });
