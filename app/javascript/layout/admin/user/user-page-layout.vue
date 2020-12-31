@@ -8,7 +8,7 @@
         {{ message }}
       </div>
       <div class="container">
-        <!-- <login-form ref="loginForm"></login-form> -->
+        <content-tab ref="contentTab"></content-tab>
       </div>
     </div>
   </section>
@@ -17,7 +17,7 @@
 
 <script>
 import snackbar from "../../../components/shared/snackbar.vue";
-// import loginForm from "../../../components/admin/web-meta-form.vue";
+import contenttab from "../../../components/admin/user-tab-content.vue";
 
 export default {
   data: function () {
@@ -37,11 +37,11 @@ export default {
   },
   mounted: function () {
     if(this._datas !== null && !(Object.keys(this._datas).length === 0 && this._datas.constructor === Object)){
-      this.$refs.loginForm.setData(JSON.parse(this._datas));
+      this.$refs.contentTab.setData(JSON.parse(this._datas));
     }
   },
   components: {
-    // "login-form": loginForm,
+    "content-tab": contenttab,
     "snake-bar": snackbar,
   }
 };
