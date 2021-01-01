@@ -42,7 +42,7 @@ import adminForm from "./user-admin-form.vue";
 export default {
   data: function () {
     return {
-      currentIndex: "",
+      currentIndex: null,
       admin: {
         tableHeaders: ["email", "firstname", "lastname"],
         tabelData: [
@@ -150,6 +150,7 @@ export default {
           debugger;
           if (response.data.status === "success") {
             self.removeData(self.currentIndex);
+            self.currentIndex = null;
             responseData = response.data.data;
             self.addData(self.admin.tabelData, responseData);
             self.hideSpinner();
