@@ -42,6 +42,7 @@ import adminForm from "./user-admin-form.vue";
 export default {
   data: function () {
     return {
+      currentIndex: "",
       admin: {
         tableHeaders: ["email", "firstname", "lastname"],
         tabelData: [
@@ -77,6 +78,7 @@ export default {
     });
 
     this.onEmitEvent("USER_ADMIN_EDIT", function (data) {
+      self.currentIndex = data.index;
       self.$refs.adminForm.showForm(data.data, "edit", "Edit Admin Data");
     });
 
@@ -137,7 +139,30 @@ export default {
     });
 
     this.onEmitEvent("ON_EDIT_ADMIN", function (data) {
-      console.log(data);
+      self.$refs.adminForm.hideForm();
+      self.showSpinner();
+      let headers = self.getJsonHeaders();
+      self.post(
+        "/api/admin/user/update_admin",
+        data,
+        headers,
+        function (response) {
+          debugger;
+          if (response.data.status === "success") {
+            self.removeData(self.currentIndex);
+            responseData = response.data.data;
+            self.addData(self.admin.tabelData, responseData);
+            self.hideSpinner();
+          } else {
+            self.hideSpinner();
+            self.showSnackBar(response.data.error_message, "error");
+          }
+        },
+        function (e) {
+          self.hideSpinner();
+          self.showSnackBar(e.message, "error");
+        }
+      );
     });
   },
   methods: {
