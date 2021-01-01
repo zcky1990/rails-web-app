@@ -2,6 +2,7 @@
   <section class="section index-section">
     <div class="container">
       <snake-bar ref="snackbar"></snake-bar>
+      <spinner ref="spinner"></spinner>
     </div>
     <div class="container">
       <div class="container">
@@ -17,6 +18,7 @@
 
 <script>
 import snackbar from "../../../components/shared/snackbar.vue";
+import spinner from "../../../components/shared/spinner.vue";
 import contenttab from "../../../components/admin/user-tab-content.vue";
 
 export default {
@@ -34,6 +36,16 @@ export default {
     this.onEmitSnackBar(function (data) {
       self.$refs.snackbar.showSnackBar(data.message, data.type);
     });
+
+    this.onShowSpinner(function () {
+      self.$refs.spinner.showSpinner();
+    });
+
+    this.onHideSpinner(function () {
+      self.$refs.spinner.hideSpinner();
+    });
+
+
   },
   mounted: function () {
     if (
@@ -49,6 +61,7 @@ export default {
   components: {
     "content-tab": contenttab,
     "snake-bar": snackbar,
+    "spinner": spinner,
   },
 };
 </script>

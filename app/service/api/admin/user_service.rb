@@ -39,8 +39,8 @@ class Api::Admin::UserService
         data = {
           email: params[:email],
           password: params[:password],
-          first_name: params[:firstname],
-          last_name: params[:lastname],
+          first_name: params[:first_name],
+          last_name: params[:last_name],
           role: "admin",
         }
         new_admin = User.new(data)
@@ -65,8 +65,8 @@ class Api::Admin::UserService
         data = {
           email: params[:email],
           password: params[:password],
-          firstname: params[:firstname],
-          lastname: params[:lastname],
+          first_name: params[:first_name],
+          last_name: params[:last_name],
           role: "admin",
         }
         if admin.update_attributes(data)
@@ -123,8 +123,8 @@ class Api::Admin::UserService
         data = {
           email: params[:email],
           password: params[:password],
-          first_name: params[:firstname],
-          last_name: params[:lastname],
+          first_name: params[:first_name],
+          last_name: params[:last_name],
           role: "user",
         }
         new_admin = User.new(data)
@@ -149,8 +149,8 @@ class Api::Admin::UserService
         data = {
           email: params[:email],
           password: params[:password],
-          firstname: params[:firstname],
-          lastname: params[:lastname],
+          first_name: params[:first_name],
+          last_name: params[:last_name],
           role: "user",
         }
         if admin.update_attributes(data)

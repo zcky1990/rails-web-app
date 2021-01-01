@@ -74,6 +74,22 @@ export default {
                         callback(val)
                     });
                 },
+                showSpinner: function () {
+                    this.EventBus.$emit("SHOW_SPINNER", {});
+                },
+                hideSpinner: function () {
+                    this.EventBus.$emit("HIDE_SPINNER", {});
+                },
+                onShowSpinner(callback) {
+                    this.EventBus.$on("SHOW_SPINNER", () => {
+                        callback()
+                    });
+                },
+                onHideSpinner(callback) {
+                    this.EventBus.$on("HIDE_SPINNER", () => {
+                        callback()
+                    });
+                },
                 getToken() {
                     const metas = document.getElementsByTagName('meta');
 

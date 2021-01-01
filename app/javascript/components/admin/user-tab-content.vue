@@ -22,30 +22,13 @@
     </div>
     <div class="tab-content-container">
       <section class="tab-content admin tab-active">
-        <table-list
-          ref="admin"
-          v-bind:tableHeaders="adminTableHeaders"
-          v-bind:dataTable="adminDataTable"
-          v-bind:hideColumn="adminHideColumn"
-          v-bind:actionShow="adminActionShow"
-          v-bind:keyEvent="keyEventAdmin"
-          v-bind:page="adminCurrentPage"
-          v-bind:totalPage="adminDataTotalPage"
-          v-bind:searchType="adminSearchType"
-          v-bind:type="adminType"
-          v-bind:maxRow="adminTablemaxRow"
-        ></table-list>
+        <admin-form ref="adminForm"></admin-form>
+        <table-list ref="admin" :objectData="admin"></table-list>
       </section>
       <section class="tab-content user">
-        <table-list
+        <!-- <table-list
           ref="user"
-          v-bind:tableHeaders="adminTableHeaders"
-          v-bind:dataTable="adminDataTable"
-          v-bind:hideColumn="adminHideColumn"
-          v-bind:actionShow="adminActionShow"
-          v-bind:keyEvent="keyEventAdmin"
-          v-bind:maxRow="adminTablemaxRow"
-        ></table-list>
+        ></table-list> -->
       </section>
     </div>
   </div>
@@ -54,42 +37,47 @@
 <script>
 import { EventBus } from "../../plugins/eventbus.js";
 import tableList from "./table-list.vue";
+import adminForm from "./user-admin-form.vue";
 
 export default {
   data: function () {
     return {
-      adminTableHeaders: ["0", "1", "2", "3", "4"],
-      adminDataTable: [
-        { a: "asd", b: "dasdasdasda", c: "1sadasdas", d: "1asdas", e: "esda" },
-      ],
-      adminHideColumn: [],
-      adminActionShow: true,
-      keyEventAdmin: "USER_ADMIN",
-      adminSearchType: ["email", "user_id"],
-      adminType: "Admin",
-      adminTablemaxRow: 10,
-      adminCurrentPage: 1,
-      adminDataTotalPage: 1,
-      adminTotalData: 1,
+      admin: {
+        tableHeaders: ["email", "firstname", "lastname"],
+        tabelData: [
+          // { email: "asd@a.com", first_name: "1sadasdas", last_name: "1asdas" },
+        ],
+        hiddenColumn: [],
+        isShowActionColumn: true,
+        keyEvent: "USER_ADMIN",
+        searchType: ["email", "id"],
+        type: "Admin",
+        maxRow: 10,
+        totalPage: 1,
+        totalData: 1,
+        page: 1,
+      },
     };
   },
   created() {
     var self = this;
     this.onEmitEvent("USER_ADMIN_SHOW", function (data) {
-      let a = { a: "asd", b: "d", c: "1", d: "1", e: "esda" };
-      if (self.adminDataTable.length <= self.adminTablemaxRow) {
-        self.addData(self.adminDataTable, a);
-      } else {
-        self.addData(self.adminDataTable, a);
-        self.adminTotalData = self.adminTotalData + 1;
-        self.adminDataTotalPage = Math.ceil(
-          self.adminTotalData / self.adminTablemaxRow
-        );
-        self.adminDataTable.pop();
-      }
+      self.$refs.adminForm.showForm(data.data, "show", "Admin Data");
+      // let a = { a: "asd", b: "d", c: "1", d: "1", e: "esda" };
+      // if (self.adminDataTable.length <= self.adminTablemaxRow) {
+      //   self.addData(self.adminDataTable, a);
+      // } else {
+      //   self.addData(self.adminDataTable, a);
+      //   self.adminTotalData = self.adminTotalData + 1;
+      //   self.adminDataTotalPage = Math.ceil(
+      //     self.adminTotalData / self.adminTablemaxRow
+      //   );
+      //   self.adminDataTable.pop();
+      // }
     });
+
     this.onEmitEvent("USER_ADMIN_EDIT", function (data) {
-      console.log(data);
+      self.$refs.adminForm.showForm(data.data, "edit", "Edit Admin Data");
     });
 
     this.onEmitEvent("USER_ADMIN_REMOVE", function (data) {
@@ -98,8 +86,10 @@ export default {
     });
 
     this.onEmitEvent("USER_ADMIN_LIST", function (data) {
-      self.adminCurrentPage = data.page;
-      console.log(data);
+      if (self.adminCurrentPage != data.page) {
+        self.adminCurrentPage = data.page;
+        console.log(data);
+      }
     });
 
     this.onEmitEvent("USER_ADMIN_SEARCH", function (data) {
@@ -107,6 +97,46 @@ export default {
     });
 
     this.onEmitEvent("USER_ADMIN_ADD", function (data) {
+      console.log("adasd");
+      self.$refs.adminForm.showForm({}, "add", "Add New Admin");
+    });
+
+    this.onEmitEvent("ON_ADD_ADMIN", function (data) {
+      self.$refs.adminForm.hideForm();
+      self.showSpinner();
+      let headers = self.getJsonHeaders();
+      self.post(
+        "/api/admin/user/add_new_admin",
+        data,
+        headers,
+        function (response) {
+          debugger;
+          if (response.data.status === "success") {
+            responseData = response.data.data;
+            if (self.admin.tabelData.length <= self.admin.maxRow) {
+              self.addData(self.admin.tabelData, responseData);
+            } else {
+              self.addData(self.admin.tabelData, responseData);
+              self.admin.totalData = self.admin.totalData + 1;
+              self.admin.totalPage = Math.ceil(
+                self.admin.totalData / self.admin.maxRow
+              );
+              self.admin.tabelData.pop();
+            }
+            self.hideSpinner();
+          } else {
+            self.hideSpinner();
+            self.showSnackBar(response.data.error_message, "error");
+          }
+        },
+        function (e) {
+          self.hideSpinner();
+          self.showSnackBar(e.message, "error");
+        }
+      );
+    });
+
+    this.onEmitEvent("ON_EDIT_ADMIN", function (data) {
       console.log(data);
     });
   },
@@ -139,6 +169,7 @@ export default {
   },
   components: {
     "table-list": tableList,
+    "admin-form": adminForm,
   },
 };
 </script>
