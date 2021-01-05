@@ -88,29 +88,14 @@
           </td>
           <td v-if="objectData.isShowActionColumn == true">
             <div class="has-text-centered">
-              <span class="icon is-small">
-                <abbr
-                  :id="`${index}`"
-                  title="Show"
-                  class="SHOW"
-                  v-on:click="onClick"
-                >
+              <span :id="`${index}`" class="icon is-small">
+                <abbr title="Show" class="SHOW" v-on:click="onClick">
                   <i class="fas fa-eye"></i
                 ></abbr>
-                <abbr
-                  :id="`${index}`"
-                  title="Edit"
-                  class="EDIT"
-                  v-on:click="onClick"
-                >
+                <abbr title="Edit" class="EDIT" v-on:click="onClick">
                   <i class="ml-2 fas fa-edit"></i
                 ></abbr>
-                <abbr
-                  :id="`${index}`"
-                  title="Delete"
-                  class="REMOVE"
-                  v-on:click="onClick"
-                >
+                <abbr title="Delete" class="REMOVE" v-on:click="onClick">
                   <i class="ml-2 fas fa-trash"></i
                 ></abbr>
               </span>
@@ -172,7 +157,7 @@ export default {
       return this.objectData.tabelData[index];
     },
     onClick: function (event) {
-      let id = event.currentTarget.id;
+      let id = event.currentTarget.parentElement.id;
       let type = event.currentTarget.classList[0];
       let eventKey = this.objectData.keyEvent + "_" + type;
       let data = this.getData(id);
@@ -181,7 +166,6 @@ export default {
         type: type,
         index: id,
       };
-      console.log(eventKey), console.log(eventData);
       this.emitEvent(eventKey, eventData);
     },
     onSearch: function () {

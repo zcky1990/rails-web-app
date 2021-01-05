@@ -55,7 +55,7 @@ export default {
         this._datas.constructor === Object
       )
     ) {
-      this.$refs.contentTab.setData(JSON.parse(this._datas));
+      this.$refs.contentTab.setData(this._datas);
     }
   },
   components: {

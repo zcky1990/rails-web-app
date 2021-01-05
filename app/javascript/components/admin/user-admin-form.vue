@@ -95,7 +95,7 @@
             </fieldset>
           </form>
         </section>
-        <footer class="modal-card-foot">
+        <footer v-if="showButtonSubmit" class="modal-card-foot">
           <button class="button is-info" v-on:click="onSubmit">Submit</button>
           <button class="button" v-on:click="onClickCancel">Cancel</button>
         </footer>
@@ -119,6 +119,14 @@ export default {
       type: "",
     };
   },
+  computed: {
+    showButtonSubmit() {
+      if (this.type == "show") {
+        return false;
+      }
+      return true;
+    },
+  },
   methods: {
     showForm(data, type, title) {
       this.isShow = true;
@@ -128,6 +136,9 @@ export default {
     },
     hideForm() {
       this.isShow = false;
+      this.userData = {};
+      this.type = "";
+      this.title = "";
     },
     onClickCancel: function () {
       this.hideForm();

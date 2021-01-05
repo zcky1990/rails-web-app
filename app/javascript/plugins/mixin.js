@@ -39,8 +39,8 @@ export default {
                     });
                 },
 
-                delete: function (url, headers, callbackSuccess, callbackFailed) {
-                    this.axios.delete(url, {headers}).then(response => {
+                delete: function (url, model, headers, callbackSuccess, callbackFailed) {
+                    this.axios.delete(url, model, {headers}).then(response => {
                         callbackSuccess(response)
                     }).catch(e => {
                         callbackFailed(e);
