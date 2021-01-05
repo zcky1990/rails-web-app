@@ -40,6 +40,9 @@ export default {
     if(this._datas !== null && !(Object.keys(this._datas).length === 0 && this._datas.constructor === Object)){
       this.data = this._datas;
     }
+    if (this.notif !== null) {
+      this.$refs.snackbar.showSnackBar(this.notif.message, this.notif.status);
+    }
   },
   components: {
     "login-form": loginForm,
