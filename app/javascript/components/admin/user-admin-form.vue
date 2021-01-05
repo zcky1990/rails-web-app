@@ -144,16 +144,16 @@ export default {
       this.hideForm();
     },
     onSubmit: function (event) {
-      var self = this;
       if (this.validate(this.userData)) {
-        console.log(this.userData);
         if (this.type == "edit") {
           this.emitEvent("ON_EDIT_ADMIN", this.userData);
         } else {
+          this.userData.type = 'admin'
           this.emitEvent("ON_ADD_ADMIN", this.userData);
         }
       } else {
         console.log(this.messageError);
+        // this.showSnackBar(this.messageError, "error");
       }
     },
     validate: function (data) {
