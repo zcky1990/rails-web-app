@@ -102,11 +102,12 @@
             </div>
           </td>
         </tr>
-        <tr v-if="showPaginate() == true">
+        <tr>
           <paginate-table
             :page="objectData.page"
             :totalPage="objectData.totalPage"
-            :keyEvent="objectData.keyEvent"
+            :type="objectData.type"
+            :url="objectData.tableListUrl"
           ></paginate-table>
         </tr>
       </tbody>

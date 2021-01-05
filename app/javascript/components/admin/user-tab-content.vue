@@ -42,7 +42,6 @@ import adminForm from "./user-admin-form.vue";
 export default {
   data: function () {
     return {
-      currentIndex: null,
       admin: {
         tableHeaders: ["email", "firstname", "lastname"],
         tabelData: [],
@@ -55,6 +54,7 @@ export default {
         totalPage: 1,
         totalData: 1,
         page: 1,
+        tableListUrl: "",
       },
     };
   },
@@ -69,35 +69,7 @@ export default {
     });
 
     this.onEmitEvent("USER_ADMIN_REMOVE", function (data) {
-      let index = data.index;
-      let postData = data.data;
-      self.showSpinner();
-      let headers = self.getJsonHeaders();
-      self.delete(
-        "/api/admin/user/remove_admin",
-        data,
-        headers,
-        function (response) {
-          if (response.data.status === "success") {
-            self.removeData(self.admin.tabelData, index);
-            self.hideSpinner();
-          } else {
-            self.hideSpinner();
-            self.showSnackBar(response.data.error_message, "error");
-          }
-        },
-        function (e) {
-          self.hideSpinner();
-          self.showSnackBar(e.message, "error");
-        }
-      );
-    });
-
-    this.onEmitEvent("USER_ADMIN_LIST", function (data) {
-      if (self.adminCurrentPage != data.page) {
-        self.adminCurrentPage = data.page;
-        console.log(data);
-      }
+      self.submitForm("/admin/user/remove", data.data, "POST");
     });
 
     this.onEmitEvent("USER_ADMIN_SEARCH", function (data) {
@@ -111,63 +83,13 @@ export default {
     this.onEmitEvent("ON_ADD_ADMIN", function (data) {
       self.$refs.adminForm.hideForm();
       self.showSpinner();
-      let headers = self.getJsonHeaders();
-      self.post(
-        "/api/admin/user/add_new_admin",
-        data,
-        headers,
-        function (response) {
-          debugger;
-          if (response.data.status === "success") {
-            responseData = response.data.data;
-            if (self.admin.tabelData.length <= self.admin.maxRow) {
-              self.addData(self.admin.tabelData, responseData);
-            } else {
-              self.addData(self.admin.tabelData, responseData);
-              self.admin.totalData = self.admin.totalData + 1;
-              self.admin.totalPage = Math.ceil(
-                self.admin.totalData / self.admin.maxRow
-              );
-              self.admin.tabelData.pop();
-            }
-            self.hideSpinner();
-          } else {
-            self.hideSpinner();
-            self.showSnackBar(response.data.error_message, "error");
-          }
-        },
-        function (e) {
-          self.hideSpinner();
-          self.showSnackBar(e.message, "error");
-        }
-      );
+      self.submitForm("/admin/user/add", data, "POST");
     });
 
     this.onEmitEvent("ON_EDIT_ADMIN", function (data) {
       self.$refs.adminForm.hideForm();
       self.showSpinner();
-      let headers = self.getJsonHeaders();
-      self.put(
-        "/api/admin/user/update_admin",
-        data,
-        headers,
-        function (response) {
-          if (response.data.status === "success") {
-            let index = data.index;
-            self.removeData(self.admin.tabelData, index);
-            let responseData = response.data.data;
-            self.addData(self.admin.tabelData, responseData);
-            self.hideSpinner();
-          } else {
-            self.hideSpinner();
-            self.showSnackBar(response.data.error_message, "error");
-          }
-        },
-        function (e) {
-          self.hideSpinner();
-          self.showSnackBar(e.message, "error");
-        }
-      );
+      self.submitForm("/admin/user/update", data, "POST");
     });
   },
   methods: {
@@ -201,6 +123,7 @@ export default {
         this.admin.isShowActionColumn = true;
         this.admin.keyEvent = "USER_ADMIN";
         this.admin.searchType = ["email", "id"];
+        this.admin.tableListUrl = "/admin/user/";
       } else {
         this.user = data;
         this.user.isShowActionColumn = true;

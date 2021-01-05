@@ -6,6 +6,7 @@
     <% if @token.present?%>
       <meta name="token" content="<%= @token%>">
     <% end %>
+    <%= csrf_meta_tags %>
     <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
     <%= stylesheet_link_tag 'style', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>

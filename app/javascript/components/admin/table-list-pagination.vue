@@ -1,37 +1,62 @@
 <template>
-            <div class="container pagination-page">
-            <nav
-              class="pagination is-right is-fullwidth is-small"
-              role="navigation"
-              aria-label="pagination"
-            >
-              <a v-on:click="onClickPaginaton" id="prev" class="pagination-previous">Previous</a>
-              <a v-on:click="onClickPaginaton" id="next" class="pagination-next">Next page</a>
-              <ul class="pagination-list">
-                <li v-if="showFirstPage() == true" v-on:click="onClickPaginaton" id="1">
-                  <a class="pagination-link" aria-label="Goto page 1">1</a>
-                </li>
-                <li v-if="showPrevElipsis() == true" ><span class="pagination-ellipsis">&hellip;</span></li>
-                <li v-if="showPrev() === true" v-on:click="onClickPaginaton" :id="`${ getPrevPage()}`" >
-                  <a class="pagination-link">{{ getPrevPage() }}</a>
-                </li>
-                <li>
-                  <a
-                    class="pagination-link is-current"
-                    aria-current="page"
-                    >{{ getCurrentPage() }}</a
-                  >
-                </li>
-                <li v-if="showNext() == true" v-on:click="onClickPaginaton" :id="`${ getNextPage()}`">
-                  <a   class="pagination-link" >{{ getNextPage() }}</a>
-                </li>
-                <li v-if="showNextElipsis() == true"><span class="pagination-ellipsis">&hellip;</span></li>
-                <li >
-                  <a  v-if="showLastPage() == true" v-on:click="onClickPaginaton" :id="`${totalPage}`" class="pagination-link" aria-label="Goto page 86">{{totalPage}}</a>
-                </li>
-              </ul>
-            </nav>
-          </div>
+  <div class="container pagination-page">
+    <nav
+      class="pagination is-right is-fullwidth is-small"
+      role="navigation"
+      aria-label="pagination"
+    >
+      <a v-on:click="onClickPaginaton" id="prev" class="pagination-previous"
+        >Previous</a
+      >
+      <a v-on:click="onClickPaginaton" id="next" class="pagination-next"
+        >Next page</a
+      >
+      <ul class="pagination-list">
+        <li v-if="showFirstPage() == true" v-on:click="onClickPaginaton" id="1">
+          <a class="pagination-link" aria-label="Goto page 1">1</a>
+        </li>
+        <li v-if="showPrevElipsis() == true">
+          <span class="pagination-ellipsis">&hellip;</span>
+        </li>
+        <li
+          v-if="showPrev() === true"
+          v-on:click="onClickPaginaton"
+          :id="`${getPrevPage()}`"
+        >
+          <a class="pagination-link">{{ getPrevPage() }}</a>
+        </li>
+        <li>
+          <a
+            :id="`${getCurrentPage()}`"
+            v-on:click="onClickPaginaton"
+            class="pagination-link is-current"
+            aria-current="page"
+            >{{ getCurrentPage() }}</a
+          >
+        </li>
+        <li
+          v-if="showNext() == true"
+          v-on:click="onClickPaginaton"
+          :id="`${getNextPage()}`"
+        >
+          <a class="pagination-link">{{ getNextPage() }}</a>
+        </li>
+        <li v-if="showNextElipsis() == true">
+          <span class="pagination-ellipsis">&hellip;</span>
+        </li>
+        <li>
+          <a
+            v-if="showLastPage() == true"
+            v-on:click="onClickPaginaton"
+            :id="`${totalPage}`"
+            class="pagination-link"
+            aria-label="Goto page 86"
+            >{{ totalPage }}</a
+          >
+        </li>
+      </ul>
+    </nav>
+  </div>
 </template>
 
 <script>
@@ -41,66 +66,73 @@ export default {
   props: {
     page: Number,
     totalPage: Number,
-    keyEvent: String
+    type: String,
+    url: String,
   },
   methods: {
-    firstPage: function(){
-      return 1
+    firstPage: function () {
+      return 1;
     },
-    lastPage: function(){
+    lastPage: function () {
       return this.totalPage;
     },
-    showFirstPage: function(){
-      if (this.page >= 3){
-        return true
+    showFirstPage: function () {
+      if (this.page >= 3) {
+        return true;
       }
-      return false
+      return false;
     },
-    showLastPage: function(){
-    if (this.totalPage- this.page >= 2){
-            return true
-    }
-    return false
-    },
-    showPrev: function(){
-      if (this.page ==1) {
-        return false
+    showLastPage: function () {
+      if (this.totalPage - this.page >= 2) {
+        return true;
       }
-      return true
+      return false;
     },
-     showNext: function(){
-      if (this.page <= this.totalPage-1) {
-        return true
+    showPrev: function () {
+      if (this.page == 1) {
+        return false;
       }
-      return false
+      return true;
     },
-    showPrevElipsis: function(){
-      if (this.page - 1 > 2){
-        return true
+    showNext: function () {
+      if (this.page <= this.totalPage - 1) {
+        return true;
       }
-      return false
+      return false;
     },
-    showNextElipsis: function(){
-      if (this.totalPage - this.page > 2){
-        return true
+    showPrevElipsis: function () {
+      if (this.page - 1 > 2) {
+        return true;
       }
-      return false
+      return false;
     },
-    getCurrentPage: function(){
+    showNextElipsis: function () {
+      if (this.totalPage - this.page > 2) {
+        return true;
+      }
+      return false;
+    },
+    getCurrentPage: function () {
       return this.page;
     },
-    getPrevPage: function(){
-      if (this.page === 1){
+    getPrevPage: function () {
+      if (this.totalPage === 1) {
+        return 1;
+      }
+      if (this.page === 1) {
         return this.page;
-      }else {
-        return this.page-1;
+      } else {
+        return parseInt(this.page) - 1;
       }
     },
-    getNextPage: function(){
-      if (this.page === this.lastPage()){
+    getNextPage: function () {
+      if (this.totalPage === 1) {
+        return 1;
+      }
+      if (this.page === this.lastPage()) {
         return this.page;
-      }else {
-        return this.page+1;
+      } else {
+        return parseInt(this.page) + 1;
       }
     },
     getNumberOfColumn: function () {
@@ -117,21 +149,37 @@ export default {
       return this.dataTable[index];
     },
     onClickPaginaton: function (event) {
-      let eventKey = this.keyEvent + "_LIST";
       let id = event.currentTarget.id;
       let targetPage = 0;
-      if (id == "prev" ){
-          targetPage = this.getPrevPage();
-      }else if (id == "next") {
-          targetPage = this.getNextPage();
-      }else {
-        targetPage = parseInt(id)
+      if (id == "prev") {
+        targetPage = this.getPrevPage();
+      } else if (id == "next") {
+        targetPage = this.getNextPage();
+      } else {
+        targetPage = parseInt(id);
       }
-      let eventData = {
-        eventKey: eventKey,
-        page: targetPage
+      let params = {
+        type: this.type,
+        page: targetPage,
       };
-      this.emitEvent(eventKey, eventData);
+      this.submitFormPageList(this.url, params, "get");
+    },
+    submitFormPageList: function (path, params, method) {
+      const form = document.createElement("form");
+      form.method = method;
+      form.action = path;
+      for (const key in params) {
+        if (params.hasOwnProperty(key)) {
+          const hiddenField = document.createElement("input");
+          hiddenField.type = "hidden";
+          hiddenField.name = key;
+          hiddenField.value = params[key];
+
+          form.appendChild(hiddenField);
+        }
+      }
+      document.body.appendChild(form);
+      form.submit();
     },
   },
 };

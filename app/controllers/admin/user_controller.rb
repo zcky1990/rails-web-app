@@ -7,15 +7,40 @@ class Admin::UserController < Admin::ApplicationController
   end
 
   def index
+    @notif = get_notif(flash)
     @meta_tag = get_default_web_meta_data()
     @token = get_token(current_user)
+    type = get_type(params)
+    page = get_page(params)
+    @data = @service.get_user_list(type, page)
+  end
 
+  def add_user
+    result = @service.add_user(params)
+    redirect_to user_admin_user_url, :flash => result
+  end
+
+  def update_user
+    result = @service.update_user(params)
+    redirect_to user_admin_user_url, :flash => result
+  end
+
+  def remove_user
+    result = @service.remove_user(params)
+    redirect_to user_admin_user_url, :flash => result
+  end
+
+  private
+
+  def get_type(params)
     if !params[:type].present?
       type = "admin"
     else
       type = params[:type]
     end
+  end
 
+  def get_page(params)
     if !params[:page].present?
       page = 1
     else
@@ -25,6 +50,5 @@ class Admin::UserController < Admin::ApplicationController
         page = params[:page]
       end
     end
-    @data = @service.get_admin_list(type, page)
   end
 end

@@ -92,13 +92,44 @@ export default {
                 },
                 getToken() {
                     const metas = document.getElementsByTagName('meta');
-
                     for (let i = 0; i < metas.length; i++) {
                         if (metas[i].getAttribute('name') === "token") {
                             return metas[i].getAttribute('content');
                         }
                     }
                     return '';
+                },
+                getCsrfToken() {
+                    const metas = document.getElementsByTagName('meta');
+                    for (let i = 0; i < metas.length; i++) {
+                        if (metas[i].getAttribute('name') === "csrf-token") {
+                            return metas[i].getAttribute('content');
+                        }
+                    }
+                    return '';
+                },
+                submitForm: function (path, params, method) {
+                    const form = document.createElement("form");
+                    form.method = method;
+                    form.action = path;
+
+                    const hiddenField = document.createElement("input");
+                    hiddenField.type = "hidden";
+                    hiddenField.name = "authenticity_token";
+                    hiddenField.value = this.getCsrfToken();
+                    form.appendChild(hiddenField);
+
+                    for (const key in params) {
+                        if (params.hasOwnProperty(key)) {
+                            const hiddenField = document.createElement("input");
+                            hiddenField.type = "hidden";
+                            hiddenField.name = key;
+                            hiddenField.value = params[key];
+                            form.appendChild(hiddenField);
+                        }
+                    }
+                    document.body.appendChild(form);
+                    form.submit();
                 }
             }
         })

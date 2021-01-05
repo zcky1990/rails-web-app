@@ -29,6 +29,7 @@ export default {
   },
   props: {
     _datas: {},
+    notif: {},
     _token: "",
   },
   created() {
@@ -44,8 +45,6 @@ export default {
     this.onHideSpinner(function () {
       self.$refs.spinner.hideSpinner();
     });
-
-
   },
   mounted: function () {
     if (
@@ -57,11 +56,14 @@ export default {
     ) {
       this.$refs.contentTab.setData(this._datas);
     }
+    if (this.notif !== null) {
+      this.$refs.snackbar.showSnackBar(this.notif.message, this.notif.status);
+    }
   },
   components: {
     "content-tab": contenttab,
     "snake-bar": snackbar,
-    "spinner": spinner,
+    spinner: spinner,
   },
 };
 </script>
