@@ -3,8 +3,8 @@ class Admin::UserService
     data = User.where({ role: type }).order_by(updated_at: :desc).page(page).per(25)
     total_data = data.total_count
     total_pages = data.total_pages
-    table_header = ["id", "email", "first_name", "last_name", "role"]
-    hidden_column = []
+    table_header = ["id", "email", "first_name", "last_name", "role", "access_level"]
+    hidden_column = [5]
     datas = ActiveModel::Serializer::CollectionSerializer.new(data, serializer: UserAdminSerializer)
     return get_table_data(page, type, datas, total_data, total_pages, table_header, hidden_column, 25)
   end
@@ -14,8 +14,8 @@ class Admin::UserService
     data = User.where(search_query).order_by(updated_at: :desc)
     total_data = data.size
     total_pages = 1
-    table_header = ["id", "email", "first_name", "last_name", "role"]
-    hidden_column = []
+    table_header = ["id", "email", "first_name", "last_name", "role", "access_level"]
+    hidden_column = [5]
     datas = ActiveModel::Serializer::CollectionSerializer.new(data, serializer: UserAdminSerializer)
     return get_table_data(1, params[:type], datas, total_data, 1, table_header, hidden_column, 1000)
   end
@@ -47,6 +47,7 @@ class Admin::UserService
           first_name: params[:first_name],
           last_name: params[:last_name],
           role: params[:type],
+          access_level: params[:access_level]
         }
         new_user = User.new(data)
         if new_user.save!
@@ -72,6 +73,7 @@ class Admin::UserService
         data[:first_name] = params[:first_name]
         data[:last_name] = params[:last_name]
         data[:role] = params[:role]
+        data[:access_level]= params[:access_level]
         if user.update_attributes(data)
           return { status: "success", message: "Success Update User data" }
         else

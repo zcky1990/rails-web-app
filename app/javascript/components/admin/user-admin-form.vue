@@ -108,6 +108,8 @@
 </template>
 
 <script>
+import BulmaTagsInput from "@creativebulma/bulma-tagsinput";
+
 export default {
   data: function () {
     return {
@@ -118,6 +120,9 @@ export default {
       title: "",
       type: "",
     };
+  },
+  mounted() {
+    const tagsInputs = BulmaTagsInput.attach();
   },
   computed: {
     showButtonSubmit() {
@@ -146,10 +151,12 @@ export default {
     onSubmit: function (event) {
       if (this.validate(this.userData)) {
         if (this.type == "edit") {
-          this.emitEvent("ON_EDIT", this.userData);
+          console.log(this.userData)
+          this.emitEvent("ON_EDIT_ADMIN", this.userData);
         } else {
+          console.log(this.userData)
           this.userData.type = "admin";
-          this.emitEvent("ON_ADD", this.userData);
+          this.emitEvent("ON_ADD_ADMIN", this.userData);
         }
       } else {
         console.log(this.messageError);

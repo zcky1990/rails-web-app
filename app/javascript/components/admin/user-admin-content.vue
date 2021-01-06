@@ -73,12 +73,14 @@ export default {
     });
 
     this.onEmitEvent("ON_ADD_ADMIN", function (data) {
+      console.log("ofc")
       self.$refs.adminForm.hideForm();
       self.showSpinner();
       self.submitForm("/admin/user_admin/add", data, "POST");
     });
 
     this.onEmitEvent("ON_EDIT_ADMIN", function (data) {
+      console.log("asd")
       self.$refs.adminForm.hideForm();
       self.showSpinner();
       self.submitForm("/admin/user_admin/update", data, "POST");

@@ -22,17 +22,17 @@ class Admin::UserAdminController < Admin::ApplicationController
 
   def add_user
     result = @service.add_user(params)
-    redirect_to user_admin_user_url, :flash => result
+    redirect_to user_admin_user_admin_url, :flash => result
   end
 
   def update_user
     result = @service.update_user(params)
-    redirect_to user_admin_user_url, :flash => result
+    redirect_to user_admin_user_admin_url, :flash => result
   end
 
   def remove_user
     result = @service.remove_user(params)
-    redirect_to user_admin_user_url, :flash => result
+    redirect_to user_admin_user_admin_url, :flash => result
   end
 
   private
