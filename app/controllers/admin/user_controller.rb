@@ -15,6 +15,11 @@ class Admin::UserController < Admin::ApplicationController
     @data = @service.get_user_list(type, page)
   end
 
+  def search_user
+    @data = @service.search_user(params)
+    @meta_tag = get_default_web_meta_data()
+  end
+
   def add_user
     result = @service.add_user(params)
     redirect_to user_admin_user_url, :flash => result

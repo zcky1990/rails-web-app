@@ -177,6 +177,7 @@ export default {
         let eventData = {
           query: this.query,
           typeSearch: this.typeSearch,
+          type: this.objectData.type,
         };
         this.emitEvent(eventKey, eventData);
       }

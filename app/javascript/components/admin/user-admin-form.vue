@@ -146,10 +146,10 @@ export default {
     onSubmit: function (event) {
       if (this.validate(this.userData)) {
         if (this.type == "edit") {
-          this.emitEvent("ON_EDIT_ADMIN", this.userData);
+          this.emitEvent("ON_EDIT", this.userData);
         } else {
-          this.userData.type = 'admin'
-          this.emitEvent("ON_ADD_ADMIN", this.userData);
+          this.userData.type = "admin";
+          this.emitEvent("ON_ADD", this.userData);
         }
       } else {
         console.log(this.messageError);

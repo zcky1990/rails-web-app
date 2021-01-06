@@ -31,6 +31,7 @@ Rails.application.routes.draw do
         post "/add", to: "user#add_user", as: "add_new_user_data"
         post "/remove", to: "user#remove_user", as: "remove_user_data"
         post "/update", to: "user#update_user", as: "update_user_data"
+        get "/search", to: "user#search_user", as: "search_user_data"
       end
     end
   end

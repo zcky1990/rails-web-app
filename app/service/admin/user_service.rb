@@ -6,16 +6,18 @@ class Admin::UserService
     table_header = ["id", "email", "first_name", "last_name", "role"]
     hidden_column = [0]
     datas = ActiveModel::Serializer::CollectionSerializer.new(data, serializer: UserAdminSerializer)
-    return {
-             page: page,
-             type: type,
-             tabelData: datas,
-             total_data: total_data,
-             total_page: total_pages,
-             tableHeaders: table_header,
-             hiddenColumn: hidden_column,
-             maxRow: 25,
-           }
+    return get_table_data(page, type, datas, total_data, total_pages, table_header, hidden_column, 25)
+  end
+
+  def search_user(params)
+    search_query = get_query_search(params)
+    data = User.where(search_query).order_by(updated_at: :desc)
+    total_data = data.size
+    total_pages = 1
+    table_header = ["id", "email", "first_name", "last_name", "role"]
+    hidden_column = [0]
+    datas = ActiveModel::Serializer::CollectionSerializer.new(data, serializer: UserAdminSerializer)
+    return get_table_data(1, params[:type], datas, total_data, 1, table_header, hidden_column, 1000)
   end
 
   def remove_user(params)
@@ -81,5 +83,35 @@ class Admin::UserService
     rescue Exception => e
       return { status: "failed", message: e.message }
     end
+  end
+
+  private
+
+  def get_table_data(page, type, datas, total_data, total_Page, table_header, hidden_column, maxRow)
+    return {
+             page: page,
+             type: type,
+             tabelData: datas,
+             total_data: total_data,
+             total_page: total_Page,
+             tableHeaders: table_header,
+             hiddenColumn: hidden_column,
+             maxRow: maxRow,
+           }
+  end
+
+  def get_query_search(params)
+    type_search = params[:typeSearch]
+    query = params[:query]
+    type = params[:type]
+    search_query = {
+      role: type,
+    }
+    if type_search == "id"
+      search_query[:id] = query
+    elsif type_search == "email"
+      search_query[:email] = query
+    end
+    return search_query
   end
 end

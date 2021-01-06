@@ -1,21 +1,13 @@
 <template>
   <div id="tabs-with-content">
-    <div class="tabs is-centered is-boxed">
+    <div class="tabs is-boxed">
       <ul>
-        <li class="tab admin is-active" v-on:click="onClickTab">
+        <li class="tab is-active">
           <a>
             <span class="icon is-small"
               ><i class="fas fa-user" aria-hidden="true"></i
             ></span>
             <span>Admin</span>
-          </a>
-        </li>
-        <li class="tab user" v-on:click="onClickTab">
-          <a>
-            <span class="icon is-small"
-              ><i class="fas fa-user" aria-hidden="true"></i
-            ></span>
-            <span>User</span>
           </a>
         </li>
       </ul>
@@ -24,11 +16,6 @@
       <section class="tab-content admin tab-active">
         <admin-form ref="adminForm"></admin-form>
         <table-list ref="admin" :objectData="admin"></table-list>
-      </section>
-      <section class="tab-content user">
-        <!-- <table-list
-          ref="user"
-        ></table-list> -->
       </section>
     </div>
   </div>
@@ -49,7 +36,7 @@ export default {
         isShowActionColumn: true,
         keyEvent: "USER_ADMIN",
         searchType: ["email", "id"],
-        type: "Admin",
+        type: "admin",
         maxRow: 10,
         totalPage: 1,
         totalData: 1,
@@ -73,7 +60,7 @@ export default {
     });
 
     this.onEmitEvent("USER_ADMIN_SEARCH", function (data) {
-      console.log(data);
+      self.submitForm("/admin/user/search", data, "GET");
     });
 
     this.onEmitEvent("USER_ADMIN_ADD", function (data) {
@@ -99,37 +86,12 @@ export default {
     removeData: function (dataTable, index) {
       dataTable.splice(index, 1);
     },
-    onClickTab: function (event) {
-      var currentEl = event.currentTarget;
-      var prevActiveTab = document.querySelector(".is-active");
-      prevActiveTab.classList.remove("is-active");
-      currentEl.classList.add("is-active");
-      var currSection = "";
-      if (currentEl.classList.contains("user")) {
-        currSection = "user";
-      } else {
-        currSection = "admin";
-      }
-      var prevActiveContent = document.querySelector(".tab-active");
-      prevActiveContent.classList.remove("tab-active");
-      var currentActiveContent = document.querySelector(
-        ".tab-content" + "." + currSection
-      );
-      currentActiveContent.classList.add("tab-active");
-    },
     setData: function (data) {
-      if (data.type == "admin") {
-        this.admin = data;
-        this.admin.isShowActionColumn = true;
-        this.admin.keyEvent = "USER_ADMIN";
-        this.admin.searchType = ["email", "id"];
-        this.admin.tableListUrl = "/admin/user/";
-      } else {
-        this.user = data;
-        this.user.isShowActionColumn = true;
-        this.user.keyEvent = "USER";
-        this.user.searchType = ["email", "id"];
-      }
+      this.admin = data;
+      this.admin.isShowActionColumn = true;
+      this.admin.keyEvent = "USER_ADMIN";
+      this.admin.searchType = ["email", "id"];
+      this.admin.tableListUrl = "/admin/user/";
     },
   },
   components: {
