@@ -5,10 +5,18 @@
       role="navigation"
       aria-label="pagination"
     >
-      <a v-on:click="onClickPaginaton" id="prev" class="pagination-previous"
+      <a
+        v-if="showPrevNextButton() == true"
+        v-on:click="onClickPaginaton"
+        id="prev"
+        class="pagination-previous"
         >Previous</a
       >
-      <a v-on:click="onClickPaginaton" id="next" class="pagination-next"
+      <a
+        v-if="showPrevNextButton() == true"
+        v-on:click="onClickPaginaton"
+        id="next"
+        class="pagination-next"
         >Next page</a
       >
       <ul class="pagination-list">
@@ -88,6 +96,12 @@ export default {
       }
       return false;
     },
+    showPrevNextButton: function () {
+      if (this.totalPage > 1) {
+        return true;
+      }
+      return false;
+    },
     showPrev: function () {
       if (this.page == 1) {
         return false;
@@ -150,17 +164,17 @@ export default {
     },
     onClickPaginaton: function (event) {
       let id = event.currentTarget.id;
-      let targetPage = 0;
+      let targetPages = 1;
       if (id == "prev") {
-        targetPage = this.getPrevPage();
+        targetPages = this.getPrevPage();
       } else if (id == "next") {
-        targetPage = this.getNextPage();
+        targetPages = this.getNextPage();
       } else {
-        targetPage = parseInt(id);
+        targetPages = id;
       }
       let params = {
         type: this.type,
-        page: targetPage,
+        page: parseInt(targetPages),
       };
       this.submitFormPageList(this.url, params, "get");
     },

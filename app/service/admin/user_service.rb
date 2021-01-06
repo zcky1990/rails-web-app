@@ -4,7 +4,7 @@ class Admin::UserService
     total_data = data.total_count
     total_pages = data.total_pages
     table_header = ["id", "email", "first_name", "last_name", "role"]
-    hidden_column = [0]
+    hidden_column = []
     datas = ActiveModel::Serializer::CollectionSerializer.new(data, serializer: UserAdminSerializer)
     return get_table_data(page, type, datas, total_data, total_pages, table_header, hidden_column, 25)
   end
@@ -15,7 +15,7 @@ class Admin::UserService
     total_data = data.size
     total_pages = 1
     table_header = ["id", "email", "first_name", "last_name", "role"]
-    hidden_column = [0]
+    hidden_column = []
     datas = ActiveModel::Serializer::CollectionSerializer.new(data, serializer: UserAdminSerializer)
     return get_table_data(1, params[:type], datas, total_data, 1, table_header, hidden_column, 1000)
   end

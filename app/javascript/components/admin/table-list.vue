@@ -103,12 +103,14 @@
           </td>
         </tr>
         <tr>
+          <div v-if="isPaginateTableShow">
           <paginate-table
             :page="objectData.page"
             :totalPage="objectData.totalPage"
             :type="objectData.type"
             :url="objectData.tableListUrl"
           ></paginate-table>
+          </div>
         </tr>
       </tbody>
     </table>
@@ -124,6 +126,7 @@ export default {
   },
   props: {
     objectData: Object,
+    isPaginateTableShow: Boolean
   },
   data: function () {
     return {
@@ -165,7 +168,7 @@ export default {
       let eventData = {
         data: data,
         type: type,
-        index: id,
+        index: parseInt(id),
       };
       this.emitEvent(eventKey, eventData);
     },

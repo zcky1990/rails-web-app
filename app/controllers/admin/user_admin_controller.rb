@@ -1,4 +1,4 @@
-class Admin::UserController < Admin::ApplicationController
+class Admin::UserAdminController < Admin::ApplicationController
   # before_action :is_sign_in
 
   def initialize
@@ -52,7 +52,7 @@ class Admin::UserController < Admin::ApplicationController
       if params[:page] == 0
         page = 1
       else
-        page = params[:page]
+        page = params[:page].to_i
       end
     end
   end

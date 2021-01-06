@@ -112,13 +112,6 @@ export default {
                     const form = document.createElement("form");
                     form.method = method;
                     form.action = path;
-
-                    const hiddenField = document.createElement("input");
-                    hiddenField.type = "hidden";
-                    hiddenField.name = "authenticity_token";
-                    hiddenField.value = this.getCsrfToken();
-                    form.appendChild(hiddenField);
-
                     for (const key in params) {
                         if (params.hasOwnProperty(key)) {
                             const hiddenField = document.createElement("input");
@@ -128,6 +121,11 @@ export default {
                             form.appendChild(hiddenField);
                         }
                     }
+                    const hiddenField = document.createElement("input");
+                    hiddenField.type = "hidden";
+                    hiddenField.name = "authenticity_token";
+                    hiddenField.value = this.getCsrfToken();
+                    form.appendChild(hiddenField);
                     document.body.appendChild(form);
                     form.submit();
                 }

@@ -2,7 +2,7 @@
   <div id="tabs-with-content">
     <div class="tabs is-boxed">
       <ul>
-        <li class="tab is-active">
+        <li class="tab is-active" v-on:click="tabclick">
           <a>
             <span class="icon is-small"
               ><i class="fas fa-user" aria-hidden="true"></i
@@ -15,7 +15,11 @@
     <div class="tab-content-container">
       <section class="tab-content admin tab-active">
         <admin-form ref="adminForm"></admin-form>
-        <table-list ref="admin" :objectData="admin"></table-list>
+        <table-list
+          ref="admin"
+          :objectData="admin"
+          :isPaginateTableShow="showPaginate"
+        ></table-list>
       </section>
     </div>
   </div>
@@ -29,8 +33,9 @@ import adminForm from "./user-admin-form.vue";
 export default {
   data: function () {
     return {
+      showPaginate: true,
       admin: {
-        tableHeaders: ["email", "firstname", "lastname"],
+        tableHeaders: ["id", "email", "firstname", "lastname"],
         tabelData: [],
         hiddenColumn: [],
         isShowActionColumn: true,
@@ -60,7 +65,7 @@ export default {
     });
 
     this.onEmitEvent("USER_ADMIN_SEARCH", function (data) {
-      self.submitForm("/admin/user/search", data, "GET");
+      self.submitForm("/admin/user_admin/search", data, "get");
     });
 
     this.onEmitEvent("USER_ADMIN_ADD", function (data) {
@@ -70,13 +75,13 @@ export default {
     this.onEmitEvent("ON_ADD_ADMIN", function (data) {
       self.$refs.adminForm.hideForm();
       self.showSpinner();
-      self.submitForm("/admin/user/add", data, "POST");
+      self.submitForm("/admin/user_admin/add", data, "POST");
     });
 
     this.onEmitEvent("ON_EDIT_ADMIN", function (data) {
       self.$refs.adminForm.hideForm();
       self.showSpinner();
-      self.submitForm("/admin/user/update", data, "POST");
+      self.submitForm("/admin/user_admin/update", data, "POST");
     });
   },
   methods: {
@@ -86,12 +91,18 @@ export default {
     removeData: function (dataTable, index) {
       dataTable.splice(index, 1);
     },
+    tabclick: function () {
+      this.submitForm("/admin/user_admin", {}, "get");
+    },
     setData: function (data) {
       this.admin = data;
       this.admin.isShowActionColumn = true;
       this.admin.keyEvent = "USER_ADMIN";
       this.admin.searchType = ["email", "id"];
-      this.admin.tableListUrl = "/admin/user/";
+      this.admin.tableListUrl = "/admin/user_admin/";
+      if (window.location.href.includes("/search")) {
+        this.showPaginate = false;
+      }
     },
   },
   components: {
