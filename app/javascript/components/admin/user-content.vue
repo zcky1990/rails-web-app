@@ -54,7 +54,7 @@ export default {
         type: "user",
         maxRow: 10,
         tableListUrl: "",
-        hiddenColumn: [],
+        hiddenColumn: [5,9],
         searchType: ["id", "email", "phone_number"],
       },
       paginationOptions: {
