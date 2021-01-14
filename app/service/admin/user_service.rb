@@ -4,7 +4,7 @@ class Admin::UserService
     total_data = data.total_count
     total_pages = data.total_pages
     table_header = ["Id", "Email", "FirstName", "LastName", "Birthday", "Address", "PostalCode", "Gender", "PhoneNumber", "Desc"]
-    hidden_column = [7,9]
+    hidden_column = []
     datas = ActiveModel::Serializer::CollectionSerializer.new(data, serializer: Admin::UserSerializer)
     return get_table_data(page, type, datas, total_data, total_pages, table_header, hidden_column, 25)
   end
@@ -15,7 +15,7 @@ class Admin::UserService
     total_data = data.size
     total_pages = 1
     table_header = ["Id", "Email", "FirstName", "LastName", "Birthday", "Address", "PostalCode", "Gender", "PhoneNumber", "Desc"]
-    hidden_column = [7,9]
+    hidden_column = []
     datas = ActiveModel::Serializer::CollectionSerializer.new(data, serializer: Admin::UserSerializer)
     return get_table_data(1, params[:type], datas, total_data, 1, table_header, hidden_column, 1000)
   end
@@ -80,7 +80,7 @@ class Admin::UserService
         data[:address] = params[:address]
         data[:postal_code] = params[:postal_code]
         data[:avatar_img_url] = params[:avatar_img_url]
-        data[:phone_number] = params[:access_lphone_numberevel]
+        data[:phone_number] = params[:phone_number]
         data[:gender] = params[:gender]
         data[:description] = params[:description]
         data[:birthday] = params[:birthday]
