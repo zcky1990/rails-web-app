@@ -21,18 +21,40 @@
               <div class="field-body">
                 <div class="field">
                   <p class="control is-expanded has-icons-left">
-                    <input class="input" type="text" placeholder="FirstName" />
+                    <input
+                      class="input"
+                      :class="error.isFirstNameError ? 'is-danger' : ''"
+                      type="text"
+                      placeholder="FirstName"
+                    />
                     <span class="icon is-small is-left">
                       <i class="fas fa-user"></i>
                     </span>
                   </p>
+                  <p
+                    v-if="error.isFirstNameError == true"
+                    class="help is-danger"
+                  >
+                    {{ error.messageError }}
+                  </p>
                 </div>
                 <div class="field">
                   <p class="control is-expanded has-icons-left has-icons-right">
-                    <input class="input" type="text" placeholder="LastName" />
+                    <input
+                      class="input"
+                      :class="error.isLastNameError ? 'is-danger' : ''"
+                      type="text"
+                      placeholder="LastName"
+                    />
                     <span class="icon is-small is-left">
                       <i class="fas fa-user"></i>
                     </span>
+                  </p>
+                  <p
+                    v-if="error.isLastNameError == true"
+                    class="help is-danger"
+                  >
+                    {{ error.messageError }}
                   </p>
                 </div>
               </div>
@@ -45,11 +67,19 @@
               <div class="field-body">
                 <div class="field">
                   <div class="control has-icons-left has-icons-right">
-                    <input class="input" type="email" placeholder="email" />
+                    <input
+                      class="input"
+                      :class="error.isEmailError ? 'is-danger' : ''"
+                      type="email"
+                      placeholder="email"
+                    />
                     <span class="icon is-small is-left">
-                      <i class="fas fa-envelope fa-xs"></i>
+                      <i class="fas fa-envelope"></i>
                     </span>
                   </div>
+                  <p v-if="error.isEmailError == true" class="help is-danger">
+                    {{ error.messageError }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -67,12 +97,15 @@
                     <p class="control is-expanded">
                       <input
                         class="input"
+                        :class="error.isPhoneNumber ? 'is-danger' : ''"
                         type="tel"
                         placeholder="Your phone number"
                       />
                     </p>
                   </div>
-                  <p class="help">Do not enter the first zero</p>
+                  <p v-if="error.isPhoneNumber == true" class="help is-danger">
+                    {{ error.messageError }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -82,10 +115,20 @@
                 <label class="label">Birthday</label>
               </div>
               <div class="field-body">
-                <div class="field has-addons">
+                <div class="field">
                   <div class="control">
-                    <a class="button is-info" ref="calendarTrigger"> Search </a>
+                    <input
+                      type="date"
+                      :class="error.isBirthdayError ? 'is-danger' : ''"
+                      ref="calendarTrigger"
+                    />
                   </div>
+                  <p
+                    v-if="error.isBirthdayError == true"
+                    class="help is-danger"
+                  >
+                    {{ error.messageError }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -99,13 +142,20 @@
                   <div class="control has-icons-left has-icons-right">
                     <input
                       class="input"
+                      :class="error.isPasswordError ? 'is-danger' : ''"
                       type="password"
                       placeholder="password"
                     />
                     <span class="icon is-small is-left">
-                      <i class="fas fa-envelope fa-xs"></i>
+                      <i class="fas fa-lock"></i>
                     </span>
                   </div>
+                  <p
+                    v-if="error.isPasswordError == true"
+                    class="help is-danger"
+                  >
+                    {{ error.messageError }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -119,13 +169,20 @@
                   <div class="control has-icons-left has-icons-right">
                     <input
                       class="input"
+                      :class="error.isVerifyPasswordError ? 'is-danger' : ''"
                       type="password"
                       placeholder="verified password"
                     />
                     <span class="icon is-small is-left">
-                      <i class="fas fa-envelope fa-xs"></i>
+                      <i class="fas fa-lock"></i>
                     </span>
                   </div>
+                  <p
+                    v-if="error.isVerifyPasswordError == true"
+                    class="help is-danger"
+                  >
+                    {{ error.messageError }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -141,11 +198,18 @@
                       class="input"
                       type="text"
                       placeholder="postal code"
+                      :class="error.isPostalCodeError ? 'is-danger' : ''"
                     />
                     <span class="icon is-small is-left">
                       <i class="fas fa-globe"></i>
                     </span>
                   </div>
+                  <p
+                    v-if="error.isPostalCodeError == true"
+                    class="help is-danger"
+                  >
+                    {{ error.messageError }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -157,8 +221,15 @@
               <div class="field-body">
                 <div class="field">
                   <div class="control">
-                    <textarea class="textarea" placeholder="Address"></textarea>
+                    <textarea
+                      class="textarea"
+                      :class="error.isAddressError ? 'is-danger' : ''"
+                      placeholder="Address"
+                    ></textarea>
                   </div>
+                  <p v-if="error.isAddressError == true" class="help is-danger">
+                    {{ error.messageError }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -172,9 +243,13 @@
                   <div class="control">
                     <textarea
                       class="textarea"
+                      :class="error.isDescError ? 'is-danger' : ''"
                       placeholder="User Description"
                     ></textarea>
                   </div>
+                  <p v-if="error.isDescError == true" class="help is-danger">
+                    {{ error.messageError }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -205,19 +280,36 @@ export default {
       title: "",
       type: "",
       date: new Date(),
+      error: {
+        isFirstNameError: true,
+        isLastNameError: true,
+        isEmailError: true,
+        isPhoneNumber: true,
+        isBirthdayError: true,
+        isPasswordError: true,
+        isVerifyPasswordError: true,
+        isPostalCodeError: true,
+        isAddressError: true,
+        isDescError: true,
+        messageError: "test",
+      },
     };
   },
   mounted() {
     const tagsInputs = BulmaTagsInput.attach();
     const calendar = bulmaCalendar.attach(this.$refs.calendarTrigger, {
-      type: 'date',
-      startDate: this.date,
+      type: "date",
+      displayMode: "dialog",
+      startDate: "",
       showHeader: false,
       closeOnSelect: true,
-      displayMode: 'dialog',
-      showFooter: false
+      showFooter: false,
+      toggleOnInputClick: true,
+      dateFormat: "MM/DD/YYYY",
     })[0];
-    calendar.on('select', e => (this.date = e.start || null))
+    calendar.on("select", function (e) {
+      console.log("select");
+    });
   },
   computed: {
     showButtonSubmit() {
@@ -317,4 +409,8 @@ export default {
 </script>
 
 <style scoped>
+.datetimepicker-dummy.is-primary:before,
+.datetimepicker-dummy.is-primary::before {
+  display: none !important;
+}
 </style>
