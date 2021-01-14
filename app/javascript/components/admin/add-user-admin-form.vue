@@ -29,11 +29,7 @@
                 </div>
                 <div class="field">
                   <p class="control is-expanded has-icons-left has-icons-right">
-                    <input
-                      class="input"
-                      type="text"
-                      placeholder="LastName"
-                    />
+                    <input class="input" type="text" placeholder="LastName" />
                     <span class="icon is-small is-left">
                       <i class="fas fa-user"></i>
                     </span>
@@ -49,11 +45,7 @@
               <div class="field-body">
                 <div class="field">
                   <div class="control has-icons-left has-icons-right">
-                    <input
-                      class="input"
-                      type="email"
-                      placeholder="email"
-                    />
+                    <input class="input" type="email" placeholder="email" />
                     <span class="icon is-small is-left">
                       <i class="fas fa-envelope fa-xs"></i>
                     </span>
@@ -81,6 +73,19 @@
                     </p>
                   </div>
                   <p class="help">Do not enter the first zero</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Birthday</label>
+              </div>
+              <div class="field-body">
+                <div class="field has-addons">
+                  <div class="control">
+                    <a class="button is-info" ref="calendarTrigger"> Search </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -152,10 +157,7 @@
               <div class="field-body">
                 <div class="field">
                   <div class="control">
-                    <textarea
-                      class="textarea"
-                      placeholder="Address"
-                    ></textarea>
+                    <textarea class="textarea" placeholder="Address"></textarea>
                   </div>
                 </div>
               </div>
@@ -176,7 +178,6 @@
                 </div>
               </div>
             </div>
-
           </form>
         </section>
         <footer v-if="showButtonSubmit" class="modal-card-foot">
@@ -193,6 +194,7 @@
 
 <script>
 import BulmaTagsInput from "@creativebulma/bulma-tagsinput";
+import bulmaCalendar from "bulma-calendar/dist/js/bulma-calendar.min.js";
 
 export default {
   data: function () {
@@ -203,10 +205,20 @@ export default {
       userData: {},
       title: "",
       type: "",
+      date: new Date(),
     };
   },
   mounted() {
     const tagsInputs = BulmaTagsInput.attach();
+    const calendar = bulmaCalendar.attach(this.$refs.calendarTrigger, {
+      type: 'date',
+      startDate: this.date,
+      showHeader: false,
+      closeOnSelect: true,
+      displayMode: 'dialog',
+      showFooter: false
+    })[0];
+    calendar.on('select', e => (this.date = e.start || null))
   },
   computed: {
     showButtonSubmit() {
