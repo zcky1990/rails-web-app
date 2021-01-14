@@ -7,16 +7,16 @@
             <span class="icon is-small"
               ><i class="fas fa-user" aria-hidden="true"></i
             ></span>
-            <span>Admin</span>
+            <span>User</span>
           </a>
         </li>
       </ul>
     </div>
     <div class="tab-content-container">
       <section class="tab-content admin tab-active">
-        <admin-form ref="adminForm"></admin-form>
+        <user-form ref="userForm"></user-form>
         <table-list
-          :objectData="admin"
+          :objectData="user"
           :isPaginateTableShow="showPaginate"
         ></table-list>
       </section>
@@ -27,20 +27,20 @@
 <script>
 import { EventBus } from "../../plugins/eventbus.js";
 import tableList from "./table-list.vue";
-import adminForm from "./user-admin-form.vue";
+import userForm from "./user-form.vue";
 
 export default {
   data: function () {
     return {
       showPaginate: true,
-      admin: {
+      user: {
         tableHeaders: ["id", "email", "firstname", "lastname"],
         tabelData: [],
         hiddenColumn: [],
         isShowActionColumn: true,
-        keyEvent: "USER_ADMIN",
+        keyEvent: "USER",
         searchType: ["email", "id"],
-        type: "admin",
+        type: "user",
         maxRow: 10,
         totalPage: 1,
         totalData: 1,
@@ -51,38 +51,36 @@ export default {
   },
   created() {
     var self = this;
-    this.onEmitEvent("USER_ADMIN_SHOW", function (data) {
-      self.$refs.adminForm.showForm(data.data, "show", "Admin Data");
+    this.onEmitEvent("USER_SHOW", function (data) {
+      self.$refs.userForm.showForm(data.data, "show", "User Data");
     });
 
-    this.onEmitEvent("USER_ADMIN_EDIT", function (data) {
-      self.$refs.adminForm.showForm(data.data, "edit", "Edit Admin Data");
+    this.onEmitEvent("USER_EDIT", function (data) {
+      self.$refs.userForm.showForm(data.data, "edit", "Edit User Data");
     });
 
-    this.onEmitEvent("USER_ADMIN_REMOVE", function (data) {
+    this.onEmitEvent("USER_REMOVE", function (data) {
       self.submitForm("/admin/user/remove", data.data, "POST");
     });
 
-    this.onEmitEvent("USER_ADMIN_SEARCH", function (data) {
-      self.submitForm("/admin/user_admin/search", data, "get");
+    this.onEmitEvent("USER_SEARCH", function (data) {
+      self.submitForm("/admin/user/search", data, "get");
     });
 
-    this.onEmitEvent("USER_ADMIN_ADD", function (data) {
-      self.$refs.adminForm.showForm({}, "add", "Add New Admin");
+    this.onEmitEvent("USER_ADD", function (data) {
+      self.$refs.userForm.showForm({}, "add", "Add New User");
     });
 
-    this.onEmitEvent("ON_ADD_ADMIN", function (data) {
-      console.log("ofc")
-      self.$refs.adminForm.hideForm();
+    this.onEmitEvent("ON_ADD_USER", function (data) {
+      self.$refs.userForm.hideForm();
       self.showSpinner();
-      self.submitForm("/admin/user_admin/add", data, "POST");
+      self.submitForm("/admin/user/add", data, "POST");
     });
 
-    this.onEmitEvent("ON_EDIT_ADMIN", function (data) {
-      console.log("asd")
-      self.$refs.adminForm.hideForm();
+    this.onEmitEvent("ON_EDIT_USER", function (data) {
+      self.$refs.userForm.hideForm();
       self.showSpinner();
-      self.submitForm("/admin/user_admin/update", data, "POST");
+      self.submitForm("/admin/user/update", data, "POST");
     });
   },
   methods: {
@@ -93,14 +91,14 @@ export default {
       dataTable.splice(index, 1);
     },
     tabclick: function () {
-      this.submitForm("/admin/user_admin", {}, "get");
+      this.submitForm("/admin/user", {}, "get");
     },
     setData: function (data) {
-      this.admin = data;
-      this.admin.isShowActionColumn = true;
-      this.admin.keyEvent = "USER_ADMIN";
-      this.admin.searchType = ["email", "id"];
-      this.admin.tableListUrl = "/admin/user_admin/";
+      this.user = data;
+      this.user.isShowActionColumn = true;
+      this.user.keyEvent = "USER";
+      this.user.searchType = ["email", "id"];
+      this.user.tableListUrl = "/admin/user/";
       if (window.location.href.includes("/search")) {
         this.showPaginate = false;
       }
@@ -108,7 +106,7 @@ export default {
   },
   components: {
     "table-list": tableList,
-    "admin-form": adminForm,
+    "user-form": userForm,
   },
 };
 </script>

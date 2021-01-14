@@ -19,7 +19,7 @@
 <script>
 import snackbar from "../../../components/shared/snackbar.vue";
 import spinner from "../../../components/shared/spinner.vue";
-import contenttab from "../../../components/admin/admin-user-admin-content.vue";
+import contenttab from "../../../components/admin/user-admin-content.vue";
 
 export default {
   data: function () {

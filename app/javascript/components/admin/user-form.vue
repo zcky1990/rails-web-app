@@ -188,7 +188,6 @@
       <div class="is-desktop is-centered modal-card"></div>
       <!-- dad -->
     </div>
-    <button class="modal-close is-large" aria-label="close"></button>
   </div>
 </template>
 
