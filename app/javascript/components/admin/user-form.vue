@@ -140,6 +140,36 @@
 
             <div class="field is-horizontal">
               <div class="field-label is-normal">
+                <label class="label">Gender</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control">
+                    <div class="select">
+                      <select v-model="userData.gender">
+                        <option>Select dropdown</option>
+                        <option
+                          v-for="option in options"
+                          v-bind:value="option.value"
+                          v-bind:key="option.text"
+                        >
+                          {{ option.text }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <p
+                    v-if="error.isBirthdayError == true"
+                    class="help is-danger"
+                  >
+                    {{ error.messageError }}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
                 <label class="label">Password</label>
               </div>
               <div class="field-body">
@@ -302,6 +332,10 @@ export default {
         isDescError: false,
         messageError: "",
       },
+      options: [
+        { text: "Male", value: "M" },
+        { text: "Female", value: "F" },
+      ],
     };
   },
   mounted() {
@@ -333,11 +367,11 @@ export default {
       this.userData = data;
       this.type = type;
       this.title = title;
-      if(this.userData.birthday != undefined){
-         this.$refs.calendarTrigger.startDate = this.userData.birthday
-         this.$refs.calendarTrigger.value = this.userData.birthday
+      if (this.userData.birthday != undefined) {
+        this.$refs.calendarTrigger.startDate = this.userData.birthday;
+        this.$refs.calendarTrigger.value = this.userData.birthday;
       }
-       this.isShow = true;
+      this.isShow = true;
     },
     hideForm() {
       this.isShow = false;

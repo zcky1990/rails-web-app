@@ -34,12 +34,12 @@ export default {
     return {
       showPaginate: true,
       user: {
-        tableHeaders: ["id", "email", "firstname", "lastname"],
+        tableHeaders: [],
         tabelData: [],
         hiddenColumn: [],
         isShowActionColumn: true,
         keyEvent: "USER",
-        searchType: ["email", "id"],
+        searchType: [ "id", "email", "phone_number"],
         type: "user",
         maxRow: 10,
         totalPage: 1,
