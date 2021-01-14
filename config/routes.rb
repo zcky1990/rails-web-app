@@ -34,6 +34,16 @@ Rails.application.routes.draw do
         get "/search", to: "user_admin#search_user", as: "search_user_data"
       end
     end
+
+    resource :user, only: [] do
+      collection do
+        get "/", to: "user#index", as: "user"
+        post "/add", to: "user#add_user", as: "add_new_user_data"
+        post "/remove", to: "user#remove_user", as: "remove_user_data"
+        post "/update", to: "user#update_user", as: "update_user_data"
+        get "/search", to: "user#search_user", as: "search_user_data"
+      end
+    end
   end
 
   namespace :user do
