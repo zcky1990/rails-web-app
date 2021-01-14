@@ -3,8 +3,8 @@ class Admin::UserService
     data = User.where({ role: type }).order_by(updated_at: :desc).page(page).per(25)
     total_data = data.total_count
     total_pages = data.total_pages
-    table_header = ["Id", "Email", "FirstName", "LastName", "Birthday","Address", "PostalCode", "PhoneNumber", "Desc"]
-    hidden_column = [10]
+    table_header = ["Id", "Email", "FirstName", "LastName", "Birthday", "Address", "PostalCode", "Gender", "PhoneNumber", "Desc"]
+    hidden_column = [7,9]
     datas = ActiveModel::Serializer::CollectionSerializer.new(data, serializer: Admin::UserSerializer)
     return get_table_data(page, type, datas, total_data, total_pages, table_header, hidden_column, 25)
   end
@@ -14,8 +14,8 @@ class Admin::UserService
     data = User.where(search_query).order_by(updated_at: :desc)
     total_data = data.size
     total_pages = 1
-    table_header = ["Id", "Email", "FirstName", "LastName", "Birthday", "Address","PostalCode", "PhoneNumber", "Desc"]
-    hidden_column = [10]
+    table_header = ["Id", "Email", "FirstName", "LastName", "Birthday", "Address", "PostalCode", "Gender", "PhoneNumber", "Desc"]
+    hidden_column = [7,9]
     datas = ActiveModel::Serializer::CollectionSerializer.new(data, serializer: Admin::UserSerializer)
     return get_table_data(1, params[:type], datas, total_data, 1, table_header, hidden_column, 1000)
   end

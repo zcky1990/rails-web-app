@@ -336,7 +336,6 @@ export default {
       if(this.userData.birthday != undefined){
          this.$refs.calendarTrigger.startDate = this.userData.birthday
          this.$refs.calendarTrigger.value = this.userData.birthday
-         this.$refs.calendarTrigger.refresh()
       }
        this.isShow = true;
     },
