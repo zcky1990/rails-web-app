@@ -7,7 +7,7 @@
           <div class="field is-grouped is-grouped-right">
             <p class="control">
               <a v-on:click="onAddNewUser" class="button is-info is-small">
-                Add New {{ objectData.type }}
+                Add New {{ options.type }}
               </a>
             </p>
           </div>
@@ -24,7 +24,7 @@
                 <select v-model="typeSearch">
                   <option disabled value="">Please select one</option>
                   <option
-                    v-for="(value, index) in objectData.searchType"
+                    v-for="(value, index) in options.searchType"
                     :key="`data-${index}`"
                   >
                     {{ value }}
@@ -53,40 +53,38 @@
       <thead>
         <tr>
           <th
-            v-for="(header, index) in objectData.tableHeaders"
-            :key="`tableHeaders-${index}`"
+            v-for="(header, index) in headers"
+            :key="`headers-${index}`"
             v-if="itemsNotContains(index)"
           >
             <div class="has-text-centered is-size-7">
               {{ header }}
             </div>
           </th>
-          <th v-if="objectData.isShowActionColumn == true">
+          <th v-if="options.isShowActionColumn == true">
             <div class="container has-text-centered is-size-7">Action</div>
           </th>
         </tr>
       </thead>
       <tbody>
         <tr v-if="isDataEmpty()">
-          <td :colspan="getNumberOfColumn()" class="has-text-centered padded">
-            No Data Available
-          </td>
+          <td class="has-text-centered padded">No Data Available</td>
         </tr>
         <tr
           v-else
-          v-for="(datas, index) in objectData.tabelData"
-          :key="`tabelData-${index}`"
+          v-for="(datas, index) in dataTable"
+          :key="`tabel-row-${index}`"
         >
           <td
             v-for="(value, name, index) in datas"
-            :key="`data-${index}`"
+            :key="`rable-column-${index}`"
             v-if="itemsNotContains(index)"
           >
             <div class="has-text-centered is-size-7">
               {{ value }}
             </div>
           </td>
-          <td v-if="objectData.isShowActionColumn == true">
+          <td v-if="options.isShowActionColumn == true">
             <div class="has-text-centered">
               <span :id="`${index}`" class="icon is-small">
                 <abbr title="Show" class="SHOW" v-on:click="onClick">
@@ -103,13 +101,13 @@
           </td>
         </tr>
         <tr>
-          <div v-if="isPaginateTableShow">
-          <paginate-table
-            :page="objectData.page"
-            :totalPage="objectData.totalPage"
-            :type="objectData.type"
-            :url="objectData.tableListUrl"
-          ></paginate-table>
+          <div v-if="options.showPaginate">
+            <paginate-table
+              :page="paginationOptions.page"
+              :totalPage="paginationOptions.totalPage"
+              :type="options.type"
+              :url="options.tableListUrl"
+            ></paginate-table>
           </div>
         </tr>
       </tbody>
@@ -125,8 +123,17 @@ export default {
     "paginate-table": paginate,
   },
   props: {
-    objectData: Object,
-    isPaginateTableShow: Boolean
+    headers: Array,
+    dataTable: Array,
+    options: Object,
+    paginationOptions: Object,
+    keyEvent: String,
+  },
+  mounted: function () {
+    console.log("data-table", this.dataTable);
+    console.log("options", this.options);
+    console.log("pagination-options", this.paginationOptions);
+    console.log("keyEvent", this.keyEvent);
   },
   data: function () {
     return {
@@ -137,33 +144,27 @@ export default {
   methods: {
     showPaginate: function () {
       if (
-        this.objectData.totalPage > 1 ||
-        this.objectData.tabelData.length > this.objectData.maxRow
+        this.paginationOptions.totalPage > 1 ||
+        this.dataTable.length > this.options.maxRow
       ) {
         return true;
       }
       return false;
     },
-    getNumberOfColumn: function () {
-      return this.objectData.tableHeaders.length;
-    },
     isDataEmpty: function () {
-      if (
-        this.objectData.tabelData === undefined ||
-        this.objectData.tabelData.length == 0
-      ) {
+      if (this.dataTable === undefined || this.dataTable.length == 0) {
         return true;
       } else {
         return false;
       }
     },
     getData: function (index) {
-      return this.objectData.tabelData[index];
+      return this.dataTable[index];
     },
     onClick: function (event) {
       let id = event.currentTarget.parentElement.id;
       let type = event.currentTarget.classList[0];
-      let eventKey = this.objectData.keyEvent + "_" + type;
+      let eventKey = this.keyEvent + "_" + type;
       let data = this.getData(id);
       let eventData = {
         data: data,
@@ -176,21 +177,21 @@ export default {
       if (this.typeSearch === "") {
         this.showSnackBar("Please select search category first", "error");
       } else {
-        let eventKey = this.objectData.keyEvent + "_SEARCH";
+        let eventKey = this.keyEvent + "_SEARCH";
         let eventData = {
           query: this.query,
           typeSearch: this.typeSearch,
-          type: this.objectData.type,
+          type: this.options.type,
         };
         this.emitEvent(eventKey, eventData);
       }
     },
     onAddNewUser: function () {
-      let eventKey = this.objectData.keyEvent + "_ADD";
+      let eventKey = this.keyEvent + "_ADD";
       this.emitEvent(eventKey, {});
     },
     itemsNotContains: function (n) {
-      return !(this.objectData.hiddenColumn.indexOf(n) > -1);
+      return !(this.options.hiddenColumn.indexOf(n) > -1);
     },
   },
 };

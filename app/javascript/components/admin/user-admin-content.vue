@@ -16,8 +16,11 @@
       <section class="tab-content admin tab-active">
         <admin-form ref="adminForm"></admin-form>
         <table-list
-          :objectData="admin"
-          :isPaginateTableShow="showPaginate"
+          :headers="headers"
+          :dataTable="table"
+          :options="options"
+          :paginationOptions="paginationOptions"
+          :keyEvent="keyEvent"
         ></table-list>
       </section>
     </div>
@@ -32,21 +35,23 @@ import adminForm from "./user-admin-form.vue";
 export default {
   data: function () {
     return {
-      showPaginate: true,
-      admin: {
-        tableHeaders: ["id", "email", "firstname", "lastname"],
-        tabelData: [],
-        hiddenColumn: [],
+      table: [],
+      headers: ["Id", "Email", "FirstName", "LastName", "Role"],
+      options: {
+        showPaginate: true,
         isShowActionColumn: true,
-        keyEvent: "USER_ADMIN",
-        searchType: ["email", "id"],
         type: "admin",
         maxRow: 10,
+        tableListUrl: "",
+        hiddenColumn: [5],
+        searchType: ["id", "email"],
+      },
+      paginationOptions: {
         totalPage: 1,
         totalData: 1,
         page: 1,
-        tableListUrl: "",
       },
+      keyEvent: "USER_ADMIN",
     };
   },
   created() {
@@ -72,14 +77,14 @@ export default {
     });
 
     this.onEmitEvent("ON_ADD_ADMIN", function (data) {
-      console.log("ofc")
+      console.log("ofc");
       self.$refs.adminForm.hideForm();
       self.showSpinner();
       self.submitForm("/admin/user_admin/add", data, "POST");
     });
 
     this.onEmitEvent("ON_EDIT_ADMIN", function (data) {
-      console.log("asd")
+      console.log("asd");
       self.$refs.adminForm.hideForm();
       self.showSpinner();
       self.submitForm("/admin/user_admin/update", data, "POST");
@@ -96,13 +101,13 @@ export default {
       this.submitForm("/admin/user_admin", {}, "get");
     },
     setData: function (data) {
-      this.admin = data;
-      this.admin.isShowActionColumn = true;
-      this.admin.keyEvent = "USER_ADMIN";
-      this.admin.searchType = ["email", "id"];
-      this.admin.tableListUrl = "/admin/user_admin/";
+      console.log(data);
+      this.table = data.tabelData;
+      this.paginationOptions = data.pagination_options;
+      this.options.type = data.type;
+      this.options.tableListUrl = "/admin/user_admin/";
       if (window.location.href.includes("/search")) {
-        this.showPaginate = false;
+        this.options.showPaginate = false;
       }
     },
   },

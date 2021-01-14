@@ -13,7 +13,6 @@ class Admin::UserController < Admin::ApplicationController
     type = get_type(params)
     page = get_page(params)
     @data = @service.get_user_list(type, page)
-    pp @data
   end
 
   def search_user

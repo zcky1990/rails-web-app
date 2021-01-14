@@ -16,8 +16,11 @@
       <section class="tab-content admin tab-active">
         <user-form ref="userForm"></user-form>
         <table-list
-          :objectData="user"
-          :isPaginateTableShow="showPaginate"
+          :headers="headers"
+          :dataTable="table"
+          :options="options"
+          :paginationOptions="paginationOptions"
+          :keyEvent="keyEvent"
         ></table-list>
       </section>
     </div>
@@ -32,21 +35,34 @@ import userForm from "./user-form.vue";
 export default {
   data: function () {
     return {
-      showPaginate: true,
-      user: {
-        tableHeaders: [],
-        tabelData: [],
-        hiddenColumn: [],
+      table: [],
+      headers: [
+        "Id",
+        "Email",
+        "FirstName",
+        "LastName",
+        "Birthday",
+        "Address",
+        "PostalCode",
+        "Gender",
+        "PhoneNumber",
+        "Desc",
+      ],
+      options: {
+        showPaginate: true,
         isShowActionColumn: true,
-        keyEvent: "USER",
-        searchType: [ "id", "email", "phone_number"],
         type: "user",
         maxRow: 10,
+        tableListUrl: "",
+        hiddenColumn: [],
+        searchType: ["id", "email", "phone_number"],
+      },
+      paginationOptions: {
         totalPage: 1,
         totalData: 1,
         page: 1,
-        tableListUrl: "",
       },
+      keyEvent: "USER",
     };
   },
   created() {
@@ -84,23 +100,18 @@ export default {
     });
   },
   methods: {
-    addData: function (dataTable, data) {
-      dataTable.unshift(data);
-    },
-    removeData: function (dataTable, index) {
-      dataTable.splice(index, 1);
-    },
     tabclick: function () {
       this.submitForm("/admin/user", {}, "get");
     },
     setData: function (data) {
-      this.user = data;
-      this.user.isShowActionColumn = true;
-      this.user.keyEvent = "USER";
-      this.user.searchType = ["email", "id"];
-      this.user.tableListUrl = "/admin/user/";
+      console.log(data);
+      this.table = data.tabelData;
+      this.paginationOptions = data.pagination_options;
+      this.keyEvent = "USER";
+      this.options.type = data.type;
+      this.options.tableListUrl = "/admin/user/";
       if (window.location.href.includes("/search")) {
-        this.showPaginate = false;
+        this.options.showPaginate = false;
       }
     },
   },
