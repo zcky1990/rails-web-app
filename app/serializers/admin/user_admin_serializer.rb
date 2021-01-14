@@ -1,4 +1,4 @@
-class UserAdminSerializer < ActiveModel::Serializer
+class Admin::UserAdminSerializer < ActiveModel::Serializer
   
   attribute :id 
   attributes :email, :first_name, :last_name, :role, :access_level

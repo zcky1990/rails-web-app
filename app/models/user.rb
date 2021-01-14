@@ -17,6 +17,8 @@ class User
   field :postal_code, type: Integer
   field :avatar_img_url, type: String
   field :gender, type: String
+  field :description, type: String
+  field :phone_number, type: String
 
   field :google_uid, type: String
   field :google_token, type: String

@@ -3,7 +3,7 @@ class Admin::UserAdminController < Admin::ApplicationController
 
   def initialize
     super
-    @service = Admin::UserService.new
+    @service = Admin::UserAdminService.new
   end
 
   def index

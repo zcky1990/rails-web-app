@@ -23,6 +23,7 @@
                   <p class="control is-expanded has-icons-left">
                     <input
                       class="input"
+                      v-model="userData.first_name"
                       :class="error.isFirstNameError ? 'is-danger' : ''"
                       type="text"
                       placeholder="FirstName"
@@ -42,6 +43,7 @@
                   <p class="control is-expanded has-icons-left has-icons-right">
                     <input
                       class="input"
+                      v-model="userData.last_name"
                       :class="error.isLastNameError ? 'is-danger' : ''"
                       type="text"
                       placeholder="LastName"
@@ -69,6 +71,7 @@
                   <div class="control has-icons-left has-icons-right">
                     <input
                       class="input"
+                      v-model="userData.email"
                       :class="error.isEmailError ? 'is-danger' : ''"
                       type="email"
                       placeholder="email"
@@ -97,6 +100,7 @@
                     <p class="control is-expanded">
                       <input
                         class="input"
+                        v-model="userData.phone_number"
                         :class="error.isPhoneNumber ? 'is-danger' : ''"
                         type="tel"
                         placeholder="Your phone number"
@@ -119,6 +123,7 @@
                   <div class="control">
                     <input
                       type="date"
+                      v-model="userData.birthday"
                       :class="error.isBirthdayError ? 'is-danger' : ''"
                       ref="calendarTrigger"
                     />
@@ -142,6 +147,7 @@
                   <div class="control has-icons-left has-icons-right">
                     <input
                       class="input"
+                      v-model="userData.password"
                       :class="error.isPasswordError ? 'is-danger' : ''"
                       type="password"
                       placeholder="password"
@@ -169,6 +175,7 @@
                   <div class="control has-icons-left has-icons-right">
                     <input
                       class="input"
+                      v-model="userData.reconfirm_password"
                       :class="error.isVerifyPasswordError ? 'is-danger' : ''"
                       type="password"
                       placeholder="verified password"
@@ -197,6 +204,7 @@
                     <input
                       class="input"
                       type="text"
+                      v-model="userData.postal_code"
                       placeholder="postal code"
                       :class="error.isPostalCodeError ? 'is-danger' : ''"
                     />
@@ -223,6 +231,7 @@
                   <div class="control">
                     <textarea
                       class="textarea"
+                      v-model="userData.address"
                       :class="error.isAddressError ? 'is-danger' : ''"
                       placeholder="Address"
                     ></textarea>
@@ -243,6 +252,7 @@
                   <div class="control">
                     <textarea
                       class="textarea"
+                      v-model="userData.description"
                       :class="error.isDescError ? 'is-danger' : ''"
                       placeholder="User Description"
                     ></textarea>
@@ -267,7 +277,6 @@
 </template>
 
 <script>
-import BulmaTagsInput from "@creativebulma/bulma-tagsinput";
 import bulmaCalendar from "bulma-calendar/dist/js/bulma-calendar.min.js";
 
 export default {
@@ -281,34 +290,34 @@ export default {
       type: "",
       date: new Date(),
       error: {
-        isFirstNameError: true,
-        isLastNameError: true,
-        isEmailError: true,
-        isPhoneNumber: true,
-        isBirthdayError: true,
-        isPasswordError: true,
-        isVerifyPasswordError: true,
-        isPostalCodeError: true,
-        isAddressError: true,
-        isDescError: true,
-        messageError: "test",
+        isFirstNameError: false,
+        isLastNameError: false,
+        isEmailError: false,
+        isPhoneNumber: false,
+        isBirthdayError: false,
+        isPasswordError: false,
+        isVerifyPasswordError: false,
+        isPostalCodeError: false,
+        isAddressError: false,
+        isDescError: false,
+        messageError: "",
       },
     };
   },
   mounted() {
-    const tagsInputs = BulmaTagsInput.attach();
+    var self = this;
     const calendar = bulmaCalendar.attach(this.$refs.calendarTrigger, {
       type: "date",
       displayMode: "dialog",
-      startDate: "",
+      startDate: this.userData.birthday,
       showHeader: false,
       closeOnSelect: true,
       showFooter: false,
       toggleOnInputClick: true,
-      dateFormat: "MM/DD/YYYY",
+      dateFormat: "DD/MM/YYYY",
     })[0];
     calendar.on("select", function (e) {
-      console.log("select");
+      self.userData.birthday = self.$refs.calendarTrigger.value;
     });
   },
   computed: {
@@ -321,10 +330,15 @@ export default {
   },
   methods: {
     showForm(data, type, title) {
-      this.isShow = true;
       this.userData = data;
       this.type = type;
       this.title = title;
+      if(this.userData.birthday != undefined){
+         this.$refs.calendarTrigger.startDate = this.userData.birthday
+         this.$refs.calendarTrigger.value = this.userData.birthday
+         this.$refs.calendarTrigger.refresh()
+      }
+       this.isShow = true;
     },
     hideForm() {
       this.isShow = false;
@@ -336,81 +350,158 @@ export default {
       this.hideForm();
     },
     onSubmit: function (event) {
-      if (this.validate(this.userData)) {
-        if (this.type == "edit") {
-          console.log(this.userData);
+      if (this.type == "edit") {
+        if (!this.isFailedValidateUpdateUserData()) {
           this.emitEvent("ON_EDIT_USER", this.userData);
-        } else {
-          console.log(this.userData);
+        }
+      } else {
+        if (!this.isFailedValidateAddUserData()) {
           this.userData.type = "user";
           this.emitEvent("ON_ADD_USER", this.userData);
         }
-      } else {
-        console.log(this.messageError);
-        // this.showSnackBar(this.messageError, "error");
       }
     },
-    validate: function (data) {
-      let hasError = true;
-      if (this.type === "edit") {
-        if (!data.email || 0 === data.email.length) {
-          this.messageError = "E-mail is required";
-        } else if (!/.+@.+\..+/.test(data.email)) {
-          this.messageError = "E-mail must be valid";
-        } else if (!data.first_name || 0 === data.first_name.length) {
-          this.messageError = "Firstname is required";
-        } else if (!data.last_name || 0 === data.last_name.length) {
-          this.messageError = "Lastname is required";
-        } else {
-          hasError = false;
-        }
-        if (data.password != undefined) {
-          if (!data.password || 0 === data.password.length) {
-            this.messageError = "Password is required";
-          } else if (data.password.length < 8) {
-            this.messageError = "Minimum password length is 8";
-          } else if (data.password !== data.reconfirm_password) {
-            this.messageError = "Verify Password failed";
-          } else {
-            hasError = false;
-          }
-        }
+    resetError() {
+      this.error.isPasswordError = false;
+      this.error.isVerifyPasswordError = false;
+      this.error.isEmailError = false;
+      this.error.isFirstNameError = false;
+      this.error.isLastNameError = false;
+      this.error.isBirthdayError = false;
+      this.error.isPhoneNumber = false;
+      this.error.isPostalCodeError = false;
+      this.error.isAddressError = false;
+      this.error.messageError = "";
+    },
+    isFailedValidateAddUserData() {
+      this.resetError();
+      let error = false;
+      if (!this.userData.first_name || 0 === this.userData.first_name.length) {
+        this.error.messageError = "Firstname is required";
+        this.error.isFirstNameError = true;
+        error = true;
+      } else if (
+        !this.userData.last_name ||
+        0 === this.userData.last_name.length
+      ) {
+        this.error.messageError = "Lastname is required";
+        this.error.isLastNameError = true;
+        error = true;
+      } else if (!this.userData.email || 0 === this.userData.email.length) {
+        this.error.isEmailError = true;
+        this.error.messageError = "E-mail is required";
+        error = true;
+      } else if (!/.+@.+\..+/.test(this.userData.email)) {
+        this.error.isEmailError = true;
+        this.error.messageError = "E-mail must be valid";
+        error = true;
+      } else if (
+        !this.userData.phone_number ||
+        0 === this.userData.phone_number.length
+      ) {
+        this.error.messageError = "Phone Number is required";
+        this.error.isPhoneNumber = true;
+        error = true;
+      } else if (
+        !this.userData.birthday ||
+        0 === this.userData.birthday.length
+      ) {
+        this.error.messageError = "Birthday is required";
+        this.error.isBirthdayError = true;
+        error = true;
+      } else if (
+        !this.userData.password ||
+        0 === this.userData.password.length
+      ) {
+        this.error.isPasswordError = true;
+        this.error.messageError = "Password is required";
+        error = true;
+      } else if (this.userData.password.length < 8) {
+        this.error.isPasswordError = true;
+        this.error.messageError = "Minimum password length is 8";
+        error = true;
+      } else if (
+        !this.userData.reconfirm_password ||
+        0 === this.userData.reconfirm_password.length
+      ) {
+        this.error.isVerifyPasswordError = true;
+        this.error.messageError = "Verify Password required";
+        error = true;
+      } else if (this.userData.password !== this.userData.reconfirm_password) {
+        this.error.isVerifyPasswordError = true;
+        this.error.messageError = "Verify Password failed";
+        error = true;
+      } else if (
+        !this.userData.postal_code ||
+        0 === this.userData.postal_code.length
+      ) {
+        this.error.messageError = "Postal Code is required";
+        this.error.isPostalCodeError = true;
+        error = true;
+      } else if (!this.userData.address || 0 === this.userData.address.length) {
+        this.error.messageError = "Address is required";
+        this.error.isAddressError = true;
+        error = true;
       } else {
-        if (!data.email || 0 === data.email.length) {
-          this.messageError = "E-mail is required";
-        } else if (!/.+@.+\..+/.test(data.email)) {
-          this.messageError = "E-mail must be valid";
-        } else if (
-          !data.password ||
-          0 === data.password.length ||
-          data.password === undefined
-        ) {
-          this.messageError = "Password is required";
-        } else if (!data.first_name || 0 === data.first_name.length) {
-          this.messageError = "Firstname is required";
-        } else if (!data.last_name || 0 === data.last_name.length) {
-          this.messageError = "Lastname is required";
-        } else if (data.password.length < 8) {
-          this.messageError = "Minimum password length is 8";
-        } else if (data.password !== data.reconfirm_password) {
-          this.messageError = "Password different with verify Password";
-        } else {
-          hasError = false;
-        }
+        this.resetError();
       }
-      if (hasError == true) {
-        return false;
+      return error;
+    },
+    isFailedValidateUpdateUserData() {
+      this.resetError();
+      let error = false;
+      if (!this.userData.first_name || 0 === this.userData.first_name.length) {
+        this.error.messageError = "Firstname is required";
+        this.error.isFirstNameError = true;
+        error = true;
+      } else if (
+        !this.userData.last_name ||
+        0 === this.userData.last_name.length
+      ) {
+        this.error.messageError = "Lastname is required";
+        this.error.isLastNameError = true;
+        error = true;
+      } else if (!this.userData.email || 0 === this.userData.email.length) {
+        this.error.isEmailError = true;
+        this.error.messageError = "E-mail is required";
+        error = true;
+      } else if (!/.+@.+\..+/.test(this.userData.email)) {
+        this.error.isEmailError = true;
+        this.error.messageError = "E-mail must be valid";
+        error = true;
+      } else if (
+        !this.userData.phone_number ||
+        0 === this.userData.phone_number.length
+      ) {
+        this.error.messageError = "Phone Number is required";
+        this.error.isPhoneNumber = true;
+        error = true;
+      } else if (
+        !this.userData.birthday ||
+        0 === this.userData.birthday.length
+      ) {
+        this.error.messageError = "Birthday is required";
+        this.error.isBirthdayError = true;
+        error = true;
+      } else if (
+        !this.userData.postal_code ||
+        0 === this.userData.postal_code.length
+      ) {
+        this.error.messageError = "Postal Code is required";
+        this.error.isPostalCodeError = true;
+        error = true;
+      } else if (!this.userData.address || 0 === this.userData.address.length) {
+        this.error.messageError = "Address is required";
+        this.error.isAddressError = true;
+        error = true;
       } else {
-        return true;
+        this.resetError();
       }
+      return error;
     },
   },
 };
 </script>
 
 <style scoped>
-.datetimepicker-dummy.is-primary:before,
-.datetimepicker-dummy.is-primary::before {
-  display: none !important;
-}
 </style>

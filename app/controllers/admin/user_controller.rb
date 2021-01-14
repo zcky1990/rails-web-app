@@ -13,6 +13,7 @@ class Admin::UserController < Admin::ApplicationController
     type = get_type(params)
     page = get_page(params)
     @data = @service.get_user_list(type, page)
+    pp @data
   end
 
   def search_user
@@ -22,17 +23,17 @@ class Admin::UserController < Admin::ApplicationController
 
   def add_user
     result = @service.add_user(params)
-    redirect_to user_admin_user_admin_url, :flash => result
+    redirect_to user_admin_user_url, :flash => result
   end
 
   def update_user
     result = @service.update_user(params)
-    redirect_to user_admin_user_admin_url, :flash => result
+    redirect_to user_admin_user_url, :flash => result
   end
 
   def remove_user
     result = @service.remove_user(params)
-    redirect_to user_admin_user_admin_url, :flash => result
+    redirect_to user_admin_user_url, :flash => result
   end
 
   private
