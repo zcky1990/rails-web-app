@@ -130,10 +130,6 @@ export default {
     keyEvent: String,
   },
   mounted: function () {
-    console.log("data-table", this.dataTable);
-    console.log("options", this.options);
-    console.log("pagination-options", this.paginationOptions);
-    console.log("keyEvent", this.keyEvent);
   },
   data: function () {
     return {
