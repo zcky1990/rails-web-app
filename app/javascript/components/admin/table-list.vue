@@ -20,7 +20,10 @@
         <div class="column">
           <div class="field has-addons">
             <div class="control">
-              <span class="select is-small">
+              <span
+                class="select is-small"
+                :class="isShowError ? 'is-danger' : ''"
+              >
                 <select v-model="typeSearch">
                   <option disabled value="">Please select one</option>
                   <option
@@ -34,6 +37,7 @@
             </div>
             <div class="control is-expanded">
               <input
+                :class="isShowError ? 'is-danger' : ''"
                 v-model="query"
                 class="input is-small"
                 type="text"
@@ -46,6 +50,10 @@
               </a>
             </div>
           </div>
+          <p v-if="isShowError == true" class="help is-danger">
+            {{ searchMessageError }}
+          </p>
+          <p v-else></p>
         </div>
       </div>
     </div>
@@ -77,7 +85,7 @@
         >
           <td
             v-for="(value, name, index) in datas"
-            :key="`rable-column-${index}`"
+            :key="`table-column-${index}`"
             v-if="itemsNotContains(index)"
           >
             <div class="has-text-centered is-size-7">
@@ -129,12 +137,12 @@ export default {
     paginationOptions: Object,
     keyEvent: String,
   },
-  mounted: function () {
-  },
   data: function () {
     return {
       query: "",
       typeSearch: "",
+      searchMessageError: "Please select search category first",
+      isShowError: false,
     };
   },
   methods: {
@@ -171,7 +179,7 @@ export default {
     },
     onSearch: function () {
       if (this.typeSearch === "") {
-        this.showSnackBar("Please select search category first", "error");
+        this.isShowError = true;
       } else {
         let eventKey = this.keyEvent + "_SEARCH";
         let eventData = {

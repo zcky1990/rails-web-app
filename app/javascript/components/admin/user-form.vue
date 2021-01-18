@@ -118,15 +118,31 @@
               <div class="field-label is-normal">
                 <label class="label">Birthday</label>
               </div>
-              <div class="field-body">
+              <div class="field-body birthday-container">
                 <div class="field">
-                  <div class="control">
+                  <div class="datepicker">
                     <input
+                      id="my-element"
                       type="date"
-                      v-model="userData.birthday"
+                      hidden
                       :class="error.isBirthdayError ? 'is-danger' : ''"
                       ref="calendarTrigger"
                     />
+                  </div>
+                  <div class="birthday control has-icons-right">
+                    <input
+                      v-model="userData.birthday"
+                      class="input"
+                      :class="error.isBirthdayError ? 'is-danger' : ''"
+                      v-on:click="selectDate"
+                      type="text"
+                      readOnly
+                      placeholder="mm/dd/yyyy"
+                      ref="datepickerContent"
+                    />
+                    <span class="icon is-small is-right">
+                      <i class="fas fa-calendar"></i>
+                    </span>
                   </div>
                   <p
                     v-if="error.isBirthdayError == true"
@@ -145,23 +161,23 @@
               <div class="field-body">
                 <div class="field">
                   <div class="control">
-                    <div class="select">
+                    <div
+                      class="select"
+                      :class="error.isGenderError ? 'is-danger' : ''"
+                    >
                       <select v-model="userData.gender">
-                        <option>Select dropdown</option>
                         <option
                           v-for="option in options"
                           v-bind:value="option.value"
                           v-bind:key="option.text"
+                          :disabled="option.value == ''"
                         >
                           {{ option.text }}
                         </option>
                       </select>
                     </div>
                   </div>
-                  <p
-                    v-if="error.isBirthdayError == true"
-                    class="help is-danger"
-                  >
+                  <p v-if="error.isGenderError == true" class="help is-danger">
                     {{ error.messageError }}
                   </p>
                 </div>
@@ -315,7 +331,9 @@ export default {
       isShow: false,
       messageError: "",
       showMessage: false,
-      userData: {},
+      userData: {
+        gender: "",
+      },
       title: "",
       type: "",
       date: new Date(),
@@ -330,9 +348,11 @@ export default {
         isPostalCodeError: false,
         isAddressError: false,
         isDescError: false,
+        isGenderError: false,
         messageError: "",
       },
       options: [
+        { text: "Select Gender", value: "" },
         { text: "Male", value: "M" },
         { text: "Female", value: "F" },
       ],
@@ -343,15 +363,22 @@ export default {
     const calendar = bulmaCalendar.attach(this.$refs.calendarTrigger, {
       type: "date",
       displayMode: "dialog",
-      startDate: this.userData.birthday,
-      showHeader: false,
+      showHeader: true,
       closeOnSelect: true,
       showFooter: false,
       toggleOnInputClick: true,
       dateFormat: "DD/MM/YYYY",
+      isRange: false,
     })[0];
+    var element = document.querySelector(".datetimepicker-dummy");
+    if (element) {
+      element.style.visibility = "hidden";
+    }
+
     calendar.on("select", function (e) {
-      self.userData.birthday = self.$refs.calendarTrigger.value;
+      self.userData.birthday = e.data.value();
+      self.closeDatePicker();
+      self.$refs.datepickerContent.value = e.data.value();
     });
   },
   computed: {
@@ -361,6 +388,12 @@ export default {
       }
       return true;
     },
+    isGenderNotSelected() {
+      if (this.userData.gender == "" || this.userData.gender === undefined) {
+        return true;
+      }
+      return false;
+    },
   },
   methods: {
     showForm(data, type, title) {
@@ -368,8 +401,10 @@ export default {
       this.type = type;
       this.title = title;
       if (this.userData.birthday != undefined) {
-        this.$refs.calendarTrigger.startDate = this.userData.birthday;
-        this.$refs.calendarTrigger.value = this.userData.birthday;
+      } else {
+      }
+      if (this.userData.gender == undefined || this.userData.gender == "") {
+        this.userData.gender = "";
       }
       this.isShow = true;
     },
@@ -394,6 +429,18 @@ export default {
         }
       }
     },
+    selectDate: function () {
+      var element = document.querySelector(".datetimepicker-wrapper");
+      if (element) {
+        element.classList.add("is-active");
+      }
+    },
+    closeDatePicker: function () {
+      var element = document.querySelector(".datetimepicker-wrapper");
+      if (element) {
+        element.classList.remove("is-active");
+      }
+    },
     resetError() {
       this.error.isPasswordError = false;
       this.error.isVerifyPasswordError = false;
@@ -404,6 +451,7 @@ export default {
       this.error.isPhoneNumber = false;
       this.error.isPostalCodeError = false;
       this.error.isAddressError = false;
+      this.error.isGenderError = false;
       this.error.messageError = "";
     },
     isFailedValidateAddUserData() {
@@ -435,12 +483,13 @@ export default {
         this.error.messageError = "Phone Number is required";
         this.error.isPhoneNumber = true;
         error = true;
-      } else if (
-        !this.userData.birthday ||
-        0 === this.userData.birthday.length
-      ) {
+      } else if (!this.userData.birthday) {
         this.error.messageError = "Birthday is required";
         this.error.isBirthdayError = true;
+        error = true;
+      } else if (!this.userData.gender || 0 === this.userData.gender.length) {
+        this.error.messageError = "Please select gender";
+        this.error.isGenderError = true;
         error = true;
       } else if (
         !this.userData.password ||
@@ -509,12 +558,13 @@ export default {
         this.error.messageError = "Phone Number is required";
         this.error.isPhoneNumber = true;
         error = true;
-      } else if (
-        !this.userData.birthday ||
-        0 === this.userData.birthday.length
-      ) {
+      } else if (!this.userData.birthday) {
         this.error.messageError = "Birthday is required";
         this.error.isBirthdayError = true;
+        error = true;
+      } else if (!this.userData.gender || 0 === this.userData.gender.length) {
+        this.error.messageError = "Please select gender";
+        this.error.isGenderError = true;
         error = true;
       } else if (
         !this.userData.postal_code ||
@@ -537,4 +587,11 @@ export default {
 </script>
 
 <style scoped>
+.birthday-container {
+  max-height: 40px !important;
+}
+.birthday {
+    position: relative;
+    top: -40px;
+}
 </style>
