@@ -57,7 +57,7 @@
         </div>
       </div>
     </div>
-    <table class="table is-fullwidth is-hoverable">
+    <table class="table is-fullwidth is-hoverable is-striped">
       <thead>
         <tr>
           <th
@@ -108,8 +108,8 @@
             </div>
           </td>
         </tr>
-        <tr>
-          <div v-if="options.showPaginate">
+      </tbody>
+      <div v-if="options.showPaginate">
             <paginate-table
               :page="paginationOptions.page"
               :totalPage="paginationOptions.totalPage"
@@ -117,8 +117,6 @@
               :url="options.tableListUrl"
             ></paginate-table>
           </div>
-        </tr>
-      </tbody>
     </table>
   </div>
 </template>

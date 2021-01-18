@@ -312,7 +312,9 @@
           </form>
         </section>
         <footer v-if="showButtonSubmit" class="modal-card-foot">
-          <button class="button is-primary" v-on:click="onSubmit">Submit</button>
+          <button class="button is-primary" v-on:click="onSubmit">
+            Submit
+          </button>
           <button class="button" v-on:click="onClickCancel">Cancel</button>
         </footer>
       </div>
@@ -369,6 +371,7 @@ export default {
       toggleOnInputClick: true,
       dateFormat: "DD/MM/YYYY",
       isRange: false,
+      maxDate: new Date(),
     })[0];
     var element = document.querySelector(".datetimepicker-dummy");
     if (element) {
@@ -591,7 +594,7 @@ export default {
   max-height: 40px !important;
 }
 .birthday {
-    position: relative;
-    top: -40px;
+  position: relative;
+  top: -40px;
 }
 </style>
