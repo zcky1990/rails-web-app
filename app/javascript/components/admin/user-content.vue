@@ -4,10 +4,10 @@
       <ul>
         <li class="tab is-active" v-on:click="tabclick">
           <a>
-            <span class="icon is-small"
+            <span class="icon has-text-primary is-small"
               ><i class="fas fa-user" aria-hidden="true"></i
             ></span>
-            <span>User</span>
+            <span class="has-text-primary" >User</span>
           </a>
         </li>
       </ul>

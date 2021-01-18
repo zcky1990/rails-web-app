@@ -208,4 +208,8 @@ export default {
   width: 100% !important;
   position: absolute;
 }
+.is-current{
+  background-color: #00d1b2 !important;
+  border-color:  #00d1b2 !important;
+}
 </style>

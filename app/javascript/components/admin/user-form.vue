@@ -312,7 +312,7 @@
           </form>
         </section>
         <footer v-if="showButtonSubmit" class="modal-card-foot">
-          <button class="button is-info" v-on:click="onSubmit">Submit</button>
+          <button class="button is-primary" v-on:click="onSubmit">Submit</button>
           <button class="button" v-on:click="onClickCancel">Cancel</button>
         </footer>
       </div>

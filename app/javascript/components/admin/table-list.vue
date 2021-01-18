@@ -6,7 +6,7 @@
         <div class="column">
           <div class="field is-grouped is-grouped-right">
             <p class="control">
-              <a v-on:click="onAddNewUser" class="button is-info is-small">
+              <a v-on:click="onAddNewUser" class="button is-primary is-small">
                 Add New {{ options.type }}
               </a>
             </p>
@@ -45,7 +45,7 @@
               />
             </div>
             <div class="control">
-              <a v-on:click="onSearch" class="button is-info is-small">
+              <a v-on:click="onSearch" class="button is-primary is-small">
                 Search
               </a>
             </div>
