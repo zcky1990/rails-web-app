@@ -44,6 +44,16 @@ Rails.application.routes.draw do
         get "/search", to: "user#search_user", as: "search_user_data"
       end
     end
+
+    resource :category, only: [] do
+      collection do
+        get "/", to: "category#index", as: "user"
+        post "/add", to: "category#add_category", as: "add_new_category_data"
+        post "/remove", to: "category#remove_category", as: "remove_category_data"
+        post "/update", to: "category#update_category", as: "update_category_data"
+        get "/search", to: "category#search_category", as: "search_category_data"
+      end
+    end
   end
 
   namespace :user do

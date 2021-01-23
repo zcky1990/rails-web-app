@@ -60,9 +60,9 @@ class User
   # field :locked_at,       type: Time
 
   index({ email: 1 }, { unique: true, name: "email_index" })
-  index({ google_uid: 1 }, { unique: true, name: "google_uid_index" })
-  index({ facebook_uid: 1 }, { unique: true, name: "facebook_uid_index" })
-  index({ twitter_uid: 1 }, { unique: true, name: "twitter_uid_index" })
+  # index({ google_uid: 1 }, { unique: true, name: "google_uid_index" })
+  # index({ facebook_uid: 1 }, { unique: true, name: "facebook_uid_index" })
+  # index({ twitter_uid: 1 }, { unique: true, name: "twitter_uid_index" })
   index({ role: 1 })
 
   def self.find_by_email(email)

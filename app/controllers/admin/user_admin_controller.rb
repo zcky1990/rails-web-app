@@ -16,6 +16,7 @@ class Admin::UserAdminController < Admin::ApplicationController
   end
 
   def search_user
+    @token = get_token(current_user)
     @data = @service.search_user(params)
     @meta_tag = get_default_web_meta_data()
   end

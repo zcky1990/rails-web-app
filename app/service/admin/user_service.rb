@@ -3,7 +3,7 @@ class Admin::UserService
     data = User.where({ role: type }).order_by(updated_at: :desc).page(page).per(25)
     total_data = data.total_count
     total_pages = data.total_pages
-    datas = ActiveModel::Serializer::CollectionSerializer.new(data, serializer: Admin::UserSerializer)
+    datas = ActiveModel::Serializer::CollectionSerializer.new(data, serializer: UserSerializer)
     return get_table_data(page, type, datas, total_data, total_pages)
   end
 
@@ -13,7 +13,7 @@ class Admin::UserService
     total_data = data.size
     total_pages = 1
     page = 1
-    datas = ActiveModel::Serializer::CollectionSerializer.new(data, serializer: Admin::UserSerializer)
+    datas = ActiveModel::Serializer::CollectionSerializer.new(data, serializer: UserSerializer)
     return get_table_data(page, params[:type], datas, total_data, total_pages)
   end
 

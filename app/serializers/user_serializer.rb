@@ -1,4 +1,4 @@
-class Admin::UserSerializer < ActiveModel::Serializer
+class UserSerializer < ActiveModel::Serializer
   
   attribute :id 
   attribute :email
