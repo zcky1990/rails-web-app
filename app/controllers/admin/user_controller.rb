@@ -1,5 +1,5 @@
 class Admin::UserController < Admin::ApplicationController
-  # before_action :is_sign_in
+  before_action :is_sign_in
 
   def initialize
     super

@@ -1,16 +1,14 @@
 <template>
   <div id="tabs-with-content">
-    <div class="tabs is-boxed">
-      <ul>
-        <li class="tab is-active" v-on:click="tabclick">
-          <a>
-            <span class="icon has-text-primary is-small"
-              ><i class="fas fa-user" aria-hidden="true"></i
-            ></span>
-            <span class="has-text-primary" >User</span>
-          </a>
-        </li>
-      </ul>
+    <div class="tabs">
+      <div class="menu" v-on:click="tabclick">
+        <div class="menu-icon">
+          <span class="icon has-text-primary is-small"
+            ><i class="fas fa-user" aria-hidden="true"></i
+          ></span>
+          <span class="has-text-primary">User</span>
+        </div>
+      </div>
     </div>
     <div class="tab-content-container">
       <section class="tab-content admin tab-active">
@@ -54,7 +52,7 @@ export default {
         type: "user",
         maxRow: 10,
         tableListUrl: "",
-        hiddenColumn: [5,9],
+        hiddenColumn: [5, 9],
         searchType: ["id", "email", "phone_number"],
       },
       paginationOptions: {
