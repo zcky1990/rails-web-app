@@ -1,5 +1,5 @@
 <template>
-  <div class="table-container">
+  <div class="table-content-container">
     <div class="container">
       <div class="columns">
         <div class="column"></div>
@@ -57,67 +57,69 @@
         </div>
       </div>
     </div>
-    <table class="table is-fullwidth is-hoverable is-striped">
-      <thead>
-        <tr>
-          <th
-            v-for="(header, index) in headers"
-            :key="`headers-${index}`"
-            v-if="itemsNotContains(index)"
+    <div class="table-container">
+      <table class="table is-fullwidth is-hoverable is-striped">
+        <thead>
+          <tr>
+            <th
+              v-for="(header, index) in headers"
+              :key="`headers-${index}`"
+              v-if="itemsNotContains(index)"
+            >
+              <div class="has-text-centered is-size-7">
+                {{ header }}
+              </div>
+            </th>
+            <th v-if="options.isShowActionColumn == true">
+              <div class="container has-text-centered is-size-7">Action</div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-if="isDataEmpty()">
+            <td class="has-text-centered padded">No Data Available</td>
+          </tr>
+          <tr
+            v-else
+            v-for="(datas, index) in dataTable"
+            :key="`tabel-row-${index}`"
           >
-            <div class="has-text-centered is-size-7">
-              {{ header }}
-            </div>
-          </th>
-          <th v-if="options.isShowActionColumn == true">
-            <div class="container has-text-centered is-size-7">Action</div>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-if="isDataEmpty()">
-          <td class="has-text-centered padded">No Data Available</td>
-        </tr>
-        <tr
-          v-else
-          v-for="(datas, index) in dataTable"
-          :key="`tabel-row-${index}`"
-        >
-          <td
-            v-for="(value, name, index) in datas"
-            :key="`table-column-${index}`"
-            v-if="itemsNotContains(index)"
-          >
-            <div class="has-text-centered is-size-7">
-              {{ value }}
-            </div>
-          </td>
-          <td v-if="options.isShowActionColumn == true">
-            <div class="has-text-centered">
-              <span :id="`${index}`" class="icon is-small">
-                <abbr title="Show" class="SHOW" v-on:click="onClick">
-                  <i class="fas fa-eye"></i
-                ></abbr>
-                <abbr title="Edit" class="EDIT" v-on:click="onClick">
-                  <i class="ml-2 fas fa-edit"></i
-                ></abbr>
-                <abbr title="Delete" class="REMOVE" v-on:click="onClick">
-                  <i class="ml-2 fas fa-trash"></i
-                ></abbr>
-              </span>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-      <div v-if="options.showPaginate">
-            <paginate-table
-              :page="paginationOptions.page"
-              :totalPage="paginationOptions.totalPage"
-              :type="options.type"
-              :url="options.tableListUrl"
-            ></paginate-table>
-          </div>
-    </table>
+            <td
+              v-for="(value, name, index) in datas"
+              :key="`table-column-${index}`"
+              v-if="itemsNotContains(index)"
+            >
+              <div class="has-text-centered is-size-7">
+                {{ value }}
+              </div>
+            </td>
+            <td v-if="options.isShowActionColumn == true">
+              <div class="has-text-centered">
+                <span :id="`${index}`" class="icon is-small">
+                  <abbr title="Show" class="SHOW" v-on:click="onClick">
+                    <i class="fas fa-eye"></i
+                  ></abbr>
+                  <abbr title="Edit" class="EDIT" v-on:click="onClick">
+                    <i class="ml-2 fas fa-edit"></i
+                  ></abbr>
+                  <abbr title="Delete" class="REMOVE" v-on:click="onClick">
+                    <i class="ml-2 fas fa-trash"></i
+                  ></abbr>
+                </span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div v-if="options.showPaginate">
+      <paginate-table
+        :page="paginationOptions.page"
+        :totalPage="paginationOptions.totalPage"
+        :type="options.type"
+        :url="options.tableListUrl"
+      ></paginate-table>
+    </div>
   </div>
 </template>
 

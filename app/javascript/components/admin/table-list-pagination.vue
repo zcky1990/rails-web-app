@@ -1,5 +1,4 @@
 <template>
-  <div class="container pagination-page">
     <nav
       class="pagination is-right is-fullwidth is-small"
       role="navigation"
@@ -64,7 +63,6 @@
         </li>
       </ul>
     </nav>
-  </div>
 </template>
 
 <script>
@@ -202,11 +200,6 @@ export default {
 <style scoped>
 .padded {
   padding: 25px;
-}
-.pagination-page {
-  padding: 2rem;
-  width: 100% !important;
-  position: absolute;
 }
 .is-current{
   background-color: #00d1b2 !important;

@@ -1,16 +1,11 @@
 <template>
-  <div id="tabs-with-content">
-    <div class="tabs is-boxed">
-      <ul>
-        <li class="tab is-active" v-on:click="tabclick">
-          <a>
-            <span class="icon has-text-primary is-small"
-              ><i class="fas fa-user" aria-hidden="true"></i
-            ></span>
-            <span class="has-text-primary" >Category</span>
-          </a>
-        </li>
-      </ul>
+  <div id="panel tabs-with-content">
+    <div class="tabs">
+      <div class="menu" v-on:click="tabclick">
+        <div class="menu-icon">
+          <span class="has-text-primary">Category</span>
+        </div>
+      </div>
     </div>
     <div class="tab-content-container">
       <section class="tab-content admin tab-active">
@@ -36,13 +31,7 @@ export default {
   data: function () {
     return {
       table: [],
-      headers: [
-        "Id",
-        "Name",  
-        "Desc",
-        "Status",
-        "Moderated By"
-      ],
+      headers: ["Id", "Name", "Desc", "Status", "Moderated By"],
       options: {
         showPaginate: true,
         isShowActionColumn: true,
@@ -118,6 +107,33 @@ export default {
 </script>
 
 <style scoped>
+/* Let's get this party started */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  background: #dbdbdb;
+  -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.5);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+  background: grey;
+}
+
+.tabs {
+  border-bottom: 1px solid #dbdbdb;
+}
 .tab-content {
   display: none;
 }
