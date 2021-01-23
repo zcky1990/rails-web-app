@@ -20,17 +20,17 @@ class Admin::CategoryController < Admin::ApplicationController
   end
 
   def add_category
-    result = @service.add_category(params)
+    result = @service.add_category(params, current_user)
     redirect_to user_admin_category_url, :flash => result
   end
 
   def update_category
-    result = @service.update_category(params)
+    result = @service.update_category(params, current_user)
     redirect_to user_admin_category_url, :flash => result
   end
 
   def remove_category
-    result = @service.delete_category(params)
+    result = @service.delete_category(params, current_user)
     redirect_to user_admin_category_url, :flash => result
   end
 

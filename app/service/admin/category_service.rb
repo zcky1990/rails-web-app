@@ -1,6 +1,6 @@
 class Admin::CategoryService
   def get_category_list(page)
-    data = Category.where({is_active: true}).hint({is_active: 1}).order_by(updated_at: :desc).page(page).per(25)
+    data = Category.where({ is_active: true }).hint({ is_active: 1 }).order_by(updated_at: :desc).page(page).per(25)
     total_data = data.total_count
     total_pages = data.total_pages
     datas = ActiveModel::Serializer::CollectionSerializer.new(data, serializer: CategorySerializer)
@@ -17,7 +17,7 @@ class Admin::CategoryService
     return get_table_data(page, "category", datas, total_data, total_pages)
   end
 
-  def add_category(params)
+  def add_category(params, current_user)
     begin
       category = Category.find_by_name(params[:name])
       if !category.present?
@@ -25,6 +25,8 @@ class Admin::CategoryService
           name: params[:name],
           desc: params[:desc],
           status: params[:status],
+          created_by: current_user,
+          moderated_by: current_user,
         }
         new_category = Category.new(data)
         if new_category.save!
@@ -40,7 +42,7 @@ class Admin::CategoryService
     end
   end
 
-  def update_category(params)
+  def update_category(params, current_user)
     begin
       category = Category.find(params[:id])
       if category.present?
@@ -48,11 +50,12 @@ class Admin::CategoryService
           name: params[:name],
           desc: params[:desc],
           status: params[:status],
+          moderated_by: current_user,
         }
         if category.update_attributes(data)
           return { status: "success", message: "Success Update Category" }
         else
-          return { status: "failed", message: new_category.errors.to_s }
+          return { status: "failed", message: category.errors.to_s }
         end
       else
         return { status: "failed", message: "Category not found" }
@@ -62,14 +65,14 @@ class Admin::CategoryService
     end
   end
 
-  def delete_category(params)
+  def delete_category(params, current_user)
     begin
       category = Category.find(params[:id])
       if category.present?
-        if category.update_attributes({ is_active: false })
+        if category.update_attributes({ is_active: false, moderated_by: current_user.id.to_s })
           return { status: "success", message: "Success delete Category" }
         else
-          return { status: "failed", message: new_category.errors.to_s }
+          return { status: "failed", message: category.errors.to_s }
         end
       else
         return { status: "failed", message: "Category not found" }

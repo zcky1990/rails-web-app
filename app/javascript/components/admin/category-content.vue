@@ -40,7 +40,8 @@ export default {
         "Id",
         "Name",  
         "Desc",
-        "Status"
+        "Status",
+        "Moderated By"
       ],
       options: {
         showPaginate: true,
