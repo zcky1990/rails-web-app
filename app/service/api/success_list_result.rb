@@ -1,17 +1,12 @@
 class Api::SuccessListResult
   attr_reader :status,
-              :total_data,
-              :total_page,
               :data,
               :message
   SUCCESS = "success"
-  ERROR = "error"
 
-  def initialize(data:, message: nil, total_data:, total_page:)
+  def initialize(data:, message: nil)
     @status = SUCCESS
     @data = data
-    @total_data = total_data
-    @total_page = total_page
     @message = validate(message)
   end
 

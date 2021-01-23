@@ -101,6 +101,10 @@ Rails.application.routes.draw do
         post "/sign-up", to: "registrations#sign_up", as: "sign-up"
       end
 
+      resource :category, only: [] do
+        post "/get_category_list", to: "category#get_category_list", as: "get_category_list"
+      end
+
       resource :jwt, only: [] do
         get "/generate_jwt", to: "jwt#generate_jwt", as: "generate_jwt"
       end

@@ -3,7 +3,6 @@ class Api::SuccessObjectResult
               :data,
               :message
   SUCCESS = "success"
-  ERROR = "error"
 
   def initialize(data:, message: nil)
     @status = SUCCESS

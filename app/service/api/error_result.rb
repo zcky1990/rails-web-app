@@ -3,7 +3,6 @@ class Api::ErrorResult
               :error_code,
               :error_title,
               :error_message
-  SUCCESS = "success"
   ERROR = "error"
 
   def initialize(error_code:, error_title: nil, error_message:)
