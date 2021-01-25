@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resource :index, only: [], :path => "/" do
-      get "/dashboard", to: "index#index", as: "index"
+      get "/", to: "index#index", as: "index"
     end
 
     resource :login, only: [:index] do

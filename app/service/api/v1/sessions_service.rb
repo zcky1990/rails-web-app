@@ -8,27 +8,33 @@ class Api::V1::SessionsService < Api::V1::JsonService
     if user.present?
       if user.valid_password?(params[:password])
         if is_user_sign_in
-          return user_result_json(SUCCESS, user, USER_ALREADY_LOGIN)
+          serializer_options = {}
+          data = LoginUserSerializer.new(user, serializer_options)
+          return Api::SuccessObjectResult.new(data: data, message: USER_ALREADY_LOGIN)
         else
           callback.call(user)
-          return user_result_json(SUCCESS, user, USER_SUCCESS_LOGIN)
+          serializer_options = {}
+          data = LoginUserSerializer.new(user, serializer_options)
+          return Api::SuccessObjectResult.new(data: data, message: USER_SUCCESS_LOGIN)
         end
       else
-        return user_result_json(FAILED, nil, ERROR_FAILED_LOGIN)
-        render :json => result, :status => 200
+        serializer_options = {}
+        data = LoginUserSerializer.new(user, serializer_options)
+        return Api::ErrorResult.new(data: data, message: ERROR_FAILED_LOGIN)
       end
     else
-      return user_result_json(FAILED, nil, ERROR_FAILED_LOGIN)
-      render :json => result, :status => 200
+      serializer_options = {}
+      data = LoginUserSerializer.new(user, serializer_options)
+      return Api::ErrorResult.new(data: data, message: ERROR_FAILED_LOGIN)
     end
   end
 
   def sign_out_user(user, callback)
     if user.present?
       callback.call(user)
-      return user_result_json(SUCCESS, nil, SUCCESS_LOGOUT)
+      return Api::SuccessObjectResult.new(data: nil, message: SUCCESS_LOGOUT)
     else
-      return user_result_json(FAILED, nil, ERROR_FAILED_LOGOUT)
+      return Api::ErrorResult.new(data: nil, message: ERROR_FAILED_LOGOUT)
     end
   end
 
@@ -36,7 +42,9 @@ class Api::V1::SessionsService < Api::V1::JsonService
     user = User.find_by_omniauth_id(type, provider_data[:uid])
     if user.present?
       callback.call(user)
-      return user_result_json(SUCCESS, user, USER_SUCCESS_LOGIN)
+      serializer_options = {}
+      data = LoginUserSerializer.new(user, serializer_options)
+      return Api::SuccessObjectResult.new(data: data, message: USER_SUCCESS_LOGIN)
     else
       oauth_user_data = {}
       if type == FB_LOGIN
@@ -53,9 +61,11 @@ class Api::V1::SessionsService < Api::V1::JsonService
 
       new_user = User.new(oauth_user_data)
       if new_user.save(validate: false)
-        return user_result_json(SUCCESS, user, USER_SUCCESS_LOGIN)
+        serializer_options = {}
+        data = LoginUserSerializer.new(new_user, serializer_options)
+        return Api::SuccessObjectResult.new(data: data, message: USER_SUCCESS_LOGIN)
       else
-        return user_result_json(FAILED, nil, ERROR_FAILED_LOGIN)
+        return Api::ErrorResult.new(data: nil, message: ERROR_FAILED_LOGIN)
       end
     end
   end

@@ -8,6 +8,7 @@
       :isSearchAble="searchAble"
       :searchList="listTags"
     ></tags-input>
+    <bread-crumb :position="'center'"></bread-crumb>
     <div class="tabs">
       <div class="menu" v-on:click="tabclick">
         <div class="menu-icon">
@@ -34,6 +35,7 @@
 import { EventBus } from "../../plugins/eventbus.js";
 import tableList from "./table-list.vue";
 import Form from "./category-form.vue";
+import breadCrumb from "./../shared/breadcrumb.vue";
 
 import tagsInput from "./tags-input.vue";
 
@@ -59,34 +61,10 @@ export default {
       keyEvent: "CATEGORY",
       searchUrl: "/api/v1/category/get_category_list",
       itemsTags: [
-        {
-          id: "600bf3c6e64d1e5b97ed0e5b",
-          name: "Games",
-          desc: "guide guides",
-          status: true,
-        },
-        {
-          id: "600c2588e64d1ea13fd33548",
-          name: "gamas",
-          desc: "sadasdasd",
-          status: true,
-        },
       ],
       listTags: [
-        {
-          id: "600bf3c6e64d1e5b97ed0e5b",
-          name: "Games",
-          desc: "guide guides",
-          status: true,
-        },
-        {
-          id: "600c2588e64d1ea13fd33548",
-          name: "gamas",
-          desc: "sadasdasd",
-          status: true,
-        },
       ],
-      searchAble: false
+      searchAble: true
     };
   },
   created() {
@@ -144,6 +122,7 @@ export default {
     "table-list": tableList,
     "category-form": Form,
     "tags-input": tagsInput,
+    "bread-crumb": breadCrumb
   },
 };
 </script>
