@@ -1,6 +1,6 @@
 <template>
-  <div class="columns is-desktop is-centered">
-    <div class="column is-5-tablet is-5-desktop is-5-widescreen">
+  <div class="columns is-desktop">
+    <div class="column">
       <div class="field">
         <label for="" class="label">{{ title }}</label>
         <div v-if="isSearchAble == true" class="control has-icons-right">

@@ -1,13 +1,5 @@
 <template>
   <div id="panel tabs-with-content">
-    <tags-input
-      :title="'Category'"
-      :url="searchUrl"
-      :token="getToken()"
-      :items="itemsTags"
-      :isSearchAble="searchAble"
-      :searchList="listTags"
-    ></tags-input>
     <bread-crumb :position="'center'"></bread-crumb>
     <div class="tabs">
       <div class="menu" v-on:click="tabclick">
@@ -35,7 +27,6 @@
 import tableList from "./../../shared/table-list.vue";
 import Form from "./article-form.vue";
 import breadCrumb from "./../../shared/admin-breadcrumb.vue";
-import tagsInput from "./../../shared/tags-input.vue";
 
 export default {
   data: function () {
@@ -57,35 +48,29 @@ export default {
         page: 1,
       },
       keyEvent: "ARTICLE",
-      searchUrl: "/api/v1/category/get_category_list",
-      itemsTags: [
-      ],
-      listTags: [
-      ],
-      searchAble: true
     };
   },
   created() {
     var self = this;
     this.onEmitEvent("ARTICLE_SHOW", function (data) {
-      self.$refs.categoryForm.showForm(data.data, "show", "Category Data");
+      self.$refs.categoryForm.showForm(data.data, "show", "View Article");
       console.log(self.itemsTags);
     });
 
+    this.onEmitEvent("ARTICLE_ADD", function (data) {
+      self.$refs.categoryForm.showForm({}, "add", "Add New Article");
+    });
+
     this.onEmitEvent("ARTICLE_EDIT", function (data) {
-      self.$refs.categoryForm.showForm(data.data, "edit", "Edit Category Data");
+      self.$refs.categoryForm.showForm(data.data, "edit", "Edit Article Data");
     });
 
     this.onEmitEvent("ARTICLE_REMOVE", function (data) {
-      self.submitForm("/admin/category/remove", data.data, "POST");
+      self.submitForm("/admin/article/remove", data.data, "POST");
     });
 
     this.onEmitEvent("ARTICLE_SEARCH", function (data) {
-      self.submitForm("/admin/category/search", data, "get");
-    });
-
-    this.onEmitEvent("ARTICLE_ADD", function (data) {
-      self.$refs.categoryForm.showForm({}, "add", "Add New Category");
+      self.submitForm("/admin/article/search", data, "get");
     });
 
     this.onEmitEvent("ON_ADD_ARTICLE", function (data) {
@@ -119,8 +104,7 @@ export default {
   components: {
     "table-list": tableList,
     "category-form": Form,
-    "tags-input": tagsInput,
-    "bread-crumb": breadCrumb
+    "bread-crumb": breadCrumb,
   },
 };
 </script>
