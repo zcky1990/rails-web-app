@@ -19,7 +19,7 @@
 <script>
 import snackbar from "../../../components/shared/snackbar.vue";
 import spinner from "../../../components/shared/spinner.vue";
-import contenttab from "../../../components/admin/category/category-content.vue";
+import contentTab from "../../../components/admin/article/article-content.vue";
 
 export default {
   data: function () {
@@ -61,9 +61,9 @@ export default {
     }
   },
   components: {
-    "content-tab": contenttab,
+    "content-tab": contentTab,
     "snake-bar": snackbar,
-    spinner: spinner,
+    "spinner": spinner,
   },
 };
 </script>

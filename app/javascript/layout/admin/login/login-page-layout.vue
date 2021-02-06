@@ -17,7 +17,7 @@
 
 <script>
 import snackbar from "../../../components/shared/snackbar.vue";
-import loginForm from "../../../components/admin/login-form.vue";
+import loginForm from "../../../components/admin/login/login-form.vue";
 
 export default {
   data: function () {

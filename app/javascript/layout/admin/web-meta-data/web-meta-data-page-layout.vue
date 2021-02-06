@@ -17,7 +17,7 @@
 
 <script>
 import snackbar from "../../../components/shared/snackbar.vue";
-import loginForm from "../../../components/admin/web-meta-form.vue";
+import loginForm from "../../../components/admin/web-meta/web-meta-form.vue";
 
 export default {
   data: function () {
@@ -39,7 +39,7 @@ export default {
     if(this._datas !== null && !(Object.keys(this._datas).length === 0 && this._datas.constructor === Object)){
       this.$refs.loginForm.setData(this._datas);
     }
-    if (this.notif !== null) {
+    if (this.notif !== null && this.notif !== undefined) {
       this.$refs.snackbar.showSnackBar(this.notif.message, this.notif.status);
     }
   },

@@ -41,7 +41,6 @@ export default {
   created() {
     var splitterUrl = document.URL.split("/");
     this.breadCrumbLink = [];
-    this.breadCrumbLink.push({ name: "Home", url: "/" });
     var urlData = "";
     for (var i = 3; i < splitterUrl.length; i++) {
       urlData = urlData + "/" + splitterUrl[i];

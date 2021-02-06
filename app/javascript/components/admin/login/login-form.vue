@@ -43,8 +43,6 @@
 </template>
 
 <script>
-import { EventBus } from "../../plugins/eventbus.js";
-
 export default {
     data: function () {
         return {
@@ -65,7 +63,7 @@ export default {
                 let headers = {};
                 this.post("/api/admin/sessions/admin_login", postbody, headers, function (response) {
                         if (response.data.status === 'success') {
-                            window.location.href = "/admin/dashboard";
+                            window.location.href = "/admin";
                         } else {
                             self.showSnackBar(response, "error")
                         }

@@ -12,7 +12,7 @@
     <div class="tabs">
       <div class="menu" v-on:click="tabclick">
         <div class="menu-icon">
-          <span class="has-text-primary">Category</span>
+          <span class="has-text-primary">Article</span>
         </div>
       </div>
     </div>
@@ -32,33 +32,31 @@
 </template>
 
 <script>
-import { EventBus } from "../../plugins/eventbus.js";
-import tableList from "./table-list.vue";
-import Form from "./category-form.vue";
-import breadCrumb from "./../shared/breadcrumb.vue";
-
-import tagsInput from "./tags-input.vue";
+import tableList from "./../../shared/table-list.vue";
+import Form from "./article-form.vue";
+import breadCrumb from "./../../shared/admin-breadcrumb.vue";
+import tagsInput from "./../../shared/tags-input.vue";
 
 export default {
   data: function () {
     return {
       table: [],
-      headers: ["Id", "Name", "Desc", "Status", "Moderated By"],
+      headers: ["Id", "Title", "Slug", "Is Publish", "Moderated By"],
       options: {
         showPaginate: true,
         isShowActionColumn: true,
-        type: "category",
+        type: "article",
         maxRow: 10,
         tableListUrl: "",
         hiddenColumn: [],
-        searchType: ["id", "name"],
+        searchType: ["id", "slug"],
       },
       paginationOptions: {
         totalPage: 1,
         totalData: 1,
         page: 1,
       },
-      keyEvent: "CATEGORY",
+      keyEvent: "ARTICLE",
       searchUrl: "/api/v1/category/get_category_list",
       itemsTags: [
       ],
@@ -69,50 +67,50 @@ export default {
   },
   created() {
     var self = this;
-    this.onEmitEvent("CATEGORY_SHOW", function (data) {
+    this.onEmitEvent("ARTICLE_SHOW", function (data) {
       self.$refs.categoryForm.showForm(data.data, "show", "Category Data");
       console.log(self.itemsTags);
     });
 
-    this.onEmitEvent("CATEGORY_EDIT", function (data) {
+    this.onEmitEvent("ARTICLE_EDIT", function (data) {
       self.$refs.categoryForm.showForm(data.data, "edit", "Edit Category Data");
     });
 
-    this.onEmitEvent("CATEGORY_REMOVE", function (data) {
+    this.onEmitEvent("ARTICLE_REMOVE", function (data) {
       self.submitForm("/admin/category/remove", data.data, "POST");
     });
 
-    this.onEmitEvent("CATEGORY_SEARCH", function (data) {
+    this.onEmitEvent("ARTICLE_SEARCH", function (data) {
       self.submitForm("/admin/category/search", data, "get");
     });
 
-    this.onEmitEvent("CATEGORY_ADD", function (data) {
+    this.onEmitEvent("ARTICLE_ADD", function (data) {
       self.$refs.categoryForm.showForm({}, "add", "Add New Category");
     });
 
-    this.onEmitEvent("ON_ADD_CATEGORY", function (data) {
+    this.onEmitEvent("ON_ADD_ARTICLE", function (data) {
       self.$refs.categoryForm.hideForm();
       self.showSpinner();
-      self.submitForm("/admin/category/add", data, "POST");
+      self.submitForm("/admin/article/add", data, "POST");
     });
 
-    this.onEmitEvent("ON_EDIT_CATEGORY", function (data) {
+    this.onEmitEvent("ON_EDIT_ARTICLE", function (data) {
       self.$refs.categoryForm.hideForm();
       self.showSpinner();
-      self.submitForm("/admin/category/update", data, "POST");
+      self.submitForm("/admin/article/update", data, "POST");
     });
   },
   methods: {
     tabclick: function () {
-      this.submitForm("/admin/category", {}, "get");
+      this.submitForm("/admin/article", {}, "get");
     },
     setData: function (data) {
       console.log(data);
       this.table = data.tabelData;
       this.paginationOptions = data.pagination_options;
-      this.keyEvent = "CATEGORY";
+      this.keyEvent = "ARTICLE";
       this.options.type = data.type;
-      this.options.tableListUrl = "/admin/category/";
+      this.options.tableListUrl = "/admin/article/";
       if (window.location.href.includes("/search")) {
         this.options.showPaginate = false;
       }
