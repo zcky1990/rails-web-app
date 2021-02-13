@@ -1,5 +1,5 @@
 <template>
-  <div class="columns is-desktop">
+  <div class="container is-desktop">
     <div class="column">
       <div class="field">
         <label for="" class="label">{{ title }}</label>

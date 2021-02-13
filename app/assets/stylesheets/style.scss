@@ -2,11 +2,6 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
 @charset "utf-8";
-
 @import "bulma";
-
-// Import BulmaTagsInput main Sass File
 @import '@creativebulma/bulma-tagsinput/src/sass/index';
-
-// Import component
 @import "bulma-calendar/src/sass/index"

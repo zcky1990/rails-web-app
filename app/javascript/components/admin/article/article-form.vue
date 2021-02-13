@@ -8,7 +8,7 @@
           <button class="delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
-          <div class="columns is-5-desktop">
+          <div class="container is-5-desktop">
             <div class="column">
               <div class="field">
                 <div class="is-normal">
@@ -43,10 +43,19 @@
             :searchList="listTags"
           ></tags-input>
 
-          <button class="button is-primary" v-on:click="onSubmit">
-            Submit
-          </button>
-          <button class="button" v-on:click="onClickCancel">Cancel</button>
+          <editor :content-data="article.content"></editor>
+          <div class="container is-desktop">
+            <div class="column">
+              <div class="field is-grouped is-grouped-right">
+                <button class="button is-primary" v-on:click="onSubmit">
+                  Submit
+                </button>
+                <button class="button" v-on:click="onClickCancel">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
         </section>
       </div>
       <div class="is-desktop is-centered modal-card"></div>
@@ -56,8 +65,8 @@
 </template>
 
 <script>
-import bulmaCalendar from "bulma-calendar/dist/js/bulma-calendar.min.js";
 import tagsInput from "./../../shared/tags-input.vue";
+import editorTipTap from "./../../shared/editor/editor.vue";
 
 export default {
   data: function () {
@@ -65,7 +74,11 @@ export default {
       isShow: false,
       messageError: "",
       showMessage: false,
-      article: {},
+      article: {
+        content: `<figure class="image is-128x128">
+  <img src="https://bulma.io/images/placeholders/128x128.png">
+</figure>`,
+      },
       title: "",
       type: "",
       date: new Date(),
@@ -137,6 +150,7 @@ export default {
   },
   components: {
     "tags-input": tagsInput,
+    editor: editorTipTap,
   },
 };
 </script>

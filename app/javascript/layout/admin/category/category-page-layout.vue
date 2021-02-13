@@ -63,7 +63,7 @@ export default {
   components: {
     "content-tab": contenttab,
     "snake-bar": snackbar,
-    spinner: spinner,
+    "spinner": spinner,
   },
 };
 </script>
