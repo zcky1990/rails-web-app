@@ -1,5 +1,6 @@
 <template>
   <div class="editor container is-desktop">
+    <div id="file-uploader"></div>
     <editor-menu-bubble
       :editor="editor"
       :keep-in-bounds="keepInBounds"
@@ -16,10 +17,8 @@
           :class="{ 'is-active': isActive.bold() }"
           @click="commands.bold"
         >
-          <span
-            class="icon is-medium"
-          >
-           <format-bold></format-bold>
+          <span class="icon is-medium">
+            <format-bold></format-bold>
           </span>
         </button>
 
@@ -49,7 +48,7 @@
           @click="commands.underline"
         >
           <span class="icon">
-           <format-underline></format-underline>
+            <format-underline></format-underline>
           </span>
         </button>
 
@@ -143,7 +142,7 @@
           class="menububble__button"
           @click="showImagePrompt(commands.image)"
         >
-         <image-icon></image-icon>
+          <image-icon></image-icon>
         </button>
 
         <button
@@ -318,10 +317,9 @@ import Undo from "vue-material-design-icons/Undo.vue";
 import Redo from "vue-material-design-icons/Redo.vue";
 import ImageIcon from "vue-material-design-icons/Image.vue";
 
-
 export default {
   props: {
-    contentData : ""
+    contentData: "",
   },
   components: {
     EditorContent,
@@ -342,16 +340,16 @@ export default {
     "format-header-1": FormatHeader1,
     "format-header-2": FormatHeader2,
     "format-header-3": FormatHeader3,
-    "format-paragraph" : FormatParagraph,
+    "format-paragraph": FormatParagraph,
     "code-tags": CodeTags,
     "link-variant": LinkVariant,
     "format-list-numbers": FormatListNumbered,
-    "format-list-bulleted":FormatListBulleted,
+    "format-list-bulleted": FormatListBulleted,
     "format-quote": FormatQuote,
-    "minus": Minus,
-    "undo": Undo,
-    "redo": Redo,
-    "image-icon": ImageIcon
+    minus: Minus,
+    undo: Undo,
+    redo: Redo,
+    "image-icon": ImageIcon,
   },
   data() {
     return {
@@ -421,10 +419,45 @@ export default {
       command({ href: url });
     },
     showImagePrompt(command) {
-      const src = prompt('Enter the url of your image here')
-      if (src !== null) {
-        command({ src })
-      }
+      var self = this;
+      var f = document.createElement("input");
+      f.style.display = "none";
+      f.type = "file";
+      f.name = "file";
+      document.getElementById("file-uploader").appendChild(f);
+      f.click();
+
+      f.onchange = function () {
+        let token = self.getToken();
+        let file = this.files[0];
+        let data = new FormData();
+        data.append("image", file);
+        let headers = {
+          Authorization: "Bearer " + token,
+          "Content-Type": `multipart/form-data; boundary=${data._boundary}`,
+        };
+
+        console.log(headers);
+        console.log(file.name);
+        self.post(
+          "/api/admin/image_uploader/upload",
+          data,
+          headers,
+          function (response) {
+            if (response.data.status == "success") {
+              const src = response.data.data.secure_url;
+              console.log(response.data.data);
+              if (src !== null) {
+                command({ src });
+              }
+            }
+          },
+          function (response) {
+            console.log("failed");
+          }
+        );
+        f.remove();
+      };
     },
   },
   mounted() {

@@ -79,6 +79,10 @@ Rails.application.routes.draw do
         post "/admin_logout", to: "sessions#logout", as: "logout"
       end
 
+      resource :image_uploader, only: [] do
+        post "/upload", to: "image_uploader#upload", as: "upload_image"
+      end
+
       resources :web_meta_data, only: [] do
         post "upload_image", action: :upload_image, on: :collection
         post "create_web_meta_data", action: :create_web_meta_data, on: :collection
