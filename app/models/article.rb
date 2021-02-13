@@ -11,10 +11,15 @@ class Article
   field :is_publish, type: Boolean, default: false
 
   belongs_to :web_meta, :class_name => "WebMeta"
-  has_many :category, :class_name => "Category"
+  has_many :categories, :class_name => "Category"
   belongs_to :created_by, :class_name => "User", optional: true
   belongs_to :moderated_by, :class_name => "User", optional: true
 
   index({ slug: 1 })
   index({ slug: 1, is_publish: 1 })
+
+  def self.find_by_slug(slug)
+    results = self.find_by(slug: slug)
+    return results
+  end
 end

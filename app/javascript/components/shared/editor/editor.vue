@@ -235,19 +235,19 @@
 
         <button class="menububble__button" @click="commands.horizontal_rule">
           <span class="icon">
-            <minus></minus>
+            <minus-icon></minus-icon>
           </span>
         </button>
 
         <button class="menububble__button" @click="commands.undo">
           <span class="icon">
-            <undo></undo>
+            <undo-icon></undo-icon>
           </span>
         </button>
 
         <button class="menububble__button" @click="commands.redo">
           <span class="icon">
-            <redo></redo>
+            <redo-icon></redo-icon>
           </span>
         </button>
       </div>
@@ -262,8 +262,6 @@
 import javascript from "highlight.js/lib/languages/javascript";
 import css from "highlight.js/lib/languages/css";
 import { Editor, EditorContent, EditorMenuBubble } from "tiptap";
-// import {BulmaTitle} from "./nodes/Title.js"
-// import {BulmaImage} from "./nodes/BulmaImage.js"
 import {
   Blockquote,
   CodeBlock,
@@ -319,7 +317,7 @@ import ImageIcon from "vue-material-design-icons/Image.vue";
 
 export default {
   props: {
-    contentData: "",
+    contentdata: String
   },
   components: {
     EditorContent,
@@ -346,9 +344,9 @@ export default {
     "format-list-numbers": FormatListNumbered,
     "format-list-bulleted": FormatListBulleted,
     "format-quote": FormatQuote,
-    minus: Minus,
-    undo: Undo,
-    redo: Redo,
+    "minus-icon": Minus,
+    "undo-icon": Undo,
+    "redo-icon": Redo,
     "image-icon": ImageIcon,
   },
   data() {
@@ -369,7 +367,6 @@ export default {
           new BulletList(),
           new CodeBlock(),
           new HardBreak(),
-          // new BulmaTitle({ levels: [1, 2, 3] }),
           new Heading({ levels: [1, 2, 3] }),
           new ListItem(),
           new OrderedList(),
@@ -395,7 +392,7 @@ export default {
           new TableCell(),
           new TableRow(),
         ],
-        content: this.contentData,
+        content: this.contentdata,
       }),
     };
   },
@@ -437,13 +434,9 @@ export default {
           "Content-Type": `multipart/form-data; boundary=${data._boundary}`,
         };
 
-        console.log(headers);
-        console.log(file.name);
-        self.post(
-          "/api/admin/image_uploader/upload",
-          data,
-          headers,
-          function (response) {
+        self.axios
+          .post("/api/admin/image_uploader/upload", data, { headers })
+          .then((response) => {
             if (response.data.status == "success") {
               const src = response.data.data.secure_url;
               console.log(response.data.data);
@@ -451,18 +444,17 @@ export default {
                 command({ src });
               }
             }
-          },
-          function (response) {
+          })
+          .catch((e) => {
             console.log("failed");
-          }
-        );
+          });
         f.remove();
       };
     },
-  },
-  mounted() {
-    console.log(javascript);
-  },
+    getContent(){
+      return this.editor.getHTML();
+    }
+  }
 };
 </script>
 

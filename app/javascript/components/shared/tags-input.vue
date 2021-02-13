@@ -39,7 +39,7 @@
         </p>
       </div>
       <div class="field is-grouped is-grouped-multiline">
-        <div v-for="(item, index) in items" :key="item.name" class="control">
+        <div v-for="(item, index) in items" :key="item.id" class="control">
           <div class="tags has-addons">
             <span class="tag is-danger">{{ item.name }}</span>
             <a class="tag is-delete" @click="deleteTagsInput(item, index)"></a>
@@ -113,26 +113,12 @@ export default {
       this.isDropdownShow = true;
     },
     selectItem: function (item) {
-      if (this.items == undefined) {
-        this.items = [];
-      }
-      if (!this.containsObject(item, this.items)) {
-        this.items.push(item);
-      }
+      this.$emit("add-list", item);
       this.isDropdownShow = false;
     },
     deleteTagsInput: function (item, index) {
-      this.items.splice(index, 1);
-    },
-    containsObject: function (obj, list) {
-      var i;
-      for (i = 0; i < list.length; i++) {
-        if (list[i].id === obj.id) {
-          return true;
-        }
-      }
-      return false;
-    },
+      this.$emit("remove-list", index);
+    }
   },
 };
 </script>

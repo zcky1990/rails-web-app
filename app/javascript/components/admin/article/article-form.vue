@@ -38,12 +38,14 @@
             :title="'Category'"
             :url="searchUrl"
             :token="getToken()"
-            :items="itemsTags"
+            :items="article.categories"
             :isSearchAble="searchAble"
-            :searchList="listTags"
+            @add-list="addCategoriesArticle"
+            @remove-list="removeCategoriesArticle"
           ></tags-input>
 
-          <editor :content-data="article.content"></editor>
+          <editor ref="editor" :contentdata="article.content"></editor>
+
           <div class="container is-desktop">
             <div class="column">
               <div class="field is-grouped is-grouped-right">
@@ -76,8 +78,9 @@ export default {
       showMessage: false,
       article: {
         content: `<figure class="image is-128x128">
-  <img src="https://bulma.io/images/placeholders/128x128.png">
-</figure>`,
+                  <img src="https://bulma.io/images/placeholders/128x128.png">
+                </figure>`,
+        categories: [],
       },
       title: "",
       type: "",
@@ -91,8 +94,6 @@ export default {
         { text: "InActive", value: "false" },
       ],
       searchUrl: "/api/v1/category/get_category_list",
-      itemsTags: [],
-      listTags: [],
       searchAble: true,
     };
   },
@@ -105,6 +106,30 @@ export default {
     },
   },
   methods: {
+    addCategoriesArticle(data) {
+      console.log("emited add categories");
+      if (this.article.categories == undefined) {
+        this.article.categories = [];
+      }
+      if (!this.containsObject(this.article.categories, data)) {
+        this.article.categories.push(data);
+        this.article.content = this.$refs.editor.getContent();
+      }
+    },
+    removeCategoriesArticle(index) {
+      console.log("emited remove categories");
+      this.article.categories.splice(index, 1);
+      this.article.content = this.$refs.editor.getContent();
+    },
+    containsObject: function (obj, list) {
+      var i;
+      for (i = 0; i < list.length; i++) {
+        if (list[i].id === obj.id) {
+          return true;
+        }
+      }
+      return false;
+    },
     showForm(data, type, title) {
       this.article = data;
       this.type = type;
@@ -123,10 +148,11 @@ export default {
     onSubmit: function (event) {
       if (this.type == "edit") {
         if (!this.isFailedValidateArticleData()) {
-          this.emitEvent("ON_EDIT_ARTICLE", this.category);
+          this.emitEvent("ON_EDIT_ARTICLE", this.article);
         }
       } else {
         if (!this.isFailedValidateArticleData()) {
+          this.article.content = this.$refs.editor.getContent();
           this.emitEvent("ON_ADD_ARTICLE", this.article);
         }
       }

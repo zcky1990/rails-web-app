@@ -1,5 +1,5 @@
 class Admin::ArticleService
-  def get_category_list(page)
+  def get_article_list(page)
     data = Category.where({ is_active: true }).hint({ is_active: 1 }).order_by(updated_at: :desc).page(page).per(25)
     total_data = data.total_count
     total_pages = data.total_pages
@@ -7,7 +7,7 @@ class Admin::ArticleService
     return get_table_data(page, "category", datas, total_data, total_pages)
   end
 
-  def search_category(params)
+  def search_article(params)
     search_query = get_query_search(params)
     data = Category.where(search_query).order_by(updated_at: :desc)
     total_data = data.size
@@ -17,32 +17,34 @@ class Admin::ArticleService
     return get_table_data(page, "category", datas, total_data, total_pages)
   end
 
-  def add_category(params, current_user)
+  def add_article(params, current_user)
     begin
-      category = Category.find_by_name(params[:name])
+      category = Article.find_by_slug(params[:slug])
       if !category.present?
         data = {
-          name: params[:name],
-          desc: params[:desc],
-          status: params[:status],
+          slug: params[:slug],
+          title: params[:title],
+          content: params[:content],
+          is_publish: false,
+          categories: params[:categories],
           created_by: current_user,
           moderated_by: current_user,
         }
-        new_category = Category.new(data)
+        new_category = Article.new(data)
         if new_category.save!
-          return { status: "success", message: "Success Create New Category" }
+          return { status: "success", message: "Success Create New Article" }
         else
           return { status: "failed", message: new_category.errors.to_s }
         end
       else
-        return { status: "failed", message: "Category already exists" }
+        return { status: "failed", message: "Article already exists" }
       end
     rescue Exception => e
       return { status: "failed", message: e.message }
     end
   end
 
-  def update_category(params, current_user)
+  def update_article(params, current_user)
     begin
       category = Category.find(params[:id])
       if category.present?
@@ -65,7 +67,7 @@ class Admin::ArticleService
     end
   end
 
-  def delete_category(params, current_user)
+  def delete_article(params, current_user)
     begin
       category = Category.find(params[:id])
       if category.present?
@@ -102,10 +104,10 @@ class Admin::ArticleService
     search_query = {}
     if type_search == "id"
       search_query[:id] = query
-    elsif type_search == "name"
+    elsif type_search == "title"
       search_query[:name] = query
     elsif type_search == "status"
-      search_query[:is_active] = query
+      search_query[:is_publish] = query
     end
     return search_query
   end
