@@ -3,13 +3,13 @@
     <div class="tabs">
       <div class="menu" v-on:click="tabclick">
         <div class="menu-icon">
-          <span class="subtitle is-4 algolia-lvl1">Product Category</span>
+           <span class="subtitle is-4 algolia-lvl1">Product List</span>
         </div>
       </div>
     </div>
-    <div class="tab-content-container algolia-content">
+    <div class="tab-content-container">
       <section class="tab-content admin tab-active">
-        <category-form ref="categoryForm"></category-form>
+        <product-form ref="productForm"></product-form>
         <table-list
           :headers="headers"
           :dataTable="table"
@@ -24,17 +24,17 @@
 
 <script>
 import tableList from "./../../shared/table-list.vue";
-import Form from "./category-form.vue";
+import Form from "./product-form.vue";
 
 export default {
   data: function () {
     return {
       table: [],
-      headers: ["Id", "Name", "Desc", "Status", "Moderated By"],
+      headers: ["Id", "Product Name", "Category", "Price", "Stock", "Moderated By", "Updated Date"],
       options: {
         showPaginate: true,
         isShowActionColumn: true,
-        type: "category",
+        type: "product",
         maxRow: 10,
         tableListUrl: "",
         hiddenColumn: [],
@@ -45,54 +45,55 @@ export default {
         totalData: 1,
         page: 1,
       },
-      keyEvent: "CATEGORY",
+      keyEvent: "PRODUCT",
     };
   },
   created() {
     var self = this;
-    this.onEmitEvent("CATEGORY_SHOW", function (data) {
-      self.$refs.categoryForm.showForm(data.data, "show", "Category Data");
+    this.onEmitEvent("PRODUCT_SHOW", function (data) {
+      self.$refs.productForm.showForm(data.data, "show", "View Product");
+      console.log(self.itemsTags);
     });
 
-    this.onEmitEvent("CATEGORY_EDIT", function (data) {
-      self.$refs.categoryForm.showForm(data.data, "edit", "Edit Category Data");
+    this.onEmitEvent("PRODUCT_ADD", function (data) {
+      self.$refs.productForm.showForm({}, "add", "Add New Product");
     });
 
-    this.onEmitEvent("CATEGORY_REMOVE", function (data) {
-      self.submitForm("/admin/product/remove-product-category", data.data, "POST");
+    this.onEmitEvent("PRODUCT_EDIT", function (data) {
+      self.$refs.productForm.showForm(data.data, "edit", "Edit Product Data");
     });
 
-    this.onEmitEvent("CATEGORY_SEARCH", function (data) {
-      self.submitForm("/admin/product/product-category", data, "get");
+    this.onEmitEvent("PRODUCT_REMOVE", function (data) {
+      self.submitForm("/admin/product/remove-product-list", data.data, "POST");
     });
 
-    this.onEmitEvent("CATEGORY_ADD", function (data) {
-      self.$refs.categoryForm.showForm({}, "add", "Add New Category");
+    this.onEmitEvent("PRODUCT_SEARCH", function (data) {
+      self.submitForm("/admin/product/product-list", data, "get");
     });
 
-    this.onEmitEvent("ON_ADD_CATEGORY", function (data) {
-      self.$refs.categoryForm.hideForm();
+    this.onEmitEvent("ON_ADD_PRODUCT", function (data) {
+      self.$refs.productForm.hideForm();
       self.showSpinner();
-      self.submitForm("/admin/product/add-category", data, "POST");
+      debugger
+      self.submitForm("/admin/product/add-product-list", data, "POST");
     });
 
-    this.onEmitEvent("ON_EDIT_CATEGORY", function (data) {
-      self.$refs.categoryForm.hideForm();
+    this.onEmitEvent("ON_EDIT_PRODUCT", function (data) {
+      self.$refs.productForm.hideForm();
       self.showSpinner();
-      self.submitForm("/admin/product/update-product-category", data, "POST");
+      self.submitForm("/admin/product/update-product-list", data, "POST");
     });
   },
   methods: {
     tabclick: function () {
-      this.submitForm("/admin/product/product-category", {}, "get");
+      this.submitForm("/admin/product/product-list", {}, "get");
     },
     setData: function (data) {
-      console.log(data);
       this.table = data.tabelData;
       this.paginationOptions = data.pagination_options;
-      this.keyEvent = "CATEGORY";
+      this.keyEvent = "PRODUCT";
       this.options.type = data.type;
-      this.options.tableListUrl = "/admin/product/product-category";
+      this.options.tableListUrl = "/admin/product/product-list";
       if (window.location.href.includes("/search")) {
         this.options.showPaginate = false;
       }
@@ -100,7 +101,7 @@ export default {
   },
   components: {
     "table-list": tableList,
-    "category-form": Form,
+    "product-form": Form,
   },
 };
 </script>

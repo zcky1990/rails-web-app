@@ -12,6 +12,7 @@
       <div class="column is-9 right-content">
         <bread-crumb :position="'center'"></bread-crumb>
         <div class="content">
+          <product-list ref="contentTab"></product-list>
         </div>
       </div>
     </div>
@@ -24,6 +25,7 @@ import snackbar from "../../components/shared/snackbar.vue";
 import spinner from "../../components/shared/spinner.vue";
 import breadCrumb from "../../components/shared/admin-breadcrumb.vue";
 import sidebar from "../../components/admin/shared/admin-sidebar.vue";
+import contenttab from "../../components/admin/product/product-content.vue"
 
 export default {
   data: function () {
@@ -68,6 +70,7 @@ export default {
     "snake-bar": snackbar,
     "spinner": spinner,
     "bread-crumb": breadCrumb,
+    "product-list" : contenttab
   },
 };
 </script>

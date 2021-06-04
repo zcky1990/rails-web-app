@@ -82,6 +82,16 @@ class Admin::CategoryService
     end
   end
 
+  def get_category_dropdown_list
+    begin
+      data = Category.where({ is_active: true }).hint({ is_active: 1 }).order_by(updated_at: :desc)
+      datas = ActiveModel::Serializer::CollectionSerializer.new(data, serializer: SearchCategorySerializer)
+      return Api::SuccessListResult.new(data: datas, message: "success get category list")
+    rescue Exception => e
+      return Api::ErrorResult.new(error_code: 500, error_title: "Error get category list", error_message: e.message)
+    end
+  end
+
   private
 
   def get_table_data(page, type, datas, total_data, total_Page)

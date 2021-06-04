@@ -1,9 +1,10 @@
 class Admin::ProductController < Admin::ApplicationController
-  before_action :is_sign_in
+  #before_action :is_sign_in
   
   def initialize
     super
     @category_service = Admin::CategoryService.new
+    @product_service = Admin::ProductService.new
   end
 
   def product_list
@@ -33,6 +34,16 @@ class Admin::ProductController < Admin::ApplicationController
   def remove_category
     result = @category_service.delete_category(params, current_user)
     redirect_to product_category_admin_product_url, :flash => result
+  end
+
+  def get_category_list
+    response = @category_service.get_category_dropdown_list
+    render :json => response, :status => 200
+  end
+
+  def add_product
+    result = @product_service.add_product(params, current_user)
+    redirect_to product_list_admin_product_url, :flash => result
   end
 
   private

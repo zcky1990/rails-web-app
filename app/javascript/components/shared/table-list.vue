@@ -41,7 +41,7 @@
                 v-model="query"
                 class="input is-small"
                 type="text"
-                placeholder="Find something"
+                placeholder="type something here..."
               />
             </div>
             <div class="control">
@@ -58,7 +58,7 @@
       </div>
     </div>
     <div class="table-container">
-      <table class="table is-fullwidth is-hoverable is-narrow is-striped">
+      <table class="table is-fullwidth is-hoverable ">
         <thead>
           <tr>
             <th

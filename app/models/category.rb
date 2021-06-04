@@ -11,6 +11,7 @@ class Category
 
   belongs_to :created_by, :class_name => "User", optional: true
   belongs_to :moderated_by, :class_name => "User", optional: true
+  belongs_to :product, :class_name => "Product", optional: true
 
   index({ name: 1 })
   index({ is_active: 1 })
