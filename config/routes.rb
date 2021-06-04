@@ -25,6 +25,17 @@ Rails.application.routes.draw do
       end
     end
 
+    resource :product, only: [] do
+      collection do
+        get "/", to: "product#category", as: "product_index"
+        get "/product-category", to: "product#category", as: "product_category"
+        get "/product-list", to: "product#product_list", as: "product_list"
+        post "/add-category", to: "product#add_category", as: "add_new_category_data"
+        post "/remove-category", to: "product#remove_category", as: "remove_category_data"
+        post "/update-category", to: "product#update_category", as: "update_category_data"
+      end
+    end
+
     resource :user_admin, only: [] do
       collection do
         get "/", to: "user_admin#index", as: "user"
@@ -42,16 +53,6 @@ Rails.application.routes.draw do
         post "/remove", to: "user#remove_user", as: "remove_user_data"
         post "/update", to: "user#update_user", as: "update_user_data"
         get "/search", to: "user#search_user", as: "search_user_data"
-      end
-    end
-
-    resource :category, only: [] do
-      collection do
-        get "/", to: "category#index", as: "user"
-        post "/add", to: "category#add_category", as: "add_new_category_data"
-        post "/remove", to: "category#remove_category", as: "remove_category_data"
-        post "/update", to: "category#update_category", as: "update_category_data"
-        get "/search", to: "category#search_category", as: "search_category_data"
       end
     end
 

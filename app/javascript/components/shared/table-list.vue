@@ -1,5 +1,5 @@
 <template>
-  <div class="table-content-container">
+  <div class="table-content-container algolia-content">
     <div class="container">
       <div class="columns">
         <div class="column"></div>
@@ -41,7 +41,7 @@
                 v-model="query"
                 class="input is-small"
                 type="text"
-                placeholder="Find user"
+                placeholder="Find something"
               />
             </div>
             <div class="control">
@@ -58,7 +58,7 @@
       </div>
     </div>
     <div class="table-container">
-      <table class="table is-fullwidth is-hoverable is-striped">
+      <table class="table is-fullwidth is-hoverable is-narrow is-striped">
         <thead>
           <tr>
             <th

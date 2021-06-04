@@ -39,7 +39,8 @@ export default {
     };
   },
   created() {
-    var splitterUrl = document.URL.split("/");
+    var pathUrl = document.URL.split("?")[0];
+    var splitterUrl = pathUrl.split("/");
     this.breadCrumbLink = [];
     var urlData = "";
     for (var i = 3; i < splitterUrl.length; i++) {

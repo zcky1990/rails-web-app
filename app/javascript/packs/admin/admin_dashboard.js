@@ -1,6 +1,6 @@
 
 import Vue from 'vue/dist/vue.js';
-import AppPageLayout from '../../layout/admin/article/dashboard-page-layout.vue';
+import AppPageLayout from '../../layout/admin/product-category-page-layout.vue';
 import Mixin from '../../plugins/mixin.js';
 
 // add mixin or global function

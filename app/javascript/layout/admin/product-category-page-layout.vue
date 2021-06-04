@@ -4,12 +4,16 @@
       <snake-bar ref="snackbar"></snake-bar>
       <spinner ref="spinner"></spinner>
     </div>
-    <div class="container">
-      <div class="container">
-        {{ message }}
+
+    <div class="columns">
+      <div class="column is-3">
+        <side-bar classname="product-category"></side-bar>
       </div>
-      <div class="container">
-        <content-tab ref="contentTab"></content-tab>
+      <div class="column is-9 right-content">
+        <bread-crumb :position="'center'"></bread-crumb>
+        <div class="content">
+          <category ref="contentTab"></category>
+        </div>
       </div>
     </div>
   </section>
@@ -17,14 +21,15 @@
 
 
 <script>
-import snackbar from "../../../components/shared/snackbar.vue";
-import spinner from "../../../components/shared/spinner.vue";
-import contentTab from "../../../components/admin/article/article-content.vue";
+import snackbar from "../../components/shared/snackbar.vue";
+import spinner from "../../components/shared/spinner.vue";
+import breadCrumb from "../../components/admin/shared/admin-breadcrumb.vue";
+import sidebar from "../../components/admin/shared/admin-sidebar.vue";
+import contenttab from "../../components/admin/category/category-content.vue"
 
 export default {
   data: function () {
     return {
-      message: "",
     };
   },
   props: {
@@ -56,15 +61,23 @@ export default {
     ) {
       this.$refs.contentTab.setData(this._datas);
     }
-    if (this.notif !== null) {
+    if (this.notif !== null && this.notif !== undefined) {
       this.$refs.snackbar.showSnackBar(this.notif.message, this.notif.status);
     }
   },
   components: {
-    "content-tab": contentTab,
+    "side-bar": sidebar,
     "snake-bar": snackbar,
     "spinner": spinner,
+    "bread-crumb": breadCrumb,
+    "category" : contenttab
   },
 };
 </script>
+
+<style scoped>
+.section {
+  background: #ECF0F3;
+}
+</style>
 

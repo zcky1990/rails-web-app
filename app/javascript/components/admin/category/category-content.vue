@@ -1,14 +1,13 @@
 <template>
   <div id="panel tabs-with-content">
-    <bread-crumb :position="'center'"></bread-crumb>
     <div class="tabs">
       <div class="menu" v-on:click="tabclick">
         <div class="menu-icon">
-          <span class="has-text-primary">Category</span>
+          <span class="subtitle is-4 algolia-lvl1">Product Category</span>
         </div>
       </div>
     </div>
-    <div class="tab-content-container">
+    <div class="tab-content-container algolia-content">
       <section class="tab-content admin tab-active">
         <category-form ref="categoryForm"></category-form>
         <table-list
@@ -26,7 +25,6 @@
 <script>
 import tableList from "./../../shared/table-list.vue";
 import Form from "./category-form.vue";
-import breadCrumb from "./../../shared/admin-breadcrumb.vue";
 
 export default {
   data: function () {
@@ -62,11 +60,11 @@ export default {
     });
 
     this.onEmitEvent("CATEGORY_REMOVE", function (data) {
-      self.submitForm("/admin/category/remove", data.data, "POST");
+      self.submitForm("/admin/product/remove-category", data.data, "POST");
     });
 
     this.onEmitEvent("CATEGORY_SEARCH", function (data) {
-      self.submitForm("/admin/category/search", data, "get");
+      self.submitForm("/admin/product/product-category", data, "get");
     });
 
     this.onEmitEvent("CATEGORY_ADD", function (data) {
@@ -76,18 +74,18 @@ export default {
     this.onEmitEvent("ON_ADD_CATEGORY", function (data) {
       self.$refs.categoryForm.hideForm();
       self.showSpinner();
-      self.submitForm("/admin/category/add", data, "POST");
+      self.submitForm("/admin/product/add-category", data, "POST");
     });
 
     this.onEmitEvent("ON_EDIT_CATEGORY", function (data) {
       self.$refs.categoryForm.hideForm();
       self.showSpinner();
-      self.submitForm("/admin/category/update", data, "POST");
+      self.submitForm("/admin/product/update-category", data, "POST");
     });
   },
   methods: {
     tabclick: function () {
-      this.submitForm("/admin/category", {}, "get");
+      this.submitForm("/admin/product/product-category", {}, "get");
     },
     setData: function (data) {
       console.log(data);
@@ -104,7 +102,6 @@ export default {
   components: {
     "table-list": tableList,
     "category-form": Form,
-    "bread-crumb": breadCrumb,
   },
 };
 </script>
