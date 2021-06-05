@@ -16,6 +16,8 @@
           :options="options"
           :paginationOptions="paginationOptions"
           :keyEvent="keyEvent"
+          :searchUrl="searchUrl"
+          :removeUrl="removeUrl"
         ></table-list>
       </section>
     </div>
@@ -57,6 +59,8 @@ export default {
         page: 1,
       },
       keyEvent: "PRODUCT",
+      searchUrl: "/admin/product/product-list",
+      removeUrl: "/admin/product/remove-product-list",
     };
   },
   created() {
@@ -73,18 +77,10 @@ export default {
     this.onEmitEvent("PRODUCT_EDIT", function (data) {
       self.$refs.productForm.showForm(data.data, "edit", "Edit Product Data");
     });
-
-    this.onEmitEvent("PRODUCT_REMOVE", function (data) {
-      self.submitForm("/admin/product/remove-product-list", data.data, "POST");
-    });
-
-    this.onEmitEvent("PRODUCT_SEARCH", function (data) {
-      self.submitForm("/admin/product/product-list", data, "get");
-    });
   },
   methods: {
     tabclick: function () {
-      this.submitForm("/admin/product/product-list", {}, "get");
+      window.location = "/admin/product/product-list";
     },
     setData: function (data) {
       this.table = data.tabelData;

@@ -16,6 +16,8 @@
           :options="options"
           :paginationOptions="paginationOptions"
           :keyEvent="keyEvent"
+          :searchUrl="searchUrl"
+          :removeUrl="removeUrl"
         ></table-list>
       </section>
     </div>
@@ -46,6 +48,8 @@ export default {
         page: 1,
       },
       keyEvent: "CATEGORY",
+      searchUrl: "/admin/product/product-category",
+      removeUrl: "/admin/product/remove-product-category"
     };
   },
   created() {
@@ -56,14 +60,6 @@ export default {
 
     this.onEmitEvent("CATEGORY_EDIT", function (data) {
       self.$refs.categoryForm.showForm(data.data, "edit", "Edit Category Data");
-    });
-
-    this.onEmitEvent("CATEGORY_REMOVE", function (data) {
-      self.submitForm("/admin/product/remove-product-category", data.data, "POST");
-    });
-
-    this.onEmitEvent("CATEGORY_SEARCH", function (data) {
-      self.submitForm("/admin/product/product-category", data, "get");
     });
 
     this.onEmitEvent("CATEGORY_ADD", function (data) {
@@ -84,7 +80,7 @@ export default {
   },
   methods: {
     tabclick: function () {
-      this.submitForm("/admin/product/product-category", {}, "get");
+      window.location = "/admin/product/product-category";
     },
     setData: function (data) {
       console.log(data);

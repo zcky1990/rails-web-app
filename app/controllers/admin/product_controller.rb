@@ -38,6 +38,7 @@ class Admin::ProductController < Admin::ApplicationController
   end
 
   def remove_category
+    puts params
     result = @category_service.delete_category(params, current_user)
     redirect_to product_category_admin_product_url, :flash => result
   end

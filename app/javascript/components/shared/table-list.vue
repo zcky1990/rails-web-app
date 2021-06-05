@@ -19,12 +19,18 @@
         <div class="column"></div>
         <div class="column">
           <div class="field has-addons">
+            <form class="control"
+            id="serachbar"
+            @submit="onSearch"
+            :action="searchUrl"
+            method="get"
+            >
             <div class="control">
               <span
                 class="select is-small"
                 :class="isShowError ? 'is-danger' : ''"
               >
-                <select v-model="typeSearch">
+                <select v-model="typeSearch" name="typeSearch">
                   <option disabled value="">Please select one</option>
                   <option
                     v-for="(value, index) in options.searchType"
@@ -41,14 +47,16 @@
                 v-model="query"
                 class="input is-small"
                 type="text"
+                name="query"
                 placeholder="type something here..."
               />
             </div>
             <div class="control">
-              <a v-on:click="onSearch" class="button is-primary is-small">
+              <button class="button is-primary is-small">
                 Search
-              </a>
+              </button>
             </div>
+            </form>
           </div>
           <p v-if="isShowError == true" class="help is-danger">
             {{ searchMessageError }}
@@ -102,9 +110,16 @@
                   <abbr title="Edit" class="EDIT" v-on:click="onClick">
                     <i class="ml-2 fas fa-edit"></i
                   ></abbr>
-                  <abbr title="Delete" class="REMOVE" v-on:click="onClick">
-                    <i class="ml-2 fas fa-trash"></i
-                  ></abbr>
+                   <form
+                    id="removeForm"
+                    :action="removeUrl"
+                    method="post">
+                    <input type="hidden" name="authenticity_token" :value="csrf" />
+                    <input :id="`removeId${index}`" type="hidden" name="id" value="" />
+                    <abbr title="Delete" class="REMOVE" v-on:click="onClick(index, $event)">
+                      <i class="ml-2 fas fa-trash"></i
+                    ></abbr>
+                   </form>
                 </span>
               </div>
             </td>
@@ -136,6 +151,8 @@ export default {
     options: Object,
     paginationOptions: Object,
     keyEvent: String,
+    searchUrl: String,
+    removeUrl: String
   },
   data: function () {
     return {
@@ -143,6 +160,9 @@ export default {
       typeSearch: "",
       searchMessageError: "Please select search category first",
       isShowError: false,
+      csrf: document
+        .querySelector('meta[name="csrf-token"]')
+        .getAttribute("content"),
     };
   },
   methods: {
@@ -165,29 +185,15 @@ export default {
     getData: function (index) {
       return this.dataTable[index];
     },
-    onClick: function (event) {
-      let id = event.currentTarget.parentElement.id;
-      let type = event.currentTarget.classList[0];
-      let eventKey = this.keyEvent + "_" + type;
-      let data = this.getData(id);
-      let eventData = {
-        data: data,
-        type: type,
-        index: parseInt(id),
-      };
-      this.emitEvent(eventKey, eventData);
+    onClick: function (selectedIndex,event) {
+      let value = this.getData(selectedIndex).id
+      document.querySelector('#removeId'+selectedIndex).value = value
+      event.currentTarget.parentElement.submit();
     },
     onSearch: function () {
       if (this.typeSearch === "") {
         this.isShowError = true;
-      } else {
-        let eventKey = this.keyEvent + "_SEARCH";
-        let eventData = {
-          query: this.query,
-          typeSearch: this.typeSearch,
-          type: this.options.type,
-        };
-        this.emitEvent(eventKey, eventData);
+        return false
       }
     },
     onAddNewUser: function () {
@@ -204,5 +210,10 @@ export default {
 <style scoped>
 .padded {
   padding: 25px;
+}
+
+#serachbar{
+  display: flex;
+  width: 100%;
 }
 </style>
