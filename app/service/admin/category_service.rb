@@ -1,6 +1,6 @@
 class Admin::CategoryService
   def get_category_list(page)
-    data = Category.where({ is_active: true }).hint({ is_active: 1 }).order_by(updated_at: :desc).page(page).per(25)
+    data = Category.where({}).order_by(updated_at: :desc).page(page).per(25)
     total_data = data.total_count
     total_pages = data.total_pages
     datas = ActiveModel::Serializer::CollectionSerializer.new(data, serializer: CategorySerializer)
@@ -69,7 +69,7 @@ class Admin::CategoryService
     begin
       category = Category.find(params[:id])
       if category.present?
-        if category.update_attributes({ is_active: false, moderated_by: current_user.id.to_s })
+        if category.destroy
           return { status: "success", message: "Success delete Category" }
         else
           return { status: "failed", message: category.errors.to_s }

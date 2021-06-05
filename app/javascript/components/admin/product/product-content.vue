@@ -3,7 +3,7 @@
     <div class="tabs">
       <div class="menu" v-on:click="tabclick">
         <div class="menu-icon">
-           <span class="subtitle is-4 algolia-lvl1">Product List</span>
+          <span class="subtitle is-4 algolia-lvl1">Product List</span>
         </div>
       </div>
     </div>
@@ -30,15 +30,26 @@ export default {
   data: function () {
     return {
       table: [],
-      headers: ["Id", "Product Name", "Category", "Price", "Stock", "Moderated By", "Updated Date"],
+      headers: [
+        "Id",
+        "Product Name",
+        "Product Category Id",
+        "Product Category",
+        "Price",
+        "Stock",
+        "Status",
+        "Is Active",
+        "Moderated By",
+        "Updated Date",
+      ],
       options: {
         showPaginate: true,
         isShowActionColumn: true,
         type: "product",
         maxRow: 10,
         tableListUrl: "",
-        hiddenColumn: [],
-        searchType: ["id", "name"],
+        hiddenColumn: [2, 7],
+        searchType: ["id", "name", "product_category", "price"],
       },
       paginationOptions: {
         totalPage: 1,
@@ -69,19 +80,6 @@ export default {
 
     this.onEmitEvent("PRODUCT_SEARCH", function (data) {
       self.submitForm("/admin/product/product-list", data, "get");
-    });
-
-    this.onEmitEvent("ON_ADD_PRODUCT", function (data) {
-      self.$refs.productForm.hideForm();
-      self.showSpinner();
-      debugger
-      self.submitForm("/admin/product/add-product-list", data, "POST");
-    });
-
-    this.onEmitEvent("ON_EDIT_PRODUCT", function (data) {
-      self.$refs.productForm.hideForm();
-      self.showSpinner();
-      self.submitForm("/admin/product/update-product-list", data, "POST");
     });
   },
   methods: {

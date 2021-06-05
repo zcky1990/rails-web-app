@@ -35,6 +35,8 @@ Rails.application.routes.draw do
         post "/update-product-category", to: "product#update_category", as: "update_category_data"
         get "/get-category-list-dropdown", to: "product#get_category_list", as: "get_category_list"
         post "/add-product-list", to: "product#add_product", as: "add_new_product_data"
+        post "/update-product-list", to: "product#update_product", as: "update_product_data"
+        post "/remove-product-list", to: "product#remove_product", as: "remove_product_data"
       end
     end
 

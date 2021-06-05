@@ -1,38 +1,39 @@
 class Admin::ProductService
-  def get_category_list(page)
-    data = Category.where({ is_active: true }).hint({ is_active: 1 }).order_by(updated_at: :desc).page(page).per(25)
+  def get_product_list(page)
+    data = Product.where({}).order_by(updated_at: :desc).page(page).per(25)
     total_data = data.total_count
     total_pages = data.total_pages
-    datas = ActiveModel::Serializer::CollectionSerializer.new(data, serializer: CategorySerializer)
-    return get_table_data(page, "category", datas, total_data, total_pages)
+    datas = ActiveModel::Serializer::CollectionSerializer.new(data, serializer: ProductSerializer)
+    return get_table_data(page, "product", datas, total_data, total_pages)
   end
 
-  def search_category(params)
+  def search_product(params)
     search_query = get_query_search(params)
-    data = Category.where(search_query).order_by(updated_at: :desc)
+    data = Product.where(search_query).order_by(updated_at: :desc)
     total_data = data.size
     total_pages = 1
     page = 1
-    datas = ActiveModel::Serializer::CollectionSerializer.new(data, serializer: CategorySerializer)
-    return get_table_data(page, "category", datas, total_data, total_pages)
+    datas = ActiveModel::Serializer::CollectionSerializer.new(data, serializer: ProductSerializer)
+    return get_table_data(page, "product", datas, total_data, total_pages)
   end
 
   def add_product(params, current_user)
     begin
       product = Product.find_by_name(params[:name])
       if !product.present?
-        category = Category.find(params[:category_id])
+        category = Category.find(params[:product_category_id])
+        category_data = category.get_data_category
+        product_category = ProductCategory.new(category_data)
         data = {
           name: params[:name],
           stock: params[:stock],
           price: params[:price],
-          product_category_id: category,
           created_by: current_user,
-          moderated_by: current_user
+          moderated_by: current_user,
+          is_active: true,
+          product_category: product_category,
         }
-        binding.pry
         new_product = Product.new(data)
-       
         if new_product.save!
           return { status: "success", message: "Success Create New Product" }
         else
@@ -46,6 +47,50 @@ class Admin::ProductService
     end
   end
 
+  def update_product(params, current_user)
+    begin
+      product = Product.find(params[:id])
+      if product.present?
+        category = Category.find(params[:product_category_id])
+        category_data = category.get_data_category
+        product_category = ProductCategory.new(category_data)
+        data = {
+          name: params[:name],
+          stock: params[:stock],
+          price: params[:price],
+          product_category: product_category,
+          moderated_by: current_user,
+          is_active: params[:is_active],
+        }
+        if product.update_attributes(data)
+          return { status: "success", message: "Success Update Product" }
+        else
+          return { status: "failed", message: product.errors.to_s }
+        end
+      else
+        return { status: "failed", message: "Product not found" }
+      end
+    rescue Exception => e
+      return { status: "failed", message: e.message }
+    end
+  end
+
+  def delete_product(params, current_user)
+    begin
+      product = Product.find(params[:id])
+      if product.present?
+        if product.destroy
+          return { status: "success", message: "Success delete Product" }
+        else
+          return { status: "failed", message: product.errors.to_s }
+        end
+      else
+        return { status: "failed", message: "Product not found" }
+      end
+    rescue Exception => e
+      return { status: "failed", message: e.message }
+    end
+  end
 
   private
 
@@ -69,8 +114,10 @@ class Admin::ProductService
       search_query[:id] = query
     elsif type_search == "name"
       search_query[:name] = query
-    elsif type_search == "status"
-      search_query[:is_active] = query
+    elsif type_search == "product_category"
+      search_query["product_category.name"] = query
+    elsif type_search == "price"
+      search_query[:price] = query
     end
     return search_query
   end

@@ -12,7 +12,15 @@
           ></button>
         </header>
         <section class="modal-card-body">
-          <form class="form-horizontal">
+          <form
+            class="form-horizontal"
+            id="app"
+            @submit="onSubmit"
+            :action="getUrlSubmit"
+            method="post"
+          >
+            <input type="hidden" name="authenticity_token" :value="csrf" />
+            <input class="input" v-model="product.id" name="id" type="hidden" />
             <div class="field is-horizontal">
               <div class="field-label is-normal">
                 <label class="label">Product Name</label>
@@ -25,6 +33,7 @@
                       v-model="product.name"
                       :class="error.hasError ? 'is-danger' : ''"
                       type="text"
+                      name="name"
                       placeholder="Product Name"
                     />
                   </div>
@@ -46,6 +55,7 @@
                       class="input"
                       v-model="product.stock"
                       :class="error.hasError ? 'is-danger' : ''"
+                      name="stock"
                       type="number"
                       placeholder="Stock Product"
                     />
@@ -68,7 +78,10 @@
                       class="select"
                       :class="error.hasError ? 'is-danger' : ''"
                     >
-                      <select v-model="product.category_id">
+                      <select
+                        v-model="product.product_category_id"
+                        name="product_category_id"
+                      >
                         <option
                           v-for="option in dropdownList"
                           v-bind:value="option.id"
@@ -99,6 +112,7 @@
                       v-model="product.price"
                       :class="error.hasError ? 'is-danger' : ''"
                       type="number"
+                      name="price"
                       placeholder="Product Price"
                     />
                   </div>
@@ -108,14 +122,42 @@
                 </div>
               </div>
             </div>
+
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Status</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control">
+                    <div
+                      class="select"
+                      :class="error.isActiveError ? 'is-danger' : ''"
+                    >
+                      <select v-model="product.is_active" name="is_active">
+                        <option
+                          v-for="option in options"
+                          v-bind:value="option.value"
+                          v-bind:key="option.text"
+                          :disabled="option.value == ''"
+                        >
+                          {{ option.text }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <p v-if="error.isActiveError == true" class="help is-danger">
+                    {{ error.messageError }}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <footer v-if="showButtonSubmit" class="modal-card-foot">
+              <button class="button is-primary">Submit</button>
+              <button class="button" v-on:click="onClickCancel">Cancel</button>
+            </footer>
           </form>
         </section>
-        <footer v-if="showButtonSubmit" class="modal-card-foot">
-          <button class="button is-primary" v-on:click="onSubmit">
-            Submit
-          </button>
-          <button class="button" v-on:click="onClickCancel">Cancel</button>
-        </footer>
       </div>
       <div class="is-desktop is-centered modal-card"></div>
     </div>
@@ -142,6 +184,15 @@ export default {
       dropdownUrl: "/admin/product/get-category-list-dropdown",
       axios: "",
       dropdownList: [],
+      options: [
+        { text: "Active", value: "true" },
+        { text: "InActive", value: "false" },
+      ],
+      addUrl: "/admin/product/add-product-list",
+      updateUrl: "/admin/product/update-product-list",
+      csrf: document
+        .querySelector('meta[name="csrf-token"]')
+        .getAttribute("content"),
     };
   },
   created() {
@@ -153,6 +204,13 @@ export default {
         return false;
       }
       return true;
+    },
+    getUrlSubmit() {
+      if (this.type == "edit") {
+        return this.updateUrl;
+      } else {
+        return this.addUrl;
+      }
     },
     isCategoryNotSelected() {
       if (this.product.category == "" || this.product.category === undefined) {
@@ -194,14 +252,14 @@ export default {
     onClickCancel: function () {
       this.hideForm();
     },
-    onSubmit: function (event) {
+    onSubmit: function (e) {
       if (this.type == "edit") {
-        if (!this.isFailedValidateCategoryData()) {
-          this.emitEvent("ON_EDIT_PRODUCT", this.product);
+        if (this.isFailedValidateCategoryData()) {
+          e.preventDefault();
         }
       } else {
-        if (!this.isFailedValidateCategoryData()) {
-          this.emitEvent("ON_ADD_PRODUCT", this.product);
+        if (this.isFailedValidateCategoryData()) {
+          e.preventDefault();
         }
       }
     },
@@ -224,7 +282,10 @@ export default {
         this.error.messageError = "Stock is required";
         this.error.hasError = true;
         error = true;
-      } else if (!this.product.category_id || 0 === this.product.category_id.length) {
+      } else if (
+        !this.product.product_category_id ||
+        0 === this.product.product_category_id.length
+      ) {
         this.error.messageError = "Please select Category";
         this.error.hasError = true;
         error = true;
