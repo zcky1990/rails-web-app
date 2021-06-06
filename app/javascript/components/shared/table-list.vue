@@ -116,7 +116,7 @@
                     method="post">
                     <input type="hidden" name="authenticity_token" :value="csrf" />
                     <input :id="`removeId${index}`" type="hidden" name="id" value="" />
-                    <abbr title="Delete" class="REMOVE" v-on:click="onClick(index, $event)">
+                    <abbr title="Delete" class="REMOVE" v-on:click="onClickDelete(index, $event)">
                       <i class="ml-2 fas fa-trash"></i
                     ></abbr>
                    </form>
@@ -156,7 +156,7 @@ export default {
   },
   data: function () {
     return {
-      query: "",
+      query: "", 
       typeSearch: "",
       searchMessageError: "Please select search category first",
       isShowError: false,
@@ -185,7 +185,19 @@ export default {
     getData: function (index) {
       return this.dataTable[index];
     },
-    onClick: function (selectedIndex,event) {
+    onClick: function (event) {
+      let id = event.currentTarget.parentElement.id;
+      let type = event.currentTarget.classList[0];
+      let eventKey = this.keyEvent + "_" + type;
+      let data = this.getData(id);
+      let eventData = {
+        data: data,
+        type: type,
+        index: parseInt(id),
+      };
+      this.emitEvent(eventKey, eventData);
+    },
+    onClickDelete: function (selectedIndex,event) {
       let value = this.getData(selectedIndex).id
       document.querySelector('#removeId'+selectedIndex).value = value
       event.currentTarget.parentElement.submit();
