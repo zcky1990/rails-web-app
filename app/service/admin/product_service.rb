@@ -21,18 +21,32 @@ class Admin::ProductService
     begin
       product = Product.find_by_name(params[:name])
       if !product.present?
-        category = Category.find(params[:product_category_id])
-        category_data = category.get_data_category
-        product_category = ProductCategory.new(category_data)
         data = {
           name: params[:name],
           stock: params[:stock],
-          price: params[:price],
-          created_by: current_user,
           moderated_by: current_user,
-          is_active: true,
-          product_category: product_category,
+          created_by: current_user,
+          is_active: params[:is_active],
         }
+        if params[:product_category_id].present?
+          category = Category.find(params[:product_category_id])
+          category_data = category.get_data_category
+          product_category = ProductCategory.new(category_data)
+          data[:product_category] = product_category
+        end
+        if params[:price].present?
+          new_prices = []
+          prices = params[:price]
+          prices.each do|a|
+            new_price_params = {
+              price_type_id: a[:price_type_id],
+              price: a[:price]
+            }
+            new_price = Price.new(new_price_params)
+            new_prices << new_price
+          end
+          data[:price] = new_prices
+        end
         new_product = Product.new(data)
         if new_product.save!
           return { status: "success", message: "Success Create New Product" }
@@ -51,17 +65,32 @@ class Admin::ProductService
     begin
       product = Product.find(params[:id])
       if product.present?
-        category = Category.find(params[:product_category_id])
-        category_data = category.get_data_category
-        product_category = ProductCategory.new(category_data)
         data = {
           name: params[:name],
           stock: params[:stock],
-          price: params[:price],
-          product_category: product_category,
           moderated_by: current_user,
           is_active: params[:is_active],
         }
+        if params[:product_category_id].present?
+          category = Category.find(params[:product_category_id])
+          category_data = category.get_data_category
+          product_category = ProductCategory.new(category_data)
+          data[:product_category] = product_category
+        end
+        if params[:price].present?
+          new_prices = []
+          prices = params[:price]
+          prices.each do|a|
+            new_price_params = {
+              price_type_id: a[:price_type_id],
+              price: a[:price]
+            }
+            new_price = Price.new(new_price_params)
+            new_prices << new_price
+          end
+          data[:price] = new_prices
+        end
+
         if product.update_attributes(data)
           return { status: "success", message: "Success Update Product" }
         else

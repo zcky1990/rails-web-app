@@ -3,6 +3,6 @@ class Price
     include Mongoid::Timestamps
     
     field :price, type: String
-    has_one :price_type, :class_name => "PriceType"   
+    belongs_to :price_type, :class_name => "PriceType"   
 
   end

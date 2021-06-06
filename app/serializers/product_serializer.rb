@@ -31,6 +31,20 @@ class ProductSerializer < ActiveModel::Serializer
     end
   end
 
+  def price
+    new_prices = []
+    prices = object.price
+    prices.each do |price|
+      data = {
+        price_type_id: price.price_type.id.to_s,
+        price_type_name: price.price_type.name,
+        price: price.price
+      }
+      new_prices << data
+    end
+    return new_prices
+  end
+
   def product_category_name
     if object.product_category.present?
       object.product_category.name
