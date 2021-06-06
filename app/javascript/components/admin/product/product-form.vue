@@ -107,18 +107,68 @@
               <div class="field-body">
                 <div class="field">
                   <div class="control">
-                    <input
-                      class="input"
-                      v-model="product.price"
-                      :class="error.hasError ? 'is-danger' : ''"
-                      type="number"
-                      name="price"
-                      placeholder="Product Price"
-                    />
+                    <div class="field has-addons">
+                      <p class="control">
+                        <span class="select">
+                          <select ref="dropdownType">
+                            <option
+                              v-for="option in priceTypeDropdownList"
+                              v-bind:value="option.id + '-' + option.name"
+                              v-bind:key="option.id"
+                              :disabled="option.value == ''"
+                            >
+                              {{ option.name }}
+                            </option>
+                          </select>
+                        </span>
+                      </p>
+                      <p class="control">
+                        <input
+                          ref="priceInput"
+                          class="input"
+                          type="number"
+                          placeholder="price"
+                        />
+                      </p>
+                      <p class="control">
+                        <a class="button" v-on:click="addPrice"> Add </a>
+                      </p>
+                    </div>
                   </div>
-                  <p v-if="error.hasError == true" class="help is-danger">
-                    {{ error.messageError }}
-                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="field is-horizontal">
+              <div class="field-label is-normal"></div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control">
+                    <div
+                      class="field has-addons"
+                      v-for="(pricedData, index) in product.price"
+                      :key="`price-data-${index}`"
+                    >
+                      <p class="control">
+                        <a disabled class="button">
+                          {{ pricedData.price_type_name }}
+                        </a>
+                      </p>
+                      <p class="control">
+                        <input
+                          disabled
+                          v-model="pricedData.price"
+                          class="input"
+                          type="text"
+                        />
+                      </p>
+                      <p class="control">
+                        <a class="button" v-on:click="removePrice(index)"
+                          >remove</a
+                        >
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -188,6 +238,8 @@ export default {
         { text: "Active", value: "true" },
         { text: "InActive", value: "false" },
       ],
+      priceTypeDropDownUrl: "/admin/product/get-price-type-list-dropdown",
+      priceTypeDropdownList: [],
       addUrl: "/admin/product/add-product-list",
       updateUrl: "/admin/product/update-product-list",
       csrf: document
@@ -221,7 +273,6 @@ export default {
   },
   methods: {
     getDropdown: function () {
-      console.log("call api");
       var self = this;
       let headers = {};
       headers["Authorization"] = "Bearer " + this.token;
@@ -230,7 +281,21 @@ export default {
         .get(self.dropdownUrl, { headers })
         .then((response) => {
           self.dropdownList = response.data.data;
-          self.isDropdownShow = true;
+        })
+        .catch((e) => {
+          self.messageError = e.message;
+          self.showMessage = true;
+        });
+    },
+    getPriceTypeDropdown: function () {
+      var self = this;
+      let headers = {};
+      headers["Authorization"] = "Bearer " + this.token;
+      headers["Content-Type"] = "application/json";
+      this.axios
+        .get(self.priceTypeDropDownUrl, { headers })
+        .then((response) => {
+          self.priceTypeDropdownList = response.data.data;
         })
         .catch((e) => {
           self.messageError = e.message;
@@ -242,6 +307,7 @@ export default {
       this.type = type;
       this.title = title;
       this.getDropdown();
+      this.getPriceTypeDropdown();
       this.isShow = true;
     },
     hideForm() {
@@ -293,6 +359,29 @@ export default {
         this.resetError();
       }
       return error;
+    },
+    addPrice() {
+      let dorpdownValue = this.$refs.dropdownType.value;
+      let splitData = dorpdownValue.split("-");
+      let priceValue = this.$refs.priceInput.value;
+      let priceId = splitData[0];
+      let priceName = splitData[1];
+      if (priceId && priceName && priceValue) {
+        var data = {
+          price_type_id: priceId,
+          price_type_name: priceName,
+          price: priceValue,
+        };
+        if (this.product.price != undefined) {
+          this.product.price.push(data);
+          this.$refs.dropdownType.value = "";
+          this.$refs.priceInput.value = "";
+        }
+      }
+    },
+    removePrice(index) {
+      console.log(index);
+      this.product.price.splice(index, 1);
     },
   },
 };

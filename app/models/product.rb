@@ -6,10 +6,10 @@ class Product
   
     field :name, type: String
     field :stock, type: Integer
-    field :price, type: Integer
     field :is_active, type: Boolean
 
     embeds_one :product_category, :class_name => "ProductCategory", inverse_of: :product
+    embeds_many :price, :class_name => "Price"
     belongs_to :created_by, :class_name => "User", optional: true
     belongs_to :moderated_by, :class_name => "User", optional: true
 

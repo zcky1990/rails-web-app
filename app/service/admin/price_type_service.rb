@@ -82,6 +82,16 @@ class Admin::PriceTypeService
     end
   end
 
+  def get_price_type_dropdown_list
+    begin
+      data = PriceType.where({ is_active: true }).hint({ is_active: 1 }).order_by(updated_at: :desc)
+      datas = ActiveModel::Serializer::CollectionSerializer.new(data, serializer: PriceTypeSerializer)
+      return Api::SuccessListResult.new(data: datas, message: "success get price type list")
+    rescue Exception => e
+      return Api::ErrorResult.new(error_code: 500, error_title: "Error get price type list", error_message: e.message)
+    end
+  end
+
   private
 
   def get_table_data(page, type, datas, total_data, total_Page)

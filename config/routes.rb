@@ -41,6 +41,7 @@ Rails.application.routes.draw do
         post "/add-price-type-list", to: "product#add_price_type", as: "add_new_price_type"
         post "/update-price-type-list", to: "product#update_price_type", as: "update_price_type_data"
         post "/remove-price-type-list", to: "product#remove_price_type", as: "remove_price_type_data"
+        get "/get-price-type-list-dropdown", to: "product#get_price_type_list", as: "get_price_type_dropdown_list"
       end
     end
 

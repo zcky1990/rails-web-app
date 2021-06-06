@@ -88,6 +88,11 @@ class Admin::ProductController < Admin::ApplicationController
     redirect_to price_type_admin_product_url, :flash => result
   end
 
+  def get_price_type_list
+    response = @price_type_service.get_price_type_dropdown_list
+    render :json => response, :status => 200
+  end
+
   private
 
   def get_page(params)

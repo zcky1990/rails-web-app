@@ -12,6 +12,7 @@ class PriceType
   belongs_to :moderated_by, :class_name => "User", optional: true
 
   index({ name: 1 })
+  index({ is_active: 1 })
 
   def self.find_by_name(name)
     results = self.find_by(name: name)
