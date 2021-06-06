@@ -4,7 +4,7 @@ class Admin::PriceTypeService
     total_data = data.total_count
     total_pages = data.total_pages
     datas = ActiveModel::Serializer::CollectionSerializer.new(data, serializer: PriceTypeSerializer)
-    return get_table_data(page, "type", datas, total_data, total_pages)
+    return get_table_data(page, "price_type", datas, total_data, total_pages)
   end
 
   def search_price_type(params)
@@ -14,7 +14,7 @@ class Admin::PriceTypeService
     total_pages = 1
     page = 1
     datas = ActiveModel::Serializer::CollectionSerializer.new(data, serializer: PriceTypeSerializer)
-    return get_table_data(page, "type", datas, total_data, total_pages)
+    return get_table_data(page, "price_type", datas, total_data, total_pages)
   end
 
   def add_price_type(params, current_user)
@@ -68,7 +68,6 @@ class Admin::PriceTypeService
   def delete_price_type(params, current_user)
     begin
       price_type = PriceType.find(params[:id])
-      binding.pry
       if price_type.present?
         if price_type.destroy
           return { status: "success", message: "Success delete PriceType" }

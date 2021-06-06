@@ -19,43 +19,42 @@
         <div class="column"></div>
         <div class="column">
           <div class="field has-addons">
-            <form class="control"
-            id="serachbar"
-            @submit="onSearch"
-            :action="searchUrl"
-            method="get"
+            <form
+              class="control"
+              id="serachbar"
+              @submit="onSearch"
+              :action="searchUrl"
+              method="get"
             >
-            <div class="control">
-              <span
-                class="select is-small"
-                :class="isShowError ? 'is-danger' : ''"
-              >
-                <select v-model="typeSearch" name="typeSearch">
-                  <option disabled value="">Please select one</option>
-                  <option
-                    v-for="(value, index) in options.searchType"
-                    :key="`data-${index}`"
-                  >
-                    {{ value }}
-                  </option>
-                </select>
-              </span>
-            </div>
-            <div class="control is-expanded">
-              <input
-                :class="isShowError ? 'is-danger' : ''"
-                v-model="query"
-                class="input is-small"
-                type="text"
-                name="query"
-                placeholder="type something here..."
-              />
-            </div>
-            <div class="control">
-              <button class="button is-primary is-small">
-                Search
-              </button>
-            </div>
+              <div class="control">
+                <span
+                  class="select is-small"
+                  :class="isShowError ? 'is-danger' : ''"
+                >
+                  <select v-model="typeSearch" name="typeSearch">
+                    <option disabled value="">Please select one</option>
+                    <option
+                      v-for="(value, index) in options.searchType"
+                      :key="`data-${index}`"
+                    >
+                      {{ value }}
+                    </option>
+                  </select>
+                </span>
+              </div>
+              <div class="control is-expanded">
+                <input
+                  :class="isShowError ? 'is-danger' : ''"
+                  v-model="query"
+                  class="input is-small"
+                  type="text"
+                  name="query"
+                  placeholder="type something here..."
+                />
+              </div>
+              <div class="control">
+                <button class="button is-primary is-small">Search</button>
+              </div>
             </form>
           </div>
           <p v-if="isShowError == true" class="help is-danger">
@@ -66,7 +65,7 @@
       </div>
     </div>
     <div class="table-container">
-      <table class="table is-fullwidth is-hoverable ">
+      <table class="table is-fullwidth is-hoverable">
         <thead>
           <tr>
             <th
@@ -110,16 +109,26 @@
                   <abbr title="Edit" class="EDIT" v-on:click="onClick">
                     <i class="ml-2 fas fa-edit"></i
                   ></abbr>
-                   <form
-                    id="removeForm"
-                    :action="removeUrl"
-                    method="post">
-                    <input type="hidden" name="authenticity_token" :value="csrf" />
-                    <input :id="`removeId${index}`" type="hidden" name="id" value="" />
-                    <abbr title="Delete" class="REMOVE" v-on:click="onClickDelete(index, $event)">
+                  <form id="removeForm" :action="removeUrl" method="post">
+                    <input
+                      type="hidden"
+                      name="authenticity_token"
+                      :value="csrf"
+                    />
+                    <input
+                      :id="`removeId${index}`"
+                      type="hidden"
+                      name="id"
+                      value=""
+                    />
+                    <abbr
+                      title="Delete"
+                      class="REMOVE"
+                      v-on:click="onClickDelete(index, $event)"
+                    >
                       <i class="ml-2 fas fa-trash"></i
                     ></abbr>
-                   </form>
+                  </form>
                 </span>
               </div>
             </td>
@@ -152,11 +161,11 @@ export default {
     paginationOptions: Object,
     keyEvent: String,
     searchUrl: String,
-    removeUrl: String
+    removeUrl: String,
   },
   data: function () {
     return {
-      query: "", 
+      query: "",
       typeSearch: "",
       searchMessageError: "Please select search category first",
       isShowError: false,
@@ -197,15 +206,17 @@ export default {
       };
       this.emitEvent(eventKey, eventData);
     },
-    onClickDelete: function (selectedIndex,event) {
-      let value = this.getData(selectedIndex).id
-      document.querySelector('#removeId'+selectedIndex).value = value
+    onClickDelete: function (selectedIndex, event) {
+      var self = this
+      var data = self.getData(selectedIndex)
+      let value = data.id;
+      document.querySelector("#removeId" + selectedIndex).value = value;
       event.currentTarget.parentElement.submit();
     },
     onSearch: function () {
       if (this.typeSearch === "") {
         this.isShowError = true;
-        return false
+        return false;
       }
     },
     onAddNewUser: function () {
@@ -224,7 +235,7 @@ export default {
   padding: 25px;
 }
 
-#serachbar{
+#serachbar {
   display: flex;
   width: 100%;
 }
