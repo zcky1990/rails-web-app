@@ -5,6 +5,7 @@ class Admin::ProductController < Admin::ApplicationController
     super
     @category_service = Admin::CategoryService.new
     @product_service = Admin::ProductService.new
+    @price_type_service = Admin::PriceTypeService.new
   end
 
   def product_list
@@ -27,6 +28,16 @@ class Admin::ProductController < Admin::ApplicationController
     end
   end
 
+  def price_type
+    @token = get_token(current_user)
+    if params[:typeSearch].present?
+      @data = @price_type_service.search_price_type(params)
+    else
+      page = get_page(params)
+      @data = @price_type_service.get_price_type_list(page)
+    end
+  end
+
   def add_category
     result = @category_service.add_category(params, current_user)
     redirect_to product_category_admin_product_url, :flash => result
@@ -38,7 +49,6 @@ class Admin::ProductController < Admin::ApplicationController
   end
 
   def remove_category
-    puts params
     result = @category_service.delete_category(params, current_user)
     redirect_to product_category_admin_product_url, :flash => result
   end
@@ -61,6 +71,21 @@ class Admin::ProductController < Admin::ApplicationController
   def remove_product
     result = @product_service.delete_product(params, current_user)
     redirect_to product_list_admin_product_url, :flash => result
+  end
+
+  def add_price_type
+    result = @price_type_service.add_price_type(params, current_user)
+    redirect_to price_type_admin_product_url, :flash => result
+  end
+
+  def update_price_type
+    result = @price_type_service.update_price_type(params, current_user)
+    redirect_to price_type_admin_product_url, :flash => result
+  end
+
+  def remove_price_type
+    result = @price_type_service.delete_price_type(params, current_user)
+    redirect_to price_type_admin_product_url, :flash => result
   end
 
   private

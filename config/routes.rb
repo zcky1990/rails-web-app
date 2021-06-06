@@ -30,6 +30,7 @@ Rails.application.routes.draw do
         get "/", to: "product#category", as: "product_index"
         get "/product-category", to: "product#category", as: "product_category"
         get "/product-list", to: "product#product_list", as: "product_list"
+        get "/product-price-type", to: "product#price_type", as: "price_type"
         post "/add-category", to: "product#add_category", as: "add_new_category_data"
         post "/remove-product-category", to: "product#remove_category", as: "remove_category_data"
         post "/update-product-category", to: "product#update_category", as: "update_category_data"
@@ -37,6 +38,9 @@ Rails.application.routes.draw do
         post "/add-product-list", to: "product#add_product", as: "add_new_product_data"
         post "/update-product-list", to: "product#update_product", as: "update_product_data"
         post "/remove-product-list", to: "product#remove_product", as: "remove_product_data"
+        post "/add-price-type-list", to: "product#add_price_type", as: "add_new_price_type"
+        post "/update-price-type-list", to: "product#update_price_type", as: "update_price_type_data"
+        post "/remove-price-type-list", to: "product#remove_price_type", as: "remove_price_type_data"
       end
     end
 
