@@ -15,6 +15,7 @@
           <form
             class="form-horizontal"
             id="app"
+            ref="formProduct"
             @submit="onSubmit"
             :action="getUrlSubmit"
             method="post"
@@ -328,6 +329,35 @@ export default {
           e.preventDefault();
         }
       }
+
+      var datas = this.product.price;
+      for (var i = 0; i < datas.length; i++) {
+        var priceId = datas[i].price_type_id;
+        var priceName = datas[i].price_type_name;
+        var priceValue = datas[i].price;
+
+        var type = document.createElement("input");
+        type.setAttribute("type", "text");
+        type.setAttribute("name", "price[][price_type_id]");
+        type.value = priceId;
+        type.hidden = true;
+
+        var name = document.createElement("input");
+        name.setAttribute("type", "text");
+        name.setAttribute("name", "price[][price_type_name]");
+        name.value = priceName;
+        name.hidden = true;
+
+        var price = document.createElement("input");
+        price.setAttribute("type", "text");
+        price.setAttribute("name", "price[][price]");
+        price.value = priceValue;
+        price.hidden = true;
+
+        this.$refs.formProduct.append(type);
+        this.$refs.formProduct.append(name);
+        this.$refs.formProduct.append(price);
+      }
     },
     resetError() {
       this.error.hasError = false;
@@ -373,6 +403,7 @@ export default {
           price: priceValue,
         };
         if (this.product.price != undefined) {
+          let index = this.product.price.length;
           this.product.price.push(data);
           this.$refs.dropdownType.value = "";
           this.$refs.priceInput.value = "";
@@ -380,7 +411,6 @@ export default {
       }
     },
     removePrice(index) {
-      console.log(index);
       this.product.price.splice(index, 1);
     },
   },
