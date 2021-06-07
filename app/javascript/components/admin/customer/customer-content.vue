@@ -52,7 +52,7 @@ export default {
         maxRow: 10,
         tableListUrl: "",
         hiddenColumn: [],
-        searchType: ["id", "name", "product_category", "price_type", "price"],
+        searchType: ["id", "name", "email", "phone"],
       },
       paginationOptions: {
         totalPage: 1,
@@ -71,7 +71,7 @@ export default {
     });
 
     this.onEmitEvent("CUSTOMER_ADD", function (data) {
-      self.$refs.customerForm.showForm({}, "add", "Add New customer");
+      self.$refs.customerForm.showForm({is_active: false}, "add", "Add New customer");
     });
 
     this.onEmitEvent("CUSTOMER_EDIT", function (data) {
@@ -89,6 +89,8 @@ export default {
       this.options.type = data.type;
       this.options.tableListUrl = "/admin/customer";
       if (window.location.href.includes("?typeSearch")) {
+        this.options.showPaginate = false;
+      }else if(this.table.length == 0){
         this.options.showPaginate = false;
       }
     },

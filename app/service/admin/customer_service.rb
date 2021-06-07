@@ -110,9 +110,16 @@ class Admin::CustomerService
     if type_search == "id"
       search_query[:id] = query
     elsif type_search == "name"
-      search_query[:name] = /^#{query}$/i
-    elsif type_search == "status"
-      search_query[:is_active] = query
+      search_query={
+        "$or": [
+          {firstname: /^#{query}$/i},
+          {lastname: /^#{query}$/i}
+        ]
+      }
+    elsif type_search == "email"
+      search_query[:email] = /^#{query}$/i
+    elsif type_search == "phone"
+      search_query[:phone] = /^#{query}$/i
     end
     return search_query
   end

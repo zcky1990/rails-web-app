@@ -91,6 +91,8 @@ export default {
       this.options.tableListUrl = "/admin/product/product-category";
       if (window.location.href.includes("?typeSearch")) {
         this.options.showPaginate = false;
+      }else if(this.table.length == 0){
+        this.options.showPaginate = false;
       }
     },
   },
