@@ -48,6 +48,9 @@ Rails.application.routes.draw do
     resource :customer, only: [] do
       collection do
         get "/", to: "customer#customer_list", as: "customer_list"
+        post "/add-customer", to: "customer#add_customer", as: "add_new_customer"
+        post "/remove-customer", to: "customer#remove_customer", as: "remove_customer"
+        post "/update-customer", to: "customer#update_customer", as: "update_customer"
       end
     end
 

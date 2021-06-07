@@ -84,7 +84,7 @@
         </thead>
         <tbody>
           <tr v-if="isDataEmpty()">
-            <td class="has-text-centered padded">No Data Available</td>
+            <td class="has-text-centered padded" :colspan="getNumberOfcolumn()">No Data Available</td>
           </tr>
           <tr
             v-else
@@ -186,6 +186,9 @@ export default {
       } else {
         return false;
       }
+    },
+    getNumberOfcolumn:function(){
+      return this.headers.length
     },
     getData: function (index) {
       return this.dataTable[index];

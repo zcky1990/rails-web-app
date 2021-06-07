@@ -3,38 +3,32 @@ class Admin::CustomerController < Admin::ApplicationController
 
   def initialize
     super
-    @service = Admin::CategoryService.new
+    @service = Admin::CustomerService.new
   end
 
   def customer_list
     @token = get_token(current_user)
     if params[:typeSearch].present?
-      @data = @service.search_category(params)
+      @data = @service.search_customer(params)
     else
       page = get_page(params)
-      @data = @service.get_category_list(page)
+      @data = @service.get_customer_list(page)
     end
   end
 
-  def search_category
-    @data = @service.search_category(params)
-    @token = get_token(current_user)
-    @meta_tag = get_default_web_meta_data()
+  def add_customer
+    result = @service.add_customer(params, current_user)
+    redirect_to user_admin_customer_url, :flash => result
   end
 
-  def add_category
-    result = @service.add_category(params, current_user)
-    redirect_to user_admin_category_url, :flash => result
+  def update_customer
+    result = @service.update_customer(params, current_user)
+    redirect_to user_admin_customer_url, :flash => result
   end
 
-  def update_category
-    result = @service.update_category(params, current_user)
-    redirect_to user_admin_category_url, :flash => result
-  end
-
-  def remove_category
-    result = @service.delete_category(params, current_user)
-    redirect_to user_admin_category_url, :flash => result
+  def remove_customer
+    result = @service.delete_customer(params, current_user)
+    redirect_to user_admin_customer_url, :flash => result
   end
 
   private
