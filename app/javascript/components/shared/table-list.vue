@@ -101,35 +101,31 @@
               </div>
             </td>
             <td v-if="options.isShowActionColumn == true">
-              <div class="has-text-centered">
-                <span :id="`${index}`" class="icon is-small">
-                  <abbr title="Show" class="SHOW" v-on:click="onClick">
-                    <i class="fas fa-eye"></i
-                  ></abbr>
-                  <abbr title="Edit" class="EDIT" v-on:click="onClick">
-                    <i class="ml-2 fas fa-edit"></i
-                  ></abbr>
-                  <form id="removeForm" :action="removeUrl" method="post">
-                    <input
-                      type="hidden"
-                      name="authenticity_token"
-                      :value="csrf"
-                    />
-                    <input
-                      :id="`removeId${index}`"
-                      type="hidden"
-                      name="id"
-                      value=""
-                    />
-                    <abbr
-                      title="Delete"
-                      class="REMOVE"
-                      v-on:click="onClickDelete(index, $event)"
-                    >
-                      <i class="ml-2 fas fa-trash"></i
-                    ></abbr>
-                  </form>
-                </span>
+              <div
+                :id="`${index}`"
+                class="buttons are-small has-addons is-centered"
+              >
+                <button class="SHOW button" v-on:click="onClick">View</button>
+                <button class="EDIT button" v-on:click="onClick">Edit</button>
+                <form id="removeForm" :action="removeUrl" method="post">
+                  <input
+                    type="hidden"
+                    name="authenticity_token"
+                    :value="csrf"
+                  />
+                  <input
+                    :id="`removeId${index}`"
+                    type="hidden"
+                    name="id"
+                    value=""
+                  />
+                  <button
+                    class="REMOVE button"
+                    v-on:click="onClickDelete(index, $event)"
+                  >
+                    Remove
+                  </button>
+                </form>
               </div>
             </td>
           </tr>
@@ -207,7 +203,7 @@ export default {
       this.emitEvent(eventKey, eventData);
     },
     onClickDelete: function (selectedIndex, event) {
-      var data = this.getData(selectedIndex)
+      var data = this.getData(selectedIndex);
       let value = data.id;
       document.querySelector("#removeId" + selectedIndex).value = value;
       event.currentTarget.parentElement.submit();

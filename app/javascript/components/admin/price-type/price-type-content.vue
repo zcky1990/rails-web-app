@@ -49,7 +49,7 @@ export default {
       },
       keyEvent: "PRICE_TYPE",
       searchUrl: "/admin/product/product-price-type",
-      removeUrl: "/admin/product/remove-product-category"
+      removeUrl: "/admin/product/remove-price-type-list"
     };
   },
   created() {
