@@ -191,7 +191,7 @@ export default {
       }
     },
     getNumberOfcolumn: function () {
-      return this.headers.length;
+      return this.headers.length+1;
     },
     getData: function (index) {
       return this.dataTable[index];
