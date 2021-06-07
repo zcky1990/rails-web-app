@@ -10,7 +10,7 @@
         <side-bar classname="customer"></side-bar>
       </div>
       <div class="column is-9 right-content">
-        <bread-crumb :position="'center'"></bread-crumb>
+        <!-- <bread-crumb :position="'center'"></bread-crumb> -->
         <div class="content">
           <customer ref="contentTab"></customer>
         </div>
