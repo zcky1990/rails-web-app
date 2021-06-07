@@ -50,7 +50,7 @@ export default {
         type: "product",
         maxRow: 10,
         tableListUrl: "",
-        hiddenColumn: [2, 7],
+        hiddenColumn: [2,4, 7],
         searchType: ["id", "name", "product_category", "price"],
       },
       paginationOptions: {
@@ -71,7 +71,7 @@ export default {
     });
 
     this.onEmitEvent("PRODUCT_ADD", function (data) {
-      self.$refs.productForm.showForm({}, "add", "Add New Product");
+      self.$refs.productForm.showForm({price:[],product_category_id: "", is_active: false}, "add", "Add New Product");
     });
 
     this.onEmitEvent("PRODUCT_EDIT", function (data) {

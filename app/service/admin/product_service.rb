@@ -30,17 +30,17 @@ class Admin::ProductService
         }
         if params[:product_category_id].present?
           category = Category.find(params[:product_category_id])
-          category_data = category.get_data_category
-          product_category = ProductCategory.new(category_data)
+          product_category = ProductCategory.new(category: category)
           data[:product_category] = product_category
         end
         if params[:price].present?
           new_prices = []
           prices = params[:price]
-          prices.each do|a|
+          prices.each do |a|
+            price_type = PriceType.find(a[:price_type_id])
             new_price_params = {
-              price_type_id: a[:price_type_id],
-              price: a[:price]
+              price_type: price_type,
+              price: a[:price],
             }
             new_price = Price.new(new_price_params)
             new_prices << new_price
@@ -73,17 +73,17 @@ class Admin::ProductService
         }
         if params[:product_category_id].present?
           category = Category.find(params[:product_category_id])
-          category_data = category.get_data_category
-          product_category = ProductCategory.new(category_data)
+          product_category = ProductCategory.new(category: category)
           data[:product_category] = product_category
         end
         if params[:price].present?
           new_prices = []
           prices = params[:price]
-          prices.each do|a|
+          prices.each do |a|
+            price_type = PriceType.find(a[:price_type_id])
             new_price_params = {
-              price_type_id: a[:price_type_id],
-              price: a[:price]
+              price_type: price_type,
+              price: a[:price],
             }
             new_price = Price.new(new_price_params)
             new_prices << new_price

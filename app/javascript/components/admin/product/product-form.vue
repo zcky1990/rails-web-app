@@ -86,13 +86,14 @@
                         v-model="product.product_category_id"
                         name="product_category_id"
                       >
+                        <option value="" disabled>Select Category</option>
                         <option
                           v-for="option in dropdownList"
-                          v-bind:value="option.id"
-                          v-bind:key="option.id"
-                          :disabled="option.value == ''"
+                          v-bind:value="option.product_category_id"
+                          v-bind:key="option.product_category_id"
+                          :disabled="option.product_category_id == ''"
                         >
-                          {{ option.name }}
+                          {{ option.product_category_name }}
                         </option>
                       </select>
                     </div>
@@ -120,12 +121,13 @@
                           class="select"
                           :class="error.hasErrorPrice ? 'is-danger' : ''"
                         >
-                          <select ref="dropdownType">
+                          <select ref="dropdownType" v-model="typeSelected">
+                            <option value="" disabled>Select Price Type</option>
                             <option
                               v-for="option in priceTypeDropdownList"
                               v-bind:value="option.id + '-' + option.name"
                               v-bind:key="option.id"
-                              :disabled="option.value == ''"
+                              :disabled="option.id + '-' + option.name == ''"
                             >
                               {{ option.name }}
                             </option>
@@ -243,7 +245,11 @@ export default {
       isShow: false,
       messageError: "",
       showMessage: false,
-      product: {},
+      product: {
+        product_category_id: "",
+        product_category_name: ""
+      },
+      typeSelected: "",
       title: "",
       type: "",
       date: new Date(),
@@ -255,8 +261,8 @@ export default {
       axios: "",
       dropdownList: [],
       options: [
-        { text: "Active", value: "true" },
-        { text: "InActive", value: "false" },
+        { text: "Active", value: true },
+        { text: "InActive", value: false },
       ],
       priceTypeDropDownUrl: "/admin/product/get-price-type-list-dropdown",
       priceTypeDropdownList: [],
@@ -348,7 +354,6 @@ export default {
           e.preventDefault();
         }
       }
-
       var datas = this.product.price;
       if (datas != undefined) {
         for (var i = 0; i < datas.length; i++) {

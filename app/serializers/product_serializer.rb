@@ -26,8 +26,8 @@ class ProductSerializer < ActiveModel::Serializer
   end
 
   def product_category_id
-    if object.product_category.present?
-      object.product_category.id.to_s
+    if object.product_category.category.present?
+      object.product_category.category.id.to_s
     end
   end
 
@@ -46,8 +46,8 @@ class ProductSerializer < ActiveModel::Serializer
   end
 
   def product_category_name
-    if object.product_category.present?
-      object.product_category.name
+    if object.product_category.category.present?
+      object.product_category.category.name
     end
   end
 

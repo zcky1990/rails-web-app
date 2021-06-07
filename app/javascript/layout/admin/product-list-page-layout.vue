@@ -59,6 +59,7 @@ export default {
         this._datas.constructor === Object
       )
     ) {
+       console.log(this._datas)
       this.$refs.contentTab.setData(this._datas);
     }
     if (this.notif !== null && this.notif !== undefined) {
