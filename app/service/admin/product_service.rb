@@ -137,20 +137,18 @@ class Admin::ProductService
 
   def get_query_search(params)
     type_search = params[:typeSearch]
-    query = params[:query]
+    query = params[:query].downcase
     search_query = {}
     if type_search == "id"
       search_query[:id] = query
     elsif type_search == "name"
-      search_query[:name] = query
+      search_query[:name] = /^#{query}$/i
     elsif type_search == "price"
-      search_query["price.price"] = query
+      search_query["price.price"] = /^#{query}$/i
     elsif type_search == "price_type"
-      search_query["price.price_type.name"] = query
+      search_query["price.price_type.name"] = /^#{query}$/i
     elsif type_search == "product_category"
-      search_query["product_category.category.name"] = query
-    elsif type_search == "price"
-      search_query[:price] = query
+      search_query["product_category.category.name"] = /^#{query}$/i
     end
     return search_query
   end

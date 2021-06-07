@@ -108,12 +108,12 @@ class Admin::PriceTypeService
 
   def get_query_search(params)
     type_search = params[:typeSearch]
-    query = params[:query]
+    query = params[:query].downcase
     search_query = {}
     if type_search == "id"
       search_query[:id] = query
     elsif type_search == "name"
-      search_query[:name] = query
+      search_query[:name] = /^#{query}$/i
     end
     return search_query
   end
