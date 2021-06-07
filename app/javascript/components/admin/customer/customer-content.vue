@@ -3,13 +3,13 @@
     <div class="tabs">
       <div class="menu" v-on:click="tabclick">
         <div class="menu-icon">
-          <span class="subtitle is-4 algolia-lvl1">Product Price Type</span>
+          <span class="subtitle is-4 algolia-lvl1">Customer</span>
         </div>
       </div>
     </div>
-    <div class="tab-content-container algolia-content">
+    <div class="tab-content-container">
       <section class="tab-content admin tab-active">
-        <price-type-form ref="categoryForm"></price-type-form>
+        <product-form ref="productForm"></product-form>
         <table-list
           :headers="headers"
           :dataTable="table"
@@ -26,57 +26,72 @@
 
 <script>
 import tableList from "../../shared/table-list.vue";
-import Form from "./price-type-form.vue";
+import Form from "./customer-form.vue";
 
 export default {
   data: function () {
     return {
       table: [],
-      headers: ["Id", "Name", "Description", "is_active", "Moderated By", "Updated at"],
+      headers: [
+        "Id",
+        "Product Name",
+        "Product Category Id",
+        "Product Category",
+        "Price",
+        "Stock",
+        "Status",
+        "Is Active",
+        "Moderated By",
+        "Updated Date",
+      ],
       options: {
         showPaginate: true,
         isShowActionColumn: true,
-        type: "price_type",
+        type: "customer",
         maxRow: 10,
         tableListUrl: "",
-        hiddenColumn: [],
-        searchType: ["id", "name"],
+        hiddenColumn: [2, 4, 7],
+        searchType: ["id", "name", "product_category", "price_type", "price"],
       },
       paginationOptions: {
         totalPage: 1,
         totalData: 1,
         page: 1,
       },
-      keyEvent: "PRICE_TYPE",
-      searchUrl: "/admin/product/product-price-type",
-      removeUrl: "/admin/product/remove-price-type-list"
+      keyEvent: "CUSTOMER",
+      searchUrl: "/admin/customer",
+      removeUrl: "/admin/customer/remove-customer",
     };
   },
   created() {
     var self = this;
-    this.onEmitEvent("PRICE_TYPE_SHOW", function (data) {
-      self.$refs.categoryForm.showForm(data.data, "show", "Price Type Data");
+    this.onEmitEvent("CUSTOMER_SHOW", function (data) {
+      self.$refs.productForm.showForm(data.data, "show", "View customer");
+      console.log(self.itemsTags);
     });
 
-    this.onEmitEvent("PRICE_TYPE_EDIT", function (data) {
-      self.$refs.categoryForm.showForm(data.data, "edit", "Edit Price Type Data");
+    this.onEmitEvent("CUSTOMER_ADD", function (data) {
+      self.$refs.productForm.showForm(
+        { price: [], product_category_id: "", is_active: false },
+        "add",
+        "Add New customer"
+      );
     });
 
-    this.onEmitEvent("PRICE_TYPE_ADD", function (data) {
-      self.$refs.categoryForm.showForm({is_active: false}, "add", "Add New Price Type Data");
+    this.onEmitEvent("CUSTOMER_EDIT", function (data) {
+      self.$refs.productForm.showForm(data.data, "edit", "Edit customer Data");
     });
   },
   methods: {
     tabclick: function () {
-      window.location = "/admin/product/product-price-type";
+      window.location = "/admin/customer";
     },
     setData: function (data) {
-      console.log(data);
       this.table = data.tabelData;
       this.paginationOptions = data.pagination_options;
-      this.keyEvent = "PRICE_TYPE";
+      this.keyEvent = "PRODUCT";
       this.options.type = data.type;
-      this.options.tableListUrl = "/admin/product/product-price-type";
+      this.options.tableListUrl = "/admin/customer";
       if (window.location.href.includes("?typeSearch")) {
         this.options.showPaginate = false;
       }
@@ -84,7 +99,7 @@ export default {
   },
   components: {
     "table-list": tableList,
-    "price-type-form": Form,
+    "product-form": Form,
   },
 };
 </script>

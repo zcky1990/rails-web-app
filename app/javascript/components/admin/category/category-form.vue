@@ -13,7 +13,13 @@
           ></button>
         </header>
         <section class="modal-card-body">
-          <form class="form-horizontal">
+          <form
+            class="form-horizontal"
+            id="app"
+            @submit="onSubmit"
+            :action="getUrlSubmit"
+            method="post"
+          >
             <div class="field is-horizontal">
               <div class="field-label is-normal">
                 <label class="label">Category Name</label>

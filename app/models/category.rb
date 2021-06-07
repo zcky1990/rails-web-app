@@ -12,7 +12,7 @@ class Category
   belongs_to :created_by, :class_name => "User", optional: true
   belongs_to :moderated_by, :class_name => "User", optional: true
 
-  index({ name: 1 })
+  index({ name: 1 },{ unique: true })
   index({ is_active: 1 })
 
   def self.find_by_name(name)

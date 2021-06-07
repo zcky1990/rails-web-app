@@ -45,6 +45,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resource :customer, only: [] do
+      collection do
+        get "/", to: "customer#customer_list", as: "customer_list"
+      end
+    end
+
     resource :user_admin, only: [] do
       collection do
         get "/", to: "user_admin#index", as: "user"

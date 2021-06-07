@@ -89,7 +89,7 @@ export default {
       this.keyEvent = "CATEGORY";
       this.options.type = data.type;
       this.options.tableListUrl = "/admin/product/product-category";
-      if (window.location.href.includes("/search")) {
+      if (window.location.href.includes("?typeSearch")) {
         this.options.showPaginate = false;
       }
     },
