@@ -16,6 +16,11 @@ class Admin::CustomerController < Admin::ApplicationController
     end
   end
 
+  def customer_details
+    @token = get_token(current_user)
+    @data = @service.get_customer_detail(params[:id])
+  end
+
   def add_customer
     result = @service.add_customer(params, current_user)
     redirect_to customer_list_admin_customer_url, :flash => result

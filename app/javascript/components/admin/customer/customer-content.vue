@@ -67,7 +67,10 @@ export default {
   created() {
     var self = this;
     this.onEmitEvent("CUSTOMER_SHOW", function (data) {
-      self.$refs.customerForm.showForm(data.data, "show", "View customer");
+      console.log(data)
+      var id = data.data.id
+      window.location = "/admin/customer/detail/"+id;
+      // self.$refs.customerForm.showForm(data.data, "show", "View customer");
     });
 
     this.onEmitEvent("CUSTOMER_ADD", function (data) {

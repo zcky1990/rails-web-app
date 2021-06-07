@@ -51,6 +51,7 @@ Rails.application.routes.draw do
         post "/add-customer", to: "customer#add_customer", as: "add_new_customer"
         post "/remove-customer", to: "customer#remove_customer", as: "remove_customer"
         post "/update-customer", to: "customer#update_customer", as: "update_customer"
+        get "/detail/:id", to: "customer#customer_details", as: "customer_details"
       end
     end
 

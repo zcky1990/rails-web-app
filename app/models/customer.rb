@@ -10,7 +10,7 @@ class Customer
   field :phone, type: String
   field :address, type: String
   field :email, type: String
-  field :current_point, type: Integer
+  field :current_point, type: Integer, default: 0
   field :used_point, type: Integer, default: 0
   field :is_active, type: Boolean, default: false
 

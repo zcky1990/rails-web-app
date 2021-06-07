@@ -17,6 +17,12 @@ class Admin::CustomerService
     return get_table_data(page, "customer", datas, total_data, total_pages)
   end
 
+  def get_customer_detail(id)
+    data = Customer.find(id)
+    datas = ActiveModel::SerializableResource.new(data, serializer: CustomerDetailSerializer)
+    return datas
+  end
+
   def add_customer(params, current_user)
     begin
       customer = Customer.find_by_phone(params[:phone])
@@ -91,6 +97,7 @@ class Admin::CustomerService
   end
 
   private
+
   def get_table_data(page, type, datas, total_data, total_Page)
     return {
              type: type,
@@ -110,11 +117,11 @@ class Admin::CustomerService
     if type_search == "id"
       search_query[:id] = query
     elsif type_search == "name"
-      search_query={
+      search_query = {
         "$or": [
-          {firstname: /^#{query}$/i},
-          {lastname: /^#{query}$/i}
-        ]
+          { firstname: /^#{query}$/i },
+          { lastname: /^#{query}$/i },
+        ],
       }
     elsif type_search == "email"
       search_query[:email] = /^#{query}$/i

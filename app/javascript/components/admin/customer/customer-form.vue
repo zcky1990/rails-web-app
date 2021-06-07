@@ -37,13 +37,13 @@
                     <input
                       class="input"
                       v-model="postData.firstname"
-                      :class="error.hasErrorName ? 'is-danger' : ''"
+                      :class="error.hasErrorFirstName ? 'is-danger' : ''"
                       type="text"
                       name="firstname"
                       placeholder="First Name"
                     />
                   </div>
-                  <p v-if="error.hasErrorName == true" class="help is-danger">
+                  <p v-if="error.hasErrorFirstName == true" class="help is-danger">
                     {{ error.messageError }}
                   </p>
                 </div>
@@ -59,13 +59,13 @@
                     <input
                       class="input"
                       v-model="postData.lastname"
-                      :class="error.hasErrorName ? 'is-danger' : ''"
+                      :class="error.hasErrorLastName ? 'is-danger' : ''"
                       type="text"
                       name="lastname"
                       placeholder="Last Name"
                     />
                   </div>
-                  <p v-if="error.hasErrorName == true" class="help is-danger">
+                  <p v-if="error.hasErrorLastName == true" class="help is-danger">
                     {{ error.messageError }}
                   </p>
                 </div>
@@ -82,13 +82,13 @@
                     <input
                       class="input"
                       v-model="postData.email"
-                      :class="error.hasErrorName ? 'is-danger' : ''"
+                      :class="error.hasErrorEmail ? 'is-danger' : ''"
                       name="email"
                       type="email"
                       placeholder="e.g. alexsmith@gmail.com"
                     />
                   </div>
-                  <p v-if="error.hasErrorName == true" class="help is-danger">
+                  <p v-if="error.hasErrorEmail == true" class="help is-danger">
                     {{ error.messageError }}
                   </p>
                 </div>
@@ -108,13 +108,13 @@
                     <input
                       class="input"
                       v-model="postData.phone"
-                      :class="error.hasErrorName ? 'is-danger' : ''"
+                      :class="error.hasErrorPhone ? 'is-danger' : ''"
                       name="phone"
                       type="number"
                       placeholder="phone number.."
                     />
                   </p>
-                  <p v-if="error.hasErrorName == true" class="help is-danger">
+                  <p v-if="error.hasErrorPhone == true" class="help is-danger">
                     {{ error.messageError }}
                   </p>
                 </div>
@@ -131,12 +131,12 @@
                     <textarea
                       class="textarea"
                       v-model="postData.address"
-                      :class="error.hasErrorName ? 'is-danger' : ''"
+                      :class="error.hasErrorAddress ? 'is-danger' : ''"
                       name="address"
                       placeholder="Address...."
                     />
                   </div>
-                  <p v-if="error.hasErrorName == true" class="help is-danger">
+                  <p v-if="error.hasErrorAddress == true" class="help is-danger">
                     {{ error.messageError }}
                   </p>
                 </div>
@@ -202,15 +202,11 @@ export default {
         hasError: false,
         messageError: "",
       },
-      dropdownUrl: "/admin/product/get-category-list-dropdown",
       axios: "",
-      dropdownList: [],
       options: [
         { text: "Active", value: true },
         { text: "InActive", value: false },
       ],
-      priceTypeDropDownUrl: "/admin/product/get-price-type-list-dropdown",
-      priceTypeDropdownList: [],
       addUrl: "/admin/customer/add-customer",
       updateUrl: "/admin/customer/update-customer",
       csrf: document
@@ -235,44 +231,8 @@ export default {
         return this.addUrl;
       }
     },
-    isCategoryNotSelected() {
-      if (this.product.category == "" || this.product.category === undefined) {
-        return true;
-      }
-      return false;
-    },
   },
   methods: {
-    getDropdown: function () {
-      var self = this;
-      let headers = {};
-      headers["Authorization"] = "Bearer " + this.token;
-      headers["Content-Type"] = "application/json";
-      this.axios
-        .get(self.dropdownUrl, { headers })
-        .then((response) => {
-          self.dropdownList = response.data.data;
-        })
-        .catch((e) => {
-          self.messageError = e.message;
-          self.showMessage = true;
-        });
-    },
-    getPriceTypeDropdown: function () {
-      var self = this;
-      let headers = {};
-      headers["Authorization"] = "Bearer " + this.token;
-      headers["Content-Type"] = "application/json";
-      this.axios
-        .get(self.priceTypeDropDownUrl, { headers })
-        .then((response) => {
-          self.priceTypeDropdownList = response.data.data;
-        })
-        .catch((e) => {
-          self.messageError = e.message;
-          self.showMessage = true;
-        });
-    },
     showForm(data, type, title) {
       this.postData = data;
       this.type = type;
@@ -298,65 +258,38 @@ export default {
           e.preventDefault();
         }
       }
-      var datas = this.product.price;
-      if (datas != undefined) {
-        for (var i = 0; i < datas.length; i++) {
-          var priceId = datas[i].price_type_id;
-          var priceName = datas[i].price_type_name;
-          var priceValue = datas[i].price;
-
-          var type = document.createElement("input");
-          type.setAttribute("type", "text");
-          type.setAttribute("name", "price[][price_type_id]");
-          type.value = priceId;
-          type.hidden = true;
-
-          var name = document.createElement("input");
-          name.setAttribute("type", "text");
-          name.setAttribute("name", "price[][price_type_name]");
-          name.value = priceName;
-          name.hidden = true;
-
-          var price = document.createElement("input");
-          price.setAttribute("type", "text");
-          price.setAttribute("name", "price[][price]");
-          price.value = priceValue;
-          price.hidden = true;
-
-          this.$refs.formProduct.append(type);
-          this.$refs.formProduct.append(name);
-          this.$refs.formProduct.append(price);
-        }
-      }
     },
     resetError() {
-      this.error.hasErrorName = false;
-      this.error.hasErrorPrice = false;
-      this.error.hasErrorStock = false;
-      this.error.hasErrorCategory = false;
+      this.error.hasErrorFirstName = false;
+      this.error.hasErrorLastName = false;
+      this.error.hasErrorEmail = false;
+      this.error.hasErrorPhone = false;
+      this.error.hasErrorAddress = false;
       this.error.messageError = "";
     },
     isFailedValidateCategoryData() {
       this.resetError();
       let error = false;
-      if (!this.product.name || 0 === this.product.name.length) {
-        this.error.messageError = "Name is required";
-        this.error.hasErrorName = true;
+      if (!this.postData.firstname || 0 === this.postData.firstname.length) {
+        this.error.messageError = "firstname is required";
+        this.error.hasErrorFirstName = true;
         error = true;
-      } else if (!this.product.price || 0 === this.product.price.length) {
-        this.error.messageError = "Price is required";
-        this.error.hasErrorPrice = true;
+      } else if (!this.postData.lastname || 0 === this.postData.lastname.length) {
+        this.error.messageError = "lastname is required";
+        this.error.hasErrorLastName = true;
         error = true;
-      } else if (!this.product.stock || 0 === this.product.stock.length) {
-        this.error.messageError = "Stock is required";
-        this.error.hasErrorStock = true;
+      } else if (!this.postData.email || 0 === this.postData.email.length) {
+        this.error.messageError = "email is required";
+        this.error.hasErrorEmail = true;
         error = true;
-      } else if (
-        !this.product.product_category_id ||
-        0 === this.product.product_category_id.length
-      ) {
-        this.error.messageError = "Please select Category";
-        this.error.hasErrorCategory = true;
+      }else if (!this.postData.phone || 0 === this.postData.phone.length) {
+        this.error.messageError = "phone is required";
+        this.error.hasErrorPhone = true;
+        error = true;
+      }
+      else if (!this.postData.address || 0 === this.postData.address.length) {
+        this.error.messageError = "address is required";
+        this.error.hasErrorAddress = true;
         error = true;
       } else {
         this.resetError();
