@@ -67,7 +67,6 @@ export default {
     var self = this;
     this.onEmitEvent("PRODUCT_SHOW", function (data) {
       self.$refs.productForm.showForm(data.data, "show", "View Product");
-      console.log(self.itemsTags);
     });
 
     this.onEmitEvent("PRODUCT_ADD", function (data) {

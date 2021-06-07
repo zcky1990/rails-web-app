@@ -18,17 +18,17 @@ class Admin::CustomerController < Admin::ApplicationController
 
   def add_customer
     result = @service.add_customer(params, current_user)
-    redirect_to user_admin_customer_url, :flash => result
+    redirect_to customer_list_admin_customer_url, :flash => result
   end
 
   def update_customer
     result = @service.update_customer(params, current_user)
-    redirect_to user_admin_customer_url, :flash => result
+    redirect_to customer_list_admin_customer_url, :flash => result
   end
 
   def remove_customer
     result = @service.delete_customer(params, current_user)
-    redirect_to user_admin_customer_url, :flash => result
+    redirect_to customer_list_admin_customer_url, :flash => result
   end
 
   private

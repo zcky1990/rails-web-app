@@ -12,6 +12,7 @@ class Customer
   field :email, type: String
   field :current_point, type: Integer
   field :used_point, type: Integer, default: 0
+  field :is_active, type: Boolean, default: false
 
   belongs_to :created_by, :class_name => "User", optional: true
   belongs_to :moderated_by, :class_name => "User", optional: true

@@ -84,7 +84,9 @@
         </thead>
         <tbody>
           <tr v-if="isDataEmpty()">
-            <td class="has-text-centered padded" :colspan="getNumberOfcolumn()">No Data Available</td>
+            <td class="has-text-centered padded" :colspan="getNumberOfcolumn()">
+              No Data Available
+            </td>
           </tr>
           <tr
             v-else
@@ -104,6 +106,7 @@
               <div
                 :id="`${index}`"
                 class="buttons are-small has-addons is-centered"
+                style="min-width: 200px"
               >
                 <button class="SHOW button" v-on:click="onClick">View</button>
                 <button class="EDIT button" v-on:click="onClick">Edit</button>
@@ -187,8 +190,8 @@ export default {
         return false;
       }
     },
-    getNumberOfcolumn:function(){
-      return this.headers.length
+    getNumberOfcolumn: function () {
+      return this.headers.length;
     },
     getData: function (index) {
       return this.dataTable[index];
@@ -219,6 +222,7 @@ export default {
     },
     onAddNewUser: function () {
       let eventKey = this.keyEvent + "_ADD";
+      console.log(this.keyEvent);
       this.emitEvent(eventKey, {});
     },
     itemsNotContains: function (n) {

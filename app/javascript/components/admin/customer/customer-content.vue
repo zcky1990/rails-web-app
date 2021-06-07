@@ -9,7 +9,7 @@
     </div>
     <div class="tab-content-container">
       <section class="tab-content admin tab-active">
-        <product-form ref="productForm"></product-form>
+        <customer-form ref="customerForm"></customer-form>
         <table-list
           :headers="headers"
           :dataTable="table"
@@ -41,6 +41,7 @@ export default {
         "Email",
         "Point",
         "Join Date",
+        "Is Active",
         "Moderated By",
         "Updated Date",
       ],
@@ -66,20 +67,15 @@ export default {
   created() {
     var self = this;
     this.onEmitEvent("CUSTOMER_SHOW", function (data) {
-      self.$refs.productForm.showForm(data.data, "show", "View customer");
-      console.log(self.itemsTags);
+      self.$refs.customerForm.showForm(data.data, "show", "View customer");
     });
 
     this.onEmitEvent("CUSTOMER_ADD", function (data) {
-      self.$refs.productForm.showForm(
-        { price: [], product_category_id: "", is_active: false },
-        "add",
-        "Add New customer"
-      );
+      self.$refs.customerForm.showForm({}, "add", "Add New customer");
     });
 
     this.onEmitEvent("CUSTOMER_EDIT", function (data) {
-      self.$refs.productForm.showForm(data.data, "edit", "Edit customer Data");
+      self.$refs.customerForm.showForm(data.data, "edit", "Edit customer Data");
     });
   },
   methods: {
@@ -89,7 +85,7 @@ export default {
     setData: function (data) {
       this.table = data.tabelData;
       this.paginationOptions = data.pagination_options;
-      this.keyEvent = "PRODUCT";
+      this.keyEvent = "CUSTOMER";
       this.options.type = data.type;
       this.options.tableListUrl = "/admin/customer";
       if (window.location.href.includes("?typeSearch")) {
@@ -99,7 +95,7 @@ export default {
   },
   components: {
     "table-list": tableList,
-    "product-form": Form,
+    "customer-form": Form,
   },
 };
 </script>

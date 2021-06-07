@@ -21,21 +21,48 @@
             method="post"
           >
             <input type="hidden" name="authenticity_token" :value="csrf" />
-            <input class="input" v-model="product.id" name="id" type="hidden" />
+            <input
+              class="input"
+              v-model="postData.id"
+              name="id"
+              type="hidden"
+            />
             <div class="field is-horizontal">
               <div class="field-label is-normal">
-                <label class="label">Product Name</label>
+                <label class="label">First Name</label>
               </div>
               <div class="field-body">
                 <div class="field">
                   <div class="controlx">
                     <input
                       class="input"
-                      v-model="product.name"
+                      v-model="postData.firstname"
                       :class="error.hasErrorName ? 'is-danger' : ''"
                       type="text"
-                      name="name"
-                      placeholder="Product Name"
+                      name="firstname"
+                      placeholder="First Name"
+                    />
+                  </div>
+                  <p v-if="error.hasErrorName == true" class="help is-danger">
+                    {{ error.messageError }}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Last Name</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control">
+                    <input
+                      class="input"
+                      v-model="postData.lastname"
+                      :class="error.hasErrorName ? 'is-danger' : ''"
+                      type="text"
+                      name="lastname"
+                      placeholder="Last Name"
                     />
                   </div>
                   <p v-if="error.hasErrorName == true" class="help is-danger">
@@ -47,24 +74,21 @@
 
             <div class="field is-horizontal">
               <div class="field-label is-normal">
-                <label class="label">Stock Product</label>
+                <label class="label">Email</label>
               </div>
               <div class="field-body">
                 <div class="field">
                   <div class="control">
                     <input
                       class="input"
-                      v-model="product.stock"
-                      :class="error.hasErrorNameStock ? 'is-danger' : ''"
-                      name="stock"
-                      type="number"
-                      placeholder="Stock Product"
+                      v-model="postData.email"
+                      :class="error.hasErrorName ? 'is-danger' : ''"
+                      name="email"
+                      type="email"
+                      placeholder="e.g. alexsmith@gmail.com"
                     />
                   </div>
-                  <p
-                    v-if="error.hasErrorNameStock == true"
-                    class="help is-danger"
-                  >
+                  <p v-if="error.hasErrorName == true" class="help is-danger">
                     {{ error.messageError }}
                   </p>
                 </div>
@@ -73,35 +97,24 @@
 
             <div class="field is-horizontal">
               <div class="field-label is-normal">
-                <label class="label">Product Category</label>
+                <label class="label">Phone Number</label>
               </div>
               <div class="field-body">
-                <div class="field">
-                  <div class="control">
-                    <div
-                      class="select"
-                      :class="error.hasErrorCategory ? 'is-danger' : ''"
-                    >
-                      <select
-                        v-model="product.product_category_id"
-                        name="product_category_id"
-                      >
-                        <option value="" disabled>Select Category</option>
-                        <option
-                          v-for="option in dropdownList"
-                          v-bind:value="option.product_category_id"
-                          v-bind:key="option.product_category_id"
-                          :disabled="option.product_category_id == ''"
-                        >
-                          {{ option.product_category_name }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                  <p
-                    v-if="error.hasErrorCategory == true"
-                    class="help is-danger"
-                  >
+                <div class="field has-addons">
+                  <p class="control">
+                    <a class="button" disabled> +62 </a>
+                  </p>
+                  <p class="control">
+                    <input
+                      class="input"
+                      v-model="postData.phone"
+                      :class="error.hasErrorName ? 'is-danger' : ''"
+                      name="phone"
+                      type="number"
+                      placeholder="phone number.."
+                    />
+                  </p>
+                  <p v-if="error.hasErrorName == true" class="help is-danger">
                     {{ error.messageError }}
                   </p>
                 </div>
@@ -110,87 +123,22 @@
 
             <div class="field is-horizontal">
               <div class="field-label is-normal">
-                <label class="label">Price</label>
+                <label class="label">Address</label>
               </div>
               <div class="field-body">
                 <div class="field">
                   <div class="control">
-                    <div class="field has-addons">
-                      <p class="control">
-                        <span
-                          class="select"
-                          :class="error.hasErrorPrice ? 'is-danger' : ''"
-                        >
-                          <select ref="dropdownType" v-model="typeSelected">
-                            <option value="" disabled>Select Price Type</option>
-                            <option
-                              v-for="option in priceTypeDropdownList"
-                              v-bind:value="option.id + '-' + option.name"
-                              v-bind:key="option.id"
-                              :disabled="option.id + '-' + option.name == ''"
-                            >
-                              {{ option.name }}
-                            </option>
-                          </select>
-                        </span>
-                      </p>
-                      <p class="control">
-                        <input
-                          ref="priceInput"
-                          class="input"
-                          type="number"
-                          placeholder="price"
-                          :class="error.hasErrorPrice ? 'is-danger' : ''"
-                        />
-                      </p>
-                      <p class="control">
-                        <a
-                          class="button"
-                          :class="error.hasErrorPrice ? 'is-danger' : ''"
-                          v-on:click="addPrice"
-                        >
-                          Add
-                        </a>
-                      </p>
-                    </div>
+                    <textarea
+                      class="textarea"
+                      v-model="postData.address"
+                      :class="error.hasErrorName ? 'is-danger' : ''"
+                      name="address"
+                      placeholder="Address...."
+                    />
                   </div>
-                  <p v-if="error.hasErrorPrice == true" class="help is-danger">
+                  <p v-if="error.hasErrorName == true" class="help is-danger">
                     {{ error.messageError }}
                   </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="field is-horizontal">
-              <div class="field-label is-normal"></div>
-              <div class="field-body">
-                <div class="field">
-                  <div class="control">
-                    <div
-                      class="field has-addons"
-                      v-for="(pricedData, index) in product.price"
-                      :key="`price-data-${index}`"
-                    >
-                      <p class="control">
-                        <a disabled class="button">
-                          {{ pricedData.price_type_name }}
-                        </a>
-                      </p>
-                      <p class="control">
-                        <input
-                          disabled
-                          v-model="pricedData.price"
-                          class="input"
-                          type="text"
-                        />
-                      </p>
-                      <p class="control">
-                        <a class="button" v-on:click="removePrice(index)"
-                          >remove</a
-                        >
-                      </p>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -206,7 +154,7 @@
                       class="select"
                       :class="error.isActiveError ? 'is-danger' : ''"
                     >
-                      <select v-model="product.is_active" name="is_active">
+                      <select v-model="postData.is_active" name="is_active">
                         <option
                           v-for="option in options"
                           v-bind:value="option.value"
@@ -245,10 +193,7 @@ export default {
       isShow: false,
       messageError: "",
       showMessage: false,
-      product: {
-        product_category_id: "",
-        product_category_name: "",
-      },
+      postData: {},
       typeSelected: "",
       title: "",
       type: "",
@@ -329,12 +274,11 @@ export default {
         });
     },
     showForm(data, type, title) {
-      this.product = data;
+      this.postData = data;
       this.type = type;
       this.title = title;
-      this.getDropdown();
-      this.getPriceTypeDropdown();
       this.isShow = true;
+      console.log("call");
     },
     hideForm() {
       this.isShow = false;

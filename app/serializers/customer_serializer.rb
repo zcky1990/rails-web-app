@@ -7,6 +7,7 @@ class CustomerSerializer < ActiveModel::Serializer
   attribute :email
   attribute :current_point
   attribute :join_date
+  attribute :is_active
 
   attribute :moderated_by
   attribute :updated_at

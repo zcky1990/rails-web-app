@@ -4,7 +4,7 @@ class Admin::CustomerService
     total_data = data.total_count
     total_pages = data.total_pages
     datas = ActiveModel::Serializer::CollectionSerializer.new(data, serializer: CustomerSerializer)
-    return get_table_data(page, "Customer", datas, total_data, total_pages)
+    return get_table_data(page, "customer", datas, total_data, total_pages)
   end
 
   def search_customer(params)
@@ -14,7 +14,7 @@ class Admin::CustomerService
     total_pages = 1
     page = 1
     datas = ActiveModel::Serializer::CollectionSerializer.new(data, serializer: CustomerSerializer)
-    return get_table_data(page, "Customer", datas, total_data, total_pages)
+    return get_table_data(page, "customer", datas, total_data, total_pages)
   end
 
   def add_customer(params, current_user)
@@ -22,12 +22,17 @@ class Admin::CustomerService
       customer = Customer.find_by_phone(params[:phone])
       if !customer.present?
         data = {
-          name: params[:name],
-          desc: params[:desc],
-          status: params[:status],
+          firstname: params[:firstname],
+          lastname: params[:lastname],
+          phone: params[:phone],
+          email: params[:email],
+          address: params[:address],
+          is_active: params[:is_active],
+          join_date: Date.today,
           created_by: current_user,
           moderated_by: current_user,
         }
+        binding.pry
         new_customer = Customer.new(data)
         if new_customer.save!
           return { status: "success", message: "Success Create New Customer" }
@@ -47,9 +52,12 @@ class Admin::CustomerService
       customer = Customer.find(params[:id])
       if Customer.present?
         data = {
-          name: params[:name],
-          desc: params[:desc],
-          status: params[:status],
+          firstname: params[:firstname],
+          lastname: params[:lastname],
+          phone: params[:phone],
+          email: params[:email],
+          address: params[:address],
+          is_active: params[:is_active],
           moderated_by: current_user,
         }
         if customer.update_attributes(data)
