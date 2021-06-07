@@ -45,7 +45,7 @@ export default {
     for (var i = 3; i < splitterUrl.length; i++) {
       urlData = urlData + "/" + splitterUrl[i];
       this.breadCrumbLink.push({
-        name: this.titleCase(splitterUrl[i]),
+        name: splitterUrl[i].toUpperCase(),
         url: urlData,
       });
     }

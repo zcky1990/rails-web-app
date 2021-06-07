@@ -23,7 +23,7 @@
 <script>
 import snackbar from "../../components/shared/snackbar.vue";
 import spinner from "../../components/shared/spinner.vue";
-import breadCrumb from "../../components/shared/admin-breadcrumb.vue";
+import breadCrumb from "../../components/admin/shared/admin-breadcrumb.vue";
 import sidebar from "../../components/admin/shared/admin-sidebar.vue";
 import contenttab from "../../components/admin/product/product-content.vue"
 

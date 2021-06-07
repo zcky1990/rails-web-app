@@ -38,21 +38,21 @@ export default {
       breadCrumbLink: [],
     };
   },
-  created() {
-    var pathUrl = document.URL.split("?")[0];
-    var splitterUrl = pathUrl.split("/");
+  mounted() {
+    var path = document.URL.split("?")[0];
+    var splitterUrl = path.split("/");
     this.breadCrumbLink = [];
     var urlData = "";
     for (var i = 3; i < splitterUrl.length; i++) {
       urlData = urlData + "/" + splitterUrl[i];
       this.breadCrumbLink.push({
-        name: this.titleCase(splitterUrl[i]),
+        name: this.titleCase(splitterUrl[i].replaceAll("-", " ")),
         url: urlData,
       });
     }
   },
   methods: {
-    titleCase: function (str) {
+    titleCase(str) {
       var splitStr = str.toLowerCase().split(" ");
       for (var i = 0; i < splitStr.length; i++) {
         splitStr[i] =
