@@ -13,13 +13,7 @@
           ></button>
         </header>
         <section class="modal-card-body">
-          <form
-            class="form-horizontal"
-            id="app"
-            @submit="onSubmit"
-            :action="getUrlSubmit"
-            method="post"
-          >
+          <form class="form-horizontal">
             <div class="field is-horizontal">
               <div class="field-label is-normal">
                 <label class="label">Category Name</label>
@@ -138,10 +132,7 @@ export default {
       return true;
     },
     isStatusNotSelected() {
-      if (
-        this.category.status == "" ||
-        this.category.status === undefined
-      ) {
+      if (this.category.status == "" || this.category.status === undefined) {
         return true;
       }
       return false;
@@ -152,10 +143,7 @@ export default {
       this.category = data;
       this.type = type;
       this.title = title;
-      if (
-        this.category.status == undefined ||
-        this.category.status == ""
-      ) {
+      if (this.category.status == undefined || this.category.status == "") {
         this.category.status = "false";
       }
       this.isShow = true;
@@ -164,10 +152,7 @@ export default {
       this.isShow = false;
       this.category = {};
       this.type = "";
-      if (
-        this.category.status == undefined ||
-        this.category.status == ""
-      ) {
+      if (this.category.status == undefined || this.category.status == "") {
         this.category.status = "false";
       }
       this.title = "";
@@ -200,10 +185,7 @@ export default {
         this.error.messageError = "Name is required";
         this.error.isNameError = true;
         error = true;
-      } else if (
-        !this.category.status ||
-        0 === this.category.status.length
-      ) {
+      } else if (!this.category.status || 0 === this.category.status.length) {
         this.error.messageError = "Please select Status";
         this.error.isActiveError = true;
         error = true;
