@@ -63,7 +63,7 @@ export default {
     });
 
     this.onEmitEvent("PRICE_TYPE_ADD", function (data) {
-      self.$refs.categoryForm.showForm({}, "add", "Add New Price Type Data");
+      self.$refs.categoryForm.showForm({is_active: false}, "add", "Add New Price Type Data");
     });
   },
   methods: {

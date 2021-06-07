@@ -207,8 +207,7 @@ export default {
       this.emitEvent(eventKey, eventData);
     },
     onClickDelete: function (selectedIndex, event) {
-      var self = this
-      var data = self.getData(selectedIndex)
+      var data = this.getData(selectedIndex)
       let value = data.id;
       document.querySelector("#removeId" + selectedIndex).value = value;
       event.currentTarget.parentElement.submit();

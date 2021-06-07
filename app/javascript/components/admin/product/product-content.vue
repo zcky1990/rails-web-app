@@ -51,7 +51,7 @@ export default {
         maxRow: 10,
         tableListUrl: "",
         hiddenColumn: [2,4, 7],
-        searchType: ["id", "name", "product_category", "price"],
+        searchType: ["id", "name", "product_category", "price_type", "price"],
       },
       paginationOptions: {
         totalPage: 1,

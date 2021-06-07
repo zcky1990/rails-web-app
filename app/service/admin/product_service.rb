@@ -143,8 +143,12 @@ class Admin::ProductService
       search_query[:id] = query
     elsif type_search == "name"
       search_query[:name] = query
+    elsif type_search == "price"
+      search_query["price.price"] = query
+    elsif type_search == "price_type"
+      search_query["price.price_type.name"] = query
     elsif type_search == "product_category"
-      search_query["product_category.name"] = query
+      search_query["product_category.category.name"] = query
     elsif type_search == "price"
       search_query[:price] = query
     end
