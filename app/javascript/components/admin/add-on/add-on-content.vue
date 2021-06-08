@@ -3,13 +3,13 @@
     <div class="tabs">
       <div class="menu" v-on:click="tabclick">
         <div class="menu-icon">
-          <span class="subtitle is-4 algolia-lvl1">Product List</span>
+          <span class="subtitle is-4 algolia-lvl1">Add On</span>
         </div>
       </div>
     </div>
-    <div class="tab-content-container">
+    <div class="tab-content-container algolia-content">
       <section class="tab-content admin tab-active">
-        <product-form ref="productForm"></product-form>
+        <add-On-form ref="addOnForm"></add-On-form>
         <table-list
           :headers="headers"
           :dataTable="table"
@@ -25,69 +25,58 @@
 </template>
 
 <script>
-import tableList from "./../../shared/table-list.vue";
-import Form from "./product-form.vue";
+import tableList from "../../shared/table-list.vue";
+import Form from "./add-on-form.vue";
 
 export default {
   data: function () {
     return {
       table: [],
-      headers: [
-        "Id",
-        "Product Name",
-        "Product Category Id",
-        "Product Category",
-        "Price",
-        "Add-On",
-        "Stock",
-        "Status",
-        "Is Active",
-        "Moderated By",
-        "Updated Date",
-      ],
+      headers: ["Id", "Name", "Price", "is_active", "Moderated By", "Updated at"],
       options: {
         showPaginate: true,
         isShowActionColumn: true,
-        type: "product",
+        type: "add_on",
         maxRow: 10,
         tableListUrl: "",
-        hiddenColumn: [2,4,5,8],
-        searchType: ["id", "name", "product_category", "price_type", "price"],
+        hiddenColumn: [],
+        searchType: ["id", "name", "price"],
       },
       paginationOptions: {
         totalPage: 1,
         totalData: 1,
         page: 1,
       },
-      keyEvent: "PRODUCT",
-      searchUrl: "/admin/product/product-list",
-      removeUrl: "/admin/product/remove-product-list",
+      keyEvent: "ADD_ON",
+      searchUrl: "/admin/product/product-add-on",
+      removeUrl: "/admin/product/remove-add-on"
     };
   },
   created() {
     var self = this;
-    this.onEmitEvent("PRODUCT_SHOW", function (data) {
-      self.$refs.productForm.showForm(data.data, "show", "View Product");
+    this.onEmitEvent("ADD_ON_SHOW", function (data) {
+      self.$refs.addOnForm.showForm(data.data, "show", "Show Add-On Data");
     });
 
-    this.onEmitEvent("PRODUCT_ADD", function (data) {
-      self.$refs.productForm.showForm({price:[],product_category_id: "", is_active: false}, "add", "Add New Product");
+    this.onEmitEvent("ADD_ON_EDIT", function (data) {
+      self.$refs.addOnForm.showForm(data.data, "edit", "Edit Add-On Data");
     });
 
-    this.onEmitEvent("PRODUCT_EDIT", function (data) {
-      self.$refs.productForm.showForm(data.data, "edit", "Edit Product Data");
+    this.onEmitEvent("ADD_ON_ADD", function (data) {
+      self.$refs.addOnForm.showForm({is_active: false}, "add", "Add New Add-On Data");
     });
   },
   methods: {
     tabclick: function () {
-      window.location = "/admin/product/product-list";
+      window.location = "/admin/product/product-add-on";
     },
     setData: function (data) {
+      console.log(data);
       this.table = data.tabelData;
       this.paginationOptions = data.pagination_options;
-      this.keyEvent = "PRODUCT";
+      this.keyEvent = "ADD_ON";
       this.options.type = data.type;
-      this.options.tableListUrl = "/admin/product/product-list";
+      this.options.tableListUrl = "/admin/product/product-add-on";
       if (window.location.href.includes("?typeSearch")) {
         this.options.showPaginate = false;
       }else if(this.table.length == 0){
@@ -97,7 +86,7 @@ export default {
   },
   components: {
     "table-list": tableList,
-    "product-form": Form,
+    "add-On-form": Form,
   },
 };
 </script>

@@ -47,6 +47,20 @@ class Admin::ProductService
           end
           data[:price] = new_prices
         end
+
+        if params[:available_add_on].present?
+          new_add_ons = []
+          add_on = params[:available_add_on]
+          add_on.each do |a|
+            add_on_data = AddOn.find(a[:add_on_id])
+            new_available_add_on_params = {
+              add_on: add_on_data
+            }
+            new_add_on = AvailableAddOn.new(new_available_add_on_params)
+            new_add_ons << new_add_on
+          end
+          data[:available_add_on] = new_add_ons
+        end
         new_product = Product.new(data)
         if new_product.save!
           return { status: "success", message: "Success Create New Product" }
@@ -89,6 +103,20 @@ class Admin::ProductService
             new_prices << new_price
           end
           data[:price] = new_prices
+        end
+
+        if params[:available_add_on].present?
+          new_add_ons = []
+          add_on = params[:available_add_on]
+          add_on.each do |a|
+            add_on_data = AddOn.find(a[:add_on_id])
+            new_available_add_on_params = {
+              add_on: add_on_data
+            }
+            new_add_on = AvailableAddOn.new(new_available_add_on_params)
+            new_add_ons << new_add_on
+          end
+          data[:available_add_on] = new_add_ons
         end
 
         if product.update_attributes(data)

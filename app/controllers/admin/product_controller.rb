@@ -6,6 +6,7 @@ class Admin::ProductController < Admin::ApplicationController
     @category_service = Admin::CategoryService.new
     @product_service = Admin::ProductService.new
     @price_type_service = Admin::PriceTypeService.new
+    @addon_service = Admin::AddOnService.new
   end
 
   def product_list
@@ -35,6 +36,16 @@ class Admin::ProductController < Admin::ApplicationController
     else
       page = get_page(params)
       @data = @price_type_service.get_price_type_list(page)
+    end
+  end
+
+  def add_on
+    @token = get_token(current_user)
+    if params[:typeSearch].present?
+      @data = @addon_service.search_add_on(params)
+    else
+      page = get_page(params)
+      @data = @addon_service.get_add_on_list(page)
     end
   end
 
@@ -90,6 +101,26 @@ class Admin::ProductController < Admin::ApplicationController
 
   def get_price_type_list
     response = @price_type_service.get_price_type_dropdown_list
+    render :json => response, :status => 200
+  end
+
+  def add_add_on
+    result = @addon_service.add_add_on(params, current_user)
+    redirect_to add_on_admin_product_url, :flash => result
+  end
+
+  def update_add_on
+    result = @addon_service.update_add_on(params, current_user)
+    redirect_to add_on_admin_product_url, :flash => result
+  end
+
+  def remove_add_on
+    result = @addon_service.delete_add_on(params, current_user)
+    redirect_to add_on_admin_product_url, :flash => result
+  end
+
+  def get_add_on_list
+    response = @addon_service.get_add_on_dropdown_list
     render :json => response, :status => 200
   end
 

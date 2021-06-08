@@ -10,6 +10,7 @@ class Product
 
     embeds_one :product_category, :class_name => "ProductCategory", inverse_of: :product
     embeds_many :price, :class_name => "Price"
+    embeds_many :available_add_on, :class_name => "AvailableAddOn"
     belongs_to :created_by, :class_name => "User", optional: true
     belongs_to :moderated_by, :class_name => "User", optional: true
 

@@ -4,6 +4,7 @@ class ProductSerializer < ActiveModel::Serializer
   attribute :product_category_id
   attribute :product_category_name
   attribute :price
+  attribute :available_add_on
   attribute :stock
   attribute :status
   attribute :is_active
@@ -43,6 +44,20 @@ class ProductSerializer < ActiveModel::Serializer
       new_prices << data
     end
     return new_prices
+  end
+
+  def available_add_on
+    new_add_on = []
+    available_add_on = object.available_add_on
+    available_add_on.each do |addon|
+      data = {
+        add_on_id: addon.add_on.id.to_s,
+        add_on_name: addon.add_on.name,
+        price: addon.add_on.price
+      }
+      new_add_on << data
+    end
+    return new_add_on
   end
 
   def product_category_name

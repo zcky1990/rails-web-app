@@ -160,7 +160,6 @@
                 </div>
               </div>
             </div>
-
             <div class="field is-horizontal">
               <div class="field-label is-normal"></div>
               <div class="field-body">
@@ -194,6 +193,101 @@
                 </div>
               </div>
             </div>
+
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Add-On</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control">
+                    <div class="field has-addons">
+                      <p class="control">
+                        <span
+                          class="select"
+                          :class="error.hasErrorPrice ? 'is-danger' : ''"
+                        >
+                          <select
+                            ref="addOnDropdown"
+                            v-model="dropdownSelected"
+                          >
+                            <option value="" disabled>Select Add-On</option>
+                            <option
+                              v-for="option in addOnDropdownList"
+                              v-bind:value="
+                                option.id +
+                                '-' +
+                                option.name +
+                                '-' +
+                                option.price
+                              "
+                              v-bind:key="option.id"
+                              :disabled="
+                                option.id +
+                                  '-' +
+                                  option.name +
+                                  '-' +
+                                  option.price ==
+                                ''
+                              "
+                            >
+                              {{ option.name }} - {{ option.price }}
+                            </option>
+                          </select>
+                        </span>
+                      </p>
+                      <p class="control">
+                        <a
+                          class="button"
+                          :class="error.hasErrorPrice ? 'is-danger' : ''"
+                          v-on:click="addAddOn"
+                        >
+                          Add
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                  <p v-if="error.hasErrorPrice == true" class="help is-danger">
+                    {{ error.messageError }}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="field is-horizontal">
+              <div class="field-label is-normal"></div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control">
+                    <div
+                      class="field has-addons"
+                      v-for="(addon, index) in product.available_add_on"
+                      :key="`price-data-${index}`"
+                    >
+                      <p class="control">
+                        <a disabled class="button">
+                          {{ addon.add_on_name }}
+                        </a>
+                      </p>
+                      <p class="control">
+                        <input
+                          disabled
+                          v-model="addon.price"
+                          class="input"
+                          type="text"
+                        />
+                      </p>
+                      <p class="control">
+                        <a class="button" v-on:click="removeAddOn(index)"
+                          >remove</a
+                        >
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
 
             <div class="field is-horizontal">
               <div class="field-label is-normal">
@@ -247,9 +341,10 @@ export default {
       showMessage: false,
       product: {
         product_category_id: "",
-        product_category_name: ""
+        product_category_name: "",
       },
       typeSelected: "",
+      dropdownSelected: "",
       title: "",
       type: "",
       date: new Date(),
@@ -266,6 +361,8 @@ export default {
       ],
       priceTypeDropDownUrl: "/admin/product/get-price-type-list-dropdown",
       priceTypeDropdownList: [],
+      addOnDropDownUrl: "/admin/product/get-add-on-list",
+      addOnDropdownList: [],
       addUrl: "/admin/product/add-product-list",
       updateUrl: "/admin/product/update-product-list",
       csrf: document
@@ -328,12 +425,28 @@ export default {
           self.showMessage = true;
         });
     },
+    getAddOnDropdown: function () {
+      var self = this;
+      let headers = {};
+      headers["Authorization"] = "Bearer " + this.token;
+      headers["Content-Type"] = "application/json";
+      this.axios
+        .get(self.addOnDropDownUrl, { headers })
+        .then((response) => {
+          self.addOnDropdownList = response.data.data;
+        })
+        .catch((e) => {
+          self.messageError = e.message;
+          self.showMessage = true;
+        });
+    },
     showForm(data, type, title) {
       this.product = data;
       this.type = type;
       this.title = title;
       this.getDropdown();
       this.getPriceTypeDropdown();
+      this.getAddOnDropdown();
       this.isShow = true;
     },
     hideForm() {
@@ -376,6 +489,37 @@ export default {
           var price = document.createElement("input");
           price.setAttribute("type", "text");
           price.setAttribute("name", "price[][price]");
+          price.value = priceValue;
+          price.hidden = true;
+
+          this.$refs.formProduct.append(type);
+          this.$refs.formProduct.append(name);
+          this.$refs.formProduct.append(price);
+        }
+      }
+
+      var addOnDatas = this.product.available_add_on;
+      if (addOnDatas != undefined) {
+        for (var i = 0; i < addOnDatas.length; i++) {
+          var priceId = addOnDatas[i].add_on_id;
+          var priceName = addOnDatas[i].add_on_name;
+          var priceValue = addOnDatas[i].price;
+
+          var type = document.createElement("input");
+          type.setAttribute("type", "text");
+          type.setAttribute("name", "available_add_on[][add_on_id]");
+          type.value = priceId;
+          type.hidden = true;
+
+          var name = document.createElement("input");
+          name.setAttribute("type", "text");
+          name.setAttribute("name", "available_add_on[][add_on_name]");
+          name.value = priceName;
+          name.hidden = true;
+
+          var price = document.createElement("input");
+          price.setAttribute("type", "text");
+          price.setAttribute("name", "available_add_on[][price]");
           price.value = priceValue;
           price.hidden = true;
 
@@ -441,6 +585,28 @@ export default {
     },
     removePrice(index) {
       this.product.price.splice(index, 1);
+    },
+    addAddOn() {
+      let dorpdownValue = this.$refs.addOnDropdown.value;
+      let splitData = dorpdownValue.split("-");
+      let id = splitData[0];
+      let name = splitData[1];
+      let price = splitData[2];
+      if (id && name && price) {
+        var data = {
+          add_on_id: id,
+          add_on_name: name,
+          price: price,
+        };
+        if (this.product.available_add_on == undefined) {
+          this.product.available_add_on = [];
+        }
+        this.product.available_add_on.push(data);
+        this.$refs.addOnDropdown.value = "";
+      }
+    },
+    removeAddOn(index) {
+      this.product.available_add_on.splice(index, 1);
     },
   },
 };

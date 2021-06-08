@@ -9,6 +9,7 @@
     <ul class="menu-list">
       <li><a :class="[classname === 'product-category' ? 'is-active': '' ]" href="/admin/product/product-category" >Product Category</a></li>
       <li><a :class="[classname === 'product-price-type' ? 'is-active': '' ]" href="/admin/product/product-price-type" >Product Price Type</a></li>
+      <li><a :class="[classname === 'product-add-on' ? 'is-active': '' ]" href="/admin/product/product-add-on" >Product Add-on</a></li>
       <li><a :class="[classname === 'product-list' ? 'is-active': '' ]" href="/admin/product/product-list" >Product List</a></li>
     </ul>
     <p class="menu-label">Transactions</p>
