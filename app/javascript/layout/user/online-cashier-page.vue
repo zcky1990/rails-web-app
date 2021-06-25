@@ -71,7 +71,7 @@
                   <div class="column">
                     <p class="title">{{ item.name }}</p>
                     <div
-                      class="price"
+                      class="price no-hover"
                       v-for="prices in item.price"
                       :key="prices.price_type_id"
                     >
@@ -81,10 +81,10 @@
                           bd-fat-button
                           is-primary is-light
                           bd-pagination-prev
+                          is-uppercase
                         "
                       >
-                        {{ toUpperCase(prices.price_type_name) }} - Rp.
-                        {{ prices.price }},00
+                        {{ prices.price_type_name }} - Rp. {{ prices.price }},00
                       </div>
                     </div>
                   </div>
@@ -95,30 +95,51 @@
                   <div class="content">
                     <div class="field is-grouped centered">
                       <div class="control">
-                        <div class="button is-white is-unselectable">
+                        <div class="button is-white is-unselectable no-hover">
                           Amount
                         </div>
                       </div>
                       <div class="control">
-                        <a class="button is-info"> - </a>
+                        <a
+                          class="button is-info"
+                          v-on:click="minusAmmount(item.id)"
+                        >
+                          -
+                        </a>
                       </div>
                       <div class="control">
-                        <a class="button"> 1 </a>
+                        <a :id="`${item.id}-value`" class="button no-hover">
+                          1
+                        </a>
                       </div>
                       <div class="control">
-                        <a class="button is-info"> + </a>
+                        <a
+                          class="button is-info"
+                          v-on:click="addAmmount(item.id)"
+                        >
+                          +
+                        </a>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div
-                  class="
-                    card-footer-item
-                    is-justify-content-flex-end is-align-content-flex-end
-                  "
-                >
-                  <div class="control">
-                    <a class="button is-info"> Add to Cart </a>
+                <div class="card-footer-item">
+                  <div class="field is-grouped centered">
+                    <div class="control">
+                      <div
+                        class="
+                          button
+                          is-white is-unselectable
+                          has-text-grey
+                          no-hover
+                        "
+                      >
+                        Stock : {{ item.stock }}
+                      </div>
+                    </div>
+                    <div class="control">
+                      <a class="button is-info"> Add to Cart </a>
+                    </div>
                   </div>
                 </div>
               </footer>
@@ -208,10 +229,6 @@ export default {
       );
     },
 
-    toUpperCase(string) {
-      return string.toUpperCase();
-    },
-
     search(event) {
       var query = event.srcElement.value;
       if (query.length > 2) {
@@ -221,7 +238,26 @@ export default {
         this.selectDefaultMenu();
       }
     },
+
+    addAmmount(id) {
+      var el = document.getElementById(id + "-value");
+      var value = parseInt(el.innerText);
+      el.innerText = value + 1;
+    },
+
+    minusAmmount(id) {
+      var el = document.getElementById(id + "-value");
+      var value = parseInt(el.innerText);
+      if (value > 1) {
+        el.innerText = value - 1;
+      }
+    },
   },
 };
 </script>
 
+<style>
+.no-hover {
+  pointer-events: none;
+}
+</style>
