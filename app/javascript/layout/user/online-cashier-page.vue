@@ -145,8 +145,6 @@
               </footer>
             </div>
           </div>
-          <div class="column">Second column</div>
-          <div class="column">Third column</div>
         </div>
       </aside>
       <aside id="cart" class="column is-3 aside hero is-fullheight">
