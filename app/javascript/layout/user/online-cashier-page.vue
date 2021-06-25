@@ -69,7 +69,7 @@
                     </div>
                   </div>
                   <div class="column">
-                    <p class="title">{{ item.name }}</p>
+                    <p class="title is-capitalized">{{ item.name }}</p>
                     <div
                       class="price no-hover"
                       v-for="prices in item.price"
