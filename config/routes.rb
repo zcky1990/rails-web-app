@@ -94,6 +94,7 @@ Rails.application.routes.draw do
   namespace :user do
     resource :home, only: [], :path => "/" do
       get "/", to: "home#index", as: "index"
+      get "/online_cashier_app", to: "home#online_cashier_app", as: "online_cashier_app"
     end
   end
 
