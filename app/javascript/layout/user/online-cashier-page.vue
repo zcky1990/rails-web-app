@@ -12,42 +12,16 @@
           <div class="column">
             <p class="title">Categories</p>
           </div>
-          <div class="column">
-            <div class="card">
+          <div v-for="item in category" :key="item.id" class="column">
+            <div
+              class="card"
+              :id="item.id"
+              v-on:click="searchByCategory(item.id)"
+            >
               <div class="card-content">
                 <div class="media">
-                  <div class="media-left">
-                    <figure class="image is-48x48">
-                      <img
-                        src="https://bulma.io/images/placeholders/96x96.png"
-                        alt="Placeholder image"
-                      />
-                    </figure>
-                  </div>
                   <div class="media-content">
-                    <p class="title is-4">John Smith</p>
-                    <p class="subtitle is-6">@johnsmith</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="column">
-            <div class="card">
-              <div class="card-content">
-                <div class="media">
-                  <div class="media-left">
-                    <figure class="image is-48x48">
-                      <img
-                        src="https://bulma.io/images/placeholders/96x96.png"
-                        alt="Placeholder image"
-                      />
-                    </figure>
-                  </div>
-                  <div class="media-content">
-                    <p class="title is-4">John Smith</p>
-                    <p class="subtitle is-6">@johnsmith</p>
+                    <p class="subtitle is-4">{{ item.name }}</p>
                   </div>
                 </div>
               </div>
@@ -63,7 +37,12 @@
         <div class="menu-search" id="menu-search">
           <div class="panel-block">
             <p class="control has-icons-left">
-              <input class="input" type="text" placeholder="Search" />
+              <input
+                class="input"
+                type="text"
+                placeholder="Search"
+                v-on:keyup="search($event)"
+              />
               <span class="icon is-left">
                 <i class="fas fa-search" aria-hidden="true"></i>
               </span>
@@ -71,7 +50,11 @@
           </div>
         </div>
         <div class="container">
-          <div class="column">
+          <div
+            v-for="item in selected_product_data"
+            :key="item.id"
+            class="column"
+          >
             <div class="card">
               <div class="container">
                 <div class="columns card-content">
@@ -86,8 +69,24 @@
                     </div>
                   </div>
                   <div class="column">
-                    <p class="title">Ikan Gurame Asam Manis</p>
-                    <p class="subtitle">Rp. 130000</p>
+                    <p class="title">{{ item.name }}</p>
+                    <div
+                      class="price"
+                      v-for="prices in item.price"
+                      :key="prices.price_type_id"
+                    >
+                      <div
+                        class="
+                          button
+                          bd-fat-button
+                          is-primary is-light
+                          bd-pagination-prev
+                        "
+                      >
+                        {{ toUpperCase(prices.price_type_name) }} - Rp.
+                        {{ prices.price }},00
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -143,9 +142,9 @@ import snackbar from "../../components/shared/snackbar.vue";
 export default {
   data: function () {
     return {
-      data: {
-        message: "",
-      },
+      category: [],
+      list_product_data: [],
+      selected_product_data: [],
     };
   },
   props: {
@@ -176,11 +175,52 @@ export default {
         this._datas.constructor === Object
       )
     ) {
-      console.log(this._datas);
+      this.category = this._datas.category;
+      this.list_product_data = this._datas.product;
+      this.selectDefaultMenu();
     }
     if (this.notif !== null && this.notif !== undefined) {
       this.$refs.snackbar.showSnackBar(this.notif.message, this.notif.status);
     }
+  },
+  methods: {
+    selectDefaultMenu() {
+      var data = this.category[0];
+      if (data != {} || data != undefined) {
+        var id = data.id;
+        this.selected_product_data = this.list_product_data.filter(
+          (x) => x.product_category_id == id
+        );
+        console.log(this.selected_product_data);
+      } else {
+        this.selected_product_data = [];
+      }
+    },
+
+    searchByCategory(id) {
+      this.selected_product_data = this.list_product_data.filter(
+        (x) => x.product_category_id == id
+      );
+    },
+    searchMenu(query) {
+      this.selected_product_data = this.list_product_data.filter((x) =>
+        x.name.toLowerCase().includes(query.toLowerCase())
+      );
+    },
+
+    toUpperCase(string) {
+      return string.toUpperCase();
+    },
+
+    search(event) {
+      var query = event.srcElement.value;
+      if (query.length > 2) {
+        this.searchMenu(query);
+      }
+      if (query.length == 0) {
+        this.selectDefaultMenu();
+      }
+    },
   },
 };
 </script>
